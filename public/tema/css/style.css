@@ -65,6 +65,8 @@ $delete-btn: */
 @import url("https://fonts.googleapis.com/css?family=Nunito:400,600,700");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap");
 @import url("https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css");
+@import url("https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css");
 @import url("../icons/simple-line-icons/css/simple-line-icons.css");
 @import url("../icons/fontawesome6/css/all.min.css");
 @import url("../icons/fontawesome/css/all.min.css");
@@ -83,6 +85,10 @@ $delete-btn: */
 @import url(../vendor/datatables/css/jquery.dataTables.min.css);
 @import url(../vendor/dropzone/dist/dropzone.css);
 @import url(../vendor/select2/css/select2.min.css);
+@import url(../vendor/bootstrap-select/dist/css/bootstrap-select.min.css);
+@import url(../vendor/swiper/css/swiper-bundle.min.css);
+@import url(../vendor/jvmap/jquery-jvectormap.css);
+@import url(../vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css);
 
 
 :root {

@@ -277,7 +277,7 @@
 			  type: 'image',
 				opacity:1,
 			   image: {
-				src: ['images/pt1.png'],
+				src: ['tema/images/logo.png'],
 				  width: undefined,
 				  height: undefined
 			  },
@@ -413,7 +413,7 @@
 			  type: 'image',
 				opacity:1,
 			   image: {
-				src: ['images/pt-2.png'],
+				src: ['/tema/images/logo.png'],
 				  width: undefined,
 				  height: undefined
 			  },
