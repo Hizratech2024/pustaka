@@ -95,9 +95,7 @@ export default function MenuAdmin() {
                         </a>
                         <ul aria-expanded="false" id="laporan">
                             <li className="mini-dashboard">Laporan</li>
-                            <li>
-                                <Link href="/admin/laporan">Laporan</Link>
-                            </li>
+                         
                             <li>
                                 <Link href="/admin/penjualan">Laporan Penjualan</Link>
                             </li>
