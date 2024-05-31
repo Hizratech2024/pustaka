@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
   if (requireAuth.some((path) => pathname.startsWith(path))) {
     if (!token) {
       const url = new URL("/login", request.url);
-      url.searchParams.set("callbackUrl", encodeURI(request.url));
+      // url.searchParams.set("callbackUrl", encodeURI(request.url));
       return NextResponse.redirect(url);
     }
   }
