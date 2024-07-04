@@ -12,6 +12,7 @@ import Select from 'react-select'
 const options = [
     { value: 'Admin', label: 'Admin' },
     { value: 'Kasir', label: 'Kasir' },
+    { value: 'Teknisi', label: 'Teknisi' },
 ];
 
 function Update({ karyawan, user, reload }: { karyawan: KaryawanTb, user: UserTb, reload: Function }) {

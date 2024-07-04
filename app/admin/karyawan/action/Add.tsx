@@ -9,6 +9,7 @@ import { tanggalHariIni } from "@/app/helper";
 const options = [
     { value: 'Admin', label: 'Admin' },
     { value: 'Kasir', label: 'Kasir' },
+    { value: 'Teknisi', label: 'Teknisi' },
 ];
 
 function Add({ reload }: { reload: Function }) {

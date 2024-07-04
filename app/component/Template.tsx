@@ -7,6 +7,7 @@ import ScriptJs from './ScriptJs';
 import Header from './Header';
 import { useSession } from 'next-auth/react';
 import MenuKasir from './MenuKasir';
+import MenuTeknisi from './MenuTeknisi';
 
 function Template({ children }: { children: React.ReactNode }) {
     const session = useSession()
@@ -21,7 +22,8 @@ function Template({ children }: { children: React.ReactNode }) {
             <div id="main-wrapper">
                 <Header />
                 {session?.data?.status === 'Kasir' ? (<MenuKasir />) :
-                    session?.data?.status === 'Admin' ? <Menuadmin /> : null}
+                    session?.data?.status === 'Admin' ? <Menuadmin /> :
+                        session?.data?.status === 'Teknisi' ? <MenuTeknisi /> : null}
 
                 <div className="outer-body">
                     <div className="inner-body">
