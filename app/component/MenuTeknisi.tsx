@@ -58,20 +58,18 @@ export default function MenuTeknisi() {
                     </li>
 
                     <li>
-                        <Link href="/kasir/transaksi" className="" aria-expanded="false">
+                        <Link href="/teknisi/servis" className="" aria-expanded="false">
                             <div className="menu-icon">
                                 <svg
-                                    viewBox="0 0 16 16"
+                                    viewBox="0 0 24 24"
                                     fill="currentColor"
                                     width={25} height={24}
                                 >
-                                    <path
-                                        fill="none"
-                                        d="M6 14.5a1.5 1.5 0 11-3.001-.001A1.5 1.5 0 016 14.5zM16 14.5a1.5 1.5 0 11-3.001-.001A1.5 1.5 0 0116 14.5zM16 8V2H4a1 1 0 00-1-1H0v1h2l.751 6.438A2 2 0 004 12h12v-1H4a1 1 0 01-1-1v-.01L16 8z"
-                                    />
+                                    
+                                    <path d="M13.783 15.172l2.121-2.121 5.996 5.996-2.121 2.121zM17.5 10c1.93 0 3.5-1.57 3.5-3.5 0-.58-.16-1.12-.41-1.6l-2.7 2.7-1.49-1.49 2.7-2.7c-.48-.25-1.02-.41-1.6-.41C15.57 3 14 4.57 14 6.5c0 .41.08.8.21 1.16l-1.85 1.85-1.78-1.78.71-.71-1.41-1.41L12 3.49a3 3 0 00-4.24 0L4.22 7.03l1.41 1.41H2.81l-.71.71 3.54 3.54.71-.71V9.15l1.41 1.41.71-.71 1.78 1.78-7.41 7.41 2.12 2.12L16.34 9.79c.36.13.75.21 1.16.21z" />
                                 </svg>
                             </div>
-                            <span className="nav-text">Kasir</span>
+                            <span className="nav-text">Servis</span>
                         </Link>
                     </li>
 
