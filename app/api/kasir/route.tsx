@@ -6,16 +6,6 @@ const prisma = new PrismaClient()
 export const POST = async (request: Request) => {
     const formData = await request.formData()
 
-    await prisma.transaksiTB.create({
-        data: {
-            nofaktur: String(formData.get('nofaktur')),
-            kasir: String(formData.get('kasir')),
-            tanggal:String(formData.get('tanggal')),
-            totalItem: Number(formData.get('totalItem')),
-            totalBayar: Number(formData.get('totalBayar')),
-        },
-    })
-
     await prisma.penjualanTb.create({
         data: {
             nofaktur: String(formData.get('nofaktur')),
@@ -26,13 +16,7 @@ export const POST = async (request: Request) => {
         },
     })
 
-    const lastId = await prisma.transaksiTB.findFirst({
-        orderBy: {
-            id: 'desc',
-        },
-    });
-
-    const penjualanId = await prisma.penjualanTb.findFirst({
+    const lastId = await prisma.penjualanTb.findFirst({
         orderBy: {
             id: 'desc',
         },
@@ -40,37 +24,6 @@ export const POST = async (request: Request) => {
 
     if (lastId) {
         const noId = lastId.id;
-        const pilihbarang = JSON.parse(String(formData.get('selected'))) as any[];
-
-        var x = [];
-        for (let i = 0; i < pilihbarang.length; i++) {
-            x.push({
-                barangId: pilihbarang[i].id,
-                transaksiId: noId,
-                hargaModal: Number(pilihbarang[i].hargaModal),
-                hargaJual: Number(pilihbarang[i].hargaJual),
-                qty: Number(pilihbarang[i].qty),
-            });
-        }
-
-        await prisma.detailTransaksiTb.createMany({
-            data: x
-        })
-
-        for (let i = 0; i < pilihbarang.length; i++) {
-            await prisma.barangTb.update({
-                where: {
-                    id: pilihbarang[i].id
-                },
-                data: {
-                    stok: Number(pilihbarang[i].stokakhir),
-                },
-            })
-        }
-    }
-
-    if (penjualanId) {
-        const noId = penjualanId.id;
         const pilihbarang = JSON.parse(String(formData.get('selected'))) as any[];
 
         var x = [];
@@ -87,7 +40,19 @@ export const POST = async (request: Request) => {
         await prisma.detailPenjualanTb.createMany({
             data: x
         })
+
+        for (let i = 0; i < pilihbarang.length; i++) {
+            await prisma.barangTb.update({
+                where: {
+                    id: pilihbarang[i].id
+                },
+                data: {
+                    stok: Number(pilihbarang[i].stokakhir),
+                },
+            })
+        }
     }
+
     return NextResponse.json({ pesan: 'berhasil' })
 }
 
@@ -99,7 +64,7 @@ export const GET = async () => {
 
     const tanggal = `${year}${month}${day}`;
 
-    const lastTransaksi = await prisma.transaksiTB.findFirst({
+    const lastTransaksi = await prisma.penjualanTb.findFirst({
         orderBy: {
             nofaktur: 'desc',
         },
