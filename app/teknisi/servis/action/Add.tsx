@@ -255,7 +255,7 @@ function Add({ reload }: { reload: Function }) {
                                     value={noseri} onChange={(e) => setNoseri(e.target.value)}
                                 />
                             </div>
-                            <div className="mb-3 col-md-4">
+                            {/* <div className="mb-3 col-md-4">
                                 <label className="col-sm-6 col-form-label">No Servis</label>
                                 <input
                                     required
@@ -264,7 +264,7 @@ function Add({ reload }: { reload: Function }) {
                                     className="form-control"
                                     value={noservis} onChange={(e) => setNoservis(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
 
                         </div>
 

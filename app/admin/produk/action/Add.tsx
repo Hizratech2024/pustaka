@@ -304,6 +304,7 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                                 <Editor
                                     value={deskripsi}
                                     initialValue=""
+                                    apiKey='e6x7uc1szg0c9mjyoh315prq24tm54yyyvyudgcfr197mw96'
                                     init={{
                                         height: 500,
                                         menubar: true,
