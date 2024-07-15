@@ -17,7 +17,7 @@ export const POST = async (request: Request) => {
 export const GET = async () => {
     const kategori = await prisma.kategoriTb.findMany({
         orderBy:{
-            id:'asc'
+            nama:'asc'
         }
     });
     return NextResponse.json(kategori, { status: 200 })

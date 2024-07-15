@@ -5,8 +5,8 @@ moment.locale('id');
 
 const currentTime = new Date();
 
-export let supabaseUrl = 'https://yqfkawpwazetyfbbeqgc.supabase.co'
-export let supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxZmthd3B3YXpldHlmYmJlcWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTA0NzAsImV4cCI6MjAzNTU2NjQ3MH0.eu8jULo3XXEikMbs22_uo5SmodmAwJDyylAB_lRp45A'
+export let supabaseUrl = 'https://gjrkyteltltxgxtgxogj.supabase.co'
+export let supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdqcmt5dGVsdGx0eGd4dGd4b2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjEwMjc0NTQsImV4cCI6MjAzNjYwMzQ1NH0.g-lD3Vu1bHYNweSvUGxgYazef6Xf16Hz88wgpggh9I4'
 export let supabaseBUCKET = 'uploadfile'
 export const supabase = createClient(supabaseUrl, supabaseKey)
 

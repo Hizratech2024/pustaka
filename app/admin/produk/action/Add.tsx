@@ -136,7 +136,7 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            setTimeout(function () {
+       
                 if (xxx.data.pesan === 'kode barang sudah ada') {
                     setIsLoading(false)
                     Swal.fire({
@@ -161,7 +161,7 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                         timer: 1500
                     })
                 }
-            }, 1500);
+            
         } catch (error) {
             console.error('Error:', error);
         }
@@ -280,7 +280,7 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                             </div>
                         </div>
 
-                        {/* <div className="row">
+                        <div className="row">
                             <div className="mb-3 col-md-6">
                                 <label className="col-sm-3 col-form-label">Foto</label>
                                 <input
@@ -322,7 +322,7 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                                     onEditorChange={handleEditorChange}
                                 />
                             </div>
-                        </div> */}
+                        </div>
 
                     </Modal.Body>
                     <Modal.Footer>
