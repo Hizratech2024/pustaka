@@ -49,7 +49,7 @@ function Add({ reload }: { reload: Function }) {
         const response = await axios.get(`/teknisi/api/noservis`);
         const data = response.data;
         setNoservis(data)
-      }
+    }
 
     function clearForm() {
         otomatisnoservis()
@@ -129,57 +129,41 @@ function Add({ reload }: { reload: Function }) {
             <div>
                 <h2>Data Servis</h2>
                 <table border="1" style="border-collapse: collapse; width: 100%;">
-                <tr>
-                    <th>No Servis</th>
-                    <td>${noservis}</td>
-                </tr>
-                <tr>
-                    <th>Nama</th>
-                    <td>${nama}</td>
-                </tr>
-                <tr>
-                    <th>Alamat</th>
-                    <td>${alamat}</td>
-                </tr>
-                <tr>
-                    <th>Telp</th>
-                    <td>${hp}</td>
-                </tr>
-                <tr>
-                    <th>Nama Barang</th>
-                    <td>${namaBarang}</td>
-                </tr>
-                <tr>
-                    <th>No Seri</th>
-                    <td>${noseri}</td>
-                </tr>
-                <tr>
-                    <th>Perlengkapan</th>
-                    <td>${perlengkapan}</td>
-                </tr>
-                <tr>
-                    <th>Jenis Servisan</th>
-                    <td>${jenis}</td>
-                </tr>
-                <tr>
-                    <th>Software</th>
-                    <td>${software}</td>
-                </tr>
-                <tr>
-                    <th>Hardware</th>
-                    <td>${hardware}</td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td>${jenis.toLowerCase().includes('hardware') ? 'Menunggu Konfirmasi' : 'Proses'}</td>
-                </tr>
-            </table>
+                    <tr>
+                        <th>No Servis</th>
+                        <td>${noservis}</td>
+                    </tr>
+                    <tr>
+                        <th>Nama</th>
+                        <td>${nama}</td>
+                    </tr>
+                    <tr>
+                        <th>Alamat</th>
+                        <td>${alamat}</td>
+                    </tr>
+                    <tr>
+                        <th>Telp</th>
+                        <td>${hp}</td>
+                    </tr>
+                    <tr>
+                        <th>Nama Barang</th>
+                        <td>${namaBarang}</td>
+                    </tr>
+                    <tr>
+                        <th>No Seri</th>
+                        <td>${noseri}</td>
+                    </tr>
+                    <tr>
+                        <th>Perlengkapan</th>
+                        <td>${perlengkapan}</td>
+                    </tr>
+                </table>
             </div>
         `;
         const printWindow = window.open('', '', 'height=600,width=800');
-    
+
         if (printWindow) {
-            printWindow.document.write('<html><head><title>Print Data Servis</title>');
+            // printWindow.document.write('<html><head><title>Print Data Servis</title>');
             printWindow.document.write('</head><body >');
             printWindow.document.write(printContent);
             printWindow.document.write('</body></html>');

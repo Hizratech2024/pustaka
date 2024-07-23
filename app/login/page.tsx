@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { SyntheticEvent, useState } from "react";
 import Swal from "sweetalert2";
 import CryptoJS from 'crypto-js';
-
+import Modal from 'react-bootstrap/Modal';
 
 const Login = () => {
   const [usernama, setUsernama] = useState("");
@@ -14,9 +14,16 @@ const Login = () => {
   const kunci2 = 'Iikagennishiro Omaee Omaedakega Tsurainanteomounayo Zenin Kimochiwa Onajinanda';
 
   const [isLoading, setIsLoading] = useState(false)
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  }
+
+  const handleShow = () => setShow(true);
   if (isLoading) {
     Swal.fire({
       title: "Mohon tunggu!",
+      position:'top',
       html: "Sedang validasi data",
       allowOutsideClick: false,
       didOpen: () => {
@@ -68,79 +75,123 @@ const Login = () => {
   };
 
   return (
-    <div className="authincation h-100 commonImgBg">
-      <div className="container-fluid h-100">
-        <div className="row h-100">
-        <div className="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
-            <div className="login-form">
-              <div className="text-center">
-                <img src="/tema/images/tech.png" width='400' height='200' className="mt-5 mb-3" alt="" />
-                {/* <h3 className="title" style={{ color: 'bisque' }}>Selamat Datang  di Website I-Tech Komputer</h3> */}
-                <p style={{ color: 'bisque' }}>Selamat Datang  di Website I-Tech Komputer</p>
-              </div>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  {/* <label className="mb-1" style={{ color:'#ec8200',fontSize:18,fontFamily:"initial" }}>Username</label> */}
-                  <input
-                    type="email"
-                    className="form-control form-control"
-                    onChange={(e) => setUsernama(e.target.value)}
-                    placeholder="Username"
-                    style={{backgroundColor:"antiquewhite"}}
-                  />
-                </div>
-                <div className="mb-4 position-relative">
-                  {/* <label className="mb-1" style={{ color:'green',fontSize:18,fontFamily:"initial" }}>Password</label> */}
-                  <input
-                    required
-                    value={passwordText}
-                    type={st ? "text" : "password"}
-                    className="form-control form-control"
-                    onChange={(e) => setPasswordText(e.target.value)}
-                    placeholder="Password"
-                    style={{backgroundColor:"antiquewhite"}}
-                  />
-
-                  <span className="show-pass eye">
-                    {st ?
-                      <a onClick={() => setSt(!st)} className="" >
-                        <i className="mdi mdi-eye" />
-                      </a>
-                      :
-                      <a onClick={() => setSt(!st)} className="" >
-                        <i className="mdi mdi-eye-off" />
-                      </a>
-                    }
-                  </span>
-                </div>
-                <div className="text-center mb-4">
-                  <button type="submit" className="btn btn-info  btn-block">
-                    LOGIN
-                  </button>
-                </div>
+    <main>
 
 
-              </form>
-            </div>
+      <div className="video-container">
+
+        <div className="video-container">
+          <video autoPlay loop muted className="custom-video1" poster="">
+            <source src="/tema/videos/bg.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div className="overlay mt-100">
+          <div className="content">
+
+            <button className="login-button" onClick={handleShow} >Login</button>
           </div>
-          {/* <div className="col-xl-6 col-lg-6">
-            <div className="pages-left h-100">
-              <div className="login-content">
-                <p>
-
-                </p>
-              </div>
-              <div className="login-media text-center">
-                <img src="/tema/images/z.png" alt="" />
-              </div>
-              <div className="login-content">
-
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
-    </div>
+      <Modal
+        dialogClassName="modal-m modal-dialog-centered"
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <form onSubmit={handleSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title className="modal-title-center">Silahkan Login!!!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="mb-3 col-md-12">
+              <input
+                type="email"
+                className="form-control form-control"
+                onChange={(e) => setUsernama(e.target.value)}
+                placeholder="Username"
+                style={{ backgroundColor: "antiquewhite" }}
+              />
+            </div>
+
+            <div className="mb-3 col-md-12">
+              <div className="input-group">
+                <input
+                  required
+                  type={st ? "text" : "password"}
+                  className="form-control"
+                  aria-label="Recipient's username"
+                  aria-describedby="basic-addon2"
+                  value={passwordText} onChange={(e) => setPasswordText(e.target.value)}
+                />
+                {st ?
+                  <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
+                    <i className="mdi mdi-eye-off" />
+                  </button>
+                  :
+                  <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
+                    <i className="mdi mdi-eye" />
+                  </button>
+                }
+              </div>
+            </div>
+            <div className="text-center mb-4">
+              <button type="submit" className="btn btn-info  btn-block">
+                LOGIN
+              </button>
+            </div>
+          </Modal.Body>
+        </form>
+      </Modal>
+      <div
+        className="modal fade"
+        id="subscribeModal"
+        tabIndex={-1}
+        aria-labelledby="subscribeModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <form
+                action="#"
+                method="get"
+                className="custom-form mt-lg-4 mt-2"
+                role="form"
+              >
+                <h2 className="modal-title" id="subscribeModalLabel">
+                  Stay up to date
+                </h2>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  pattern="[^ @]*@[^ @]*"
+                  className="form-control"
+                  placeholder="your@email.com"
+                  required
+                />
+                <button type="submit" className="form-control">
+                  Notify
+                </button>
+              </form>
+            </div>
+            <div className="modal-footer justify-content-center">
+              <p>By signing up, you agree to our Privacy Notice</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
 
   )
 }

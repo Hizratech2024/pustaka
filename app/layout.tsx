@@ -3,7 +3,6 @@ import { usePathname } from 'next/navigation'
 import Template from './component/Template'
 import Provider from './component/Provider'
 
-
 export default function RootLayout({
   children,
 }: {
@@ -15,7 +14,9 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <title>I-Tech Komputer</title>
+        
       </head>
+
       <body>
         <Provider>
           {pathname == "/login" ? <>{children}</> : <Template>{children}</Template>}

@@ -90,7 +90,6 @@ $delete-btn: */
 @import url(../vendor/jvmap/jquery-jvectormap.css);
 @import url(../vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css);
 
-
 :root {
   --primary: #A0CF1A;
   --secondary: #111828;
@@ -127,6 +126,116 @@ $warning-light: lighten($warning, 20%);
 $danger-light: lighten($danger, 10%);
 $info-light: lighten($info, 20%);
 $dark-light: lighten($dark, 50%); */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 22px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.site-header-text {
+  color: var(--white-color);
+  font-size: var(--p-font-size);
+  font-weight: var(--font-weight-bold);
+}
+
+.site-header-text span {
+  margin-left: 10px;
+}
+
+.bi-box-arrow-down-left::before { content: "\f1b7"; }
+.bi-box-arrow-down-right::before { content: "\f1b8"; }
+.bi-box-arrow-down::before { content: "\f1b9"; }
+.bi-box-arrow-in-down-left::before { content: "\f1ba"; }
+.bi-box-arrow-in-down-right::before { content: "\f1bb"; }
+.bi-box-arrow-in-down::before { content: "\f1bc"; }
+.bi-box-arrow-in-left::before { content: "\f1bd"; }
+.bi-box-arrow-in-right::before { content: "\f1be"; }
+.bi-box-arrow-in-up-left::before { content: "\f1bf"; }
+.bi-box-arrow-in-up-right::before { content: "\f1c0"; }
+.bi-box-arrow-in-up::before { content: "\f1c1"; }
+.bi-box-arrow-left::before { content: "\f1c2"; }
+.bi-box-arrow-right::before { content: "\f1c3"; }
+.bi-box-arrow-up-left::before { content: "\f1c4"; }
+.bi-box-arrow-up-right::before { content: "\f1c5"; }
+.bi-box-arrow-up::before { content: "\f1c6"; }
+.bi-box-seam::before { content: "\f1c7"; }
+.bi-box::before { content: "\f1c8"; }
+
+.site-header .container {
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: var(--border-radius-large);
+  padding: 15px 25px;
+  max-height: 70px;
+}
+
+.site-header-text {
+  color: var(--white-color);
+  font-size: var(--p-font-size);
+  font-weight: var(--font-weight-bold);
+}
+
+.site-header-text span {
+  margin-left: 10px;
+}
+
+.site-header .social-icon {
+  max-height: 35px;
+}
+
+.modal-title-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-size: 24px; /* Ukuran font yang lebih besar untuk visibilitas */
+  font-weight: bold; /* Berat font tebal untuk menonjol */
+  color: #ffffff; /* Warna teks putih */
+  text-shadow: 1px 1px 3px rgba(78, 13, 230, 0.8); /* Bayangan teks untuk kontras lebih baik */
+}
+
 .gradient_one {
   background-image: linear-gradient(to right, rgba(186, 1, 181, 0.85) 0%, rgba(103, 25, 255, 0.85) 100%); }
 
@@ -6430,6 +6539,9 @@ textarea.form-control-lg {
 
 .mt-5 {
   margin-top: 3rem !important; }
+
+.mt-100 {
+  margin-top: 11rem !important; }
 
 .mt-auto {
   margin-top: auto !important; }
@@ -31357,6 +31469,15 @@ table.dataTable thead .sorting:after {
 table.dataTable thead .sorting_asc:after {
   content: "\f0de";
   opacity: 1; }
+
+  .custom-video1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
 
 table.dataTable thead .sorting_desc:after {
   content: "\f0dd";

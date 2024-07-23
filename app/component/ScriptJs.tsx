@@ -42,7 +42,6 @@ export default function () {
 
             <script src="https://cdn.tiny.cloud/1/e6x7uc1szg0c9mjyoh315prq24tm54yyyvyudgcfr197mw96/tinymce/5/tinymce.min.js" referrerPolicy="origin"></script>
 
-
         </>
     )
 }
