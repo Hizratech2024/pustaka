@@ -7,7 +7,6 @@ import { mingguDepan, rupiah, tanggalHariIni, tanggalIndo } from '@/app/helper';
 import { useReactToPrint } from 'react-to-print';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
-import Add from './action/Add';
 
 const Penjualan = () => {
 
