@@ -125,11 +125,11 @@ const Login = () => {
                   value={passwordText} onChange={(e) => setPasswordText(e.target.value)}
                 />
                 {st ?
-                  <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
+                  <button onClick={() => setSt(!st)} className="btn btn-success btn-xs" type="button">
                     <i className="mdi mdi-eye-off" />
                   </button>
                   :
-                  <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
+                  <button onClick={() => setSt(!st)} className="btn btn-success btn-xs" type="button">
                     <i className="mdi mdi-eye" />
                   </button>
                 }
