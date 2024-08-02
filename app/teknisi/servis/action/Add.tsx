@@ -3,12 +3,15 @@ import { useState, SyntheticEvent, useEffect, useRef } from "react"
 import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
-import { tanggalHariIni } from "@/app/helper";
-import { Editor } from '@tinymce/tinymce-react';
+import { tanggalHariIni, tanggalIndo,cetakrequestservis } from "@/app/helper";
+import { useSession } from "next-auth/react";
 
 
 function Add({ reload }: { reload: Function }) {
+    const session = useSession()
+    const teknisi = session.data?.nama
     const [noservis, setNoservis] = useState("")
+    const [tanggal, setTanggal] = useState(tanggalHariIni);
     const [nama, setNama] = useState("")
     const [alamat, setAlamat] = useState("")
     const [hp, setHp] = useState("")
@@ -57,6 +60,7 @@ function Add({ reload }: { reload: Function }) {
         setAlamat('')
         setHp('')
         setNamabarang('')
+        setTanggal(tanggalHariIni)
         setNoseri('')
         setPerlengkapan('')
         setJenis('')
@@ -79,12 +83,14 @@ function Add({ reload }: { reload: Function }) {
             formData.append('nama', nama)
             formData.append('alamat', alamat)
             formData.append('hp', hp)
+            formData.append('tanggal', new Date(tanggal).toISOString())
             formData.append('namaBarang', namaBarang)
             formData.append('noseri', noseri)
             formData.append('perlengkapan', perlengkapan)
             formData.append('jenis', jenis)
             formData.append('software', software)
             formData.append('hardware', hardware)
+            formData.append('namaTeknisi', String(teknisi))
             formData.append('status', status)
 
             const xxx = await axios.post(`/teknisi/api/servis/`, formData, {
@@ -105,74 +111,13 @@ function Add({ reload }: { reload: Function }) {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                printData();
+                cetakrequestservis(perlengkapan,software,hardware,nama,alamat,hp,namaBarang,noseri,tanggal,teknisi);
             }
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    const handleEditorChange = (content: any, editor: any) => {
-        setPerlengkapan(content);;
-    }
-
-    const handleSoftwareChange = (content: any, editor: any) => {
-        setSoftware(content);;
-    }
-
-    const handleHardwareChange = (content: any, editor: any) => {
-        setHardware(content);;
-    }
-
-    const printData = () => {
-        const printContent = `
-            <div>
-                <h2>Data Servis</h2>
-                <table border="1" style="border-collapse: collapse; width: 100%;">
-                    <tr>
-                        <th>No Servis</th>
-                        <td>${noservis}</td>
-                    </tr>
-                    <tr>
-                        <th>Nama</th>
-                        <td>${nama}</td>
-                    </tr>
-                    <tr>
-                        <th>Alamat</th>
-                        <td>${alamat}</td>
-                    </tr>
-                    <tr>
-                        <th>Telp</th>
-                        <td>${hp}</td>
-                    </tr>
-                    <tr>
-                        <th>Nama Barang</th>
-                        <td>${namaBarang}</td>
-                    </tr>
-                    <tr>
-                        <th>No Seri</th>
-                        <td>${noseri}</td>
-                    </tr>
-                    <tr>
-                        <th>Perlengkapan</th>
-                        <td>${perlengkapan}</td>
-                    </tr>
-                </table>
-            </div>
-        `;
-        const printWindow = window.open('', '', 'height=600,width=800');
-
-        if (printWindow) {
-            // printWindow.document.write('<html><head><title>Print Data Servis</title>');
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(printContent);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        } else {
-            console.error('Failed to open print window');
-        }
-    };
 
     return (
         <div>
@@ -252,37 +197,14 @@ function Add({ reload }: { reload: Function }) {
 
                         </div>
 
-                        <div className="row">
-                            <div className="mb-3 col-md-12">
-                                <label className="form-label" >Kelengkapan</label>
-                                <Editor
-                                    initialValue=""
-                                    value={perlengkapan}
-                                    init={{
-                                        height: 250,
-                                        menubar: true,
-                                        plugins: [
-                                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                            'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                                        ],
-                                        toolbar:
-                                            'undo redo | blocks |formatselect | ' +
-                                            'bold italic forecolor | alignleft aligncenter ' +
-                                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                                            'removeformat | help |image',
-                                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                                        images_upload_url: '/upload',
-                                        images_upload_base_path: '/images',
-                                        images_upload_credentials: true,
-                                        file_picker_types: 'image',
-                                        file_picker_callback: (cb, value, meta) => {
-
-                                        },
-                                    }}
-                                    onEditorChange={handleEditorChange}
-                                />
-                            </div>
+                        <div className="mb-3 col-md-12">
+                            <label className="col-sm-6 col-form-label">Kelengkapan</label>
+                            <textarea
+                                required
+                                rows={4}
+                                className="form-control"
+                                value={perlengkapan} onChange={(e) => setPerlengkapan(e.target.value)}
+                            />
                         </div>
 
                         <div className="row">
@@ -303,68 +225,29 @@ function Add({ reload }: { reload: Function }) {
 
                         <div className="row">
                             {jenis.toLowerCase().includes('software') && (
+
                                 <div className="mb-3 col-md-6">
                                     <label className="col-sm-6 col-form-label">Software</label>
-                                    <Editor
-                                        initialValue=""
-                                        value={software}
-                                        init={{
-                                            height: 300,
-                                            menubar: true,
-                                            plugins: [
-                                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                                'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                                            ],
-                                            toolbar:
-                                                'undo redo | blocks |formatselect | ' +
-                                                'bold italic forecolor | alignleft aligncenter ' +
-                                                'alignright alignjustify | bullist numlist outdent indent | ' +
-                                                'removeformat | help |image',
-                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                                            images_upload_url: '/upload',
-                                            images_upload_base_path: '/images',
-                                            images_upload_credentials: true,
-                                            file_picker_types: 'image',
-                                            file_picker_callback: (cb, value, meta) => {
-
-                                            },
-                                        }}
-                                        onEditorChange={handleSoftwareChange}
+                                    <textarea
+                                        required
+                                        rows={4}
+                                        className="form-control"
+                                        value={software} onChange={(e) => setSoftware(e.target.value)}
                                     />
                                 </div>
+
                             )}
                             {jenis.toLowerCase().includes('hardware') && (
                                 <div className="mb-3 col-md-6">
                                     <label className="col-sm-6 col-form-label">Hardware</label>
-                                    <Editor
-                                        initialValue=""
-                                        value={hardware}
-                                        init={{
-                                            height: 300,
-                                            menubar: true,
-                                            plugins: [
-                                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                                'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                                            ],
-                                            toolbar:
-                                                'undo redo | blocks |formatselect | ' +
-                                                'bold italic forecolor | alignleft aligncenter ' +
-                                                'alignright alignjustify | bullist numlist outdent indent | ' +
-                                                'removeformat | help |image',
-                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                                            images_upload_url: '/upload',
-                                            images_upload_base_path: '/images',
-                                            images_upload_credentials: true,
-                                            file_picker_types: 'image',
-                                            file_picker_callback: (cb, value, meta) => {
-
-                                            },
-                                        }}
-                                        onEditorChange={handleHardwareChange}
+                                    <textarea
+                                        required
+                                        rows={4}
+                                        className="form-control"
+                                        value={hardware} onChange={(e) => setHardware(e.target.value)}
                                     />
                                 </div>
+
                             )}
 
                         </div>

@@ -2,6 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Add from './action/Add';
+import { tanggalIndo, warnastatus } from '@/app/helper';
+import Acc from './action/Acc';
+import Delete from './action/Delete';
+import Update from './action/Update';
 // import Update from './action/Update';
 // import Delete from './action/Delete';
 
@@ -46,28 +50,46 @@ const Servisan = () => {
       name: 'Nama Pelanggan',
       selector: (row: any) => row.nama,
       sortable: true,
-      width: '280px'
+      width: '220px'
+    },
+    {
+      name: 'Tanggal',
+      selector: (row: any) => tanggalIndo(row.tanggal),
+      sortable: true,
     },
     {
       name: 'No Hp',
       selector: (row: any) => row.hp,
-      width: '150px'
+      width: '130px'
     },
     {
       name: 'Nama Barang',
       selector: (row: any) => row.namaBarang,
-      width: '200px'
+      // width: '200px'
     },
     {
       name: 'Status',
       selector: (row: any) => row.status,
+      cell: (row: any) => (
+        <div
+          style={{
+            backgroundColor: warnastatus(row.status),
+            padding: '8px',
+            borderRadius: '4px',
+            color: 'black',
+          }}
+        >
+          {row.status}
+        </div>
+      ),
     },
     {
       name: 'Action',
       cell: (row: any) => (
         <div className="d-flex">
-          {/* <Update karyawan={row} user={row.UserTb} reload={reload}  />
-          <Delete karyawanid={row.id} reload={reload} /> */}
+          <Update servis={row}  reload={reload}  />
+          <Delete servisId={row.id} reload={reload} />
+          <Acc servisId={row.id} reload={reload} />
         </div>
       ),
     },

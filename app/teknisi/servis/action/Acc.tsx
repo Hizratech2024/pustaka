@@ -4,7 +4,7 @@ import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 
-function Delete({ servisId, reload }: { servisId: Number, reload: Function }) {
+function Acc({ servisId, reload }: { servisId: Number, reload: Function }) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -22,26 +22,26 @@ function Delete({ servisId, reload }: { servisId: Number, reload: Function }) {
     }
 
 
-    const handleDelete = async (servisId: number) => {
+    const handleProses = async (servisId: number) => {
         setIsLoading(true)
         handleClose()
-        await axios.delete(`/teknisi/api/servis/${servisId}`)
-        setTimeout(function () {
+        await axios.patch(`/teknisi/api/accservis/${servisId}`)
+        
             reload()
             setIsLoading(false)
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Berhasil dihapus',
+                title: 'Berhasil diproses',
                 showConfirmButton: false,
                 timer: 1500
             })
-        }, 1500);
+       
     }
 
     return (
         <div>
-            <span onClick={handleShow} className="btn btn-danger shadow btn-xs sharp mx-1"><i className="fa fa-trash"></i></span>
+            <span onClick={handleShow} className="btn btn-primary shadow btn-xs sharp mx-1"><i className="fa fa-check"></i></span>
             <Modal
                 dialogClassName="modal-md"
                 show={show}
@@ -49,11 +49,11 @@ function Delete({ servisId, reload }: { servisId: Number, reload: Function }) {
                 backdrop="static"
                 keyboard={false}>
                 <Modal.Body>
-                    <h6 className="font-bold">Anda yakin menghapus data ini ?</h6>
+                    <h6 className="font-bold">Akan diproses ?</h6>
                 </Modal.Body>
                 <Modal.Footer>
                     <button type="button" className="btn btn-warning light" onClick={handleClose}>Close</button>
-                    <button type="button" className="btn btn-danger light" onClick={() => handleDelete(Number(servisId))}>Ya, Hapus</button>
+                    <button type="button" className="btn btn-danger light" onClick={() => handleProses(Number(servisId))}>Ya, Lanjutkan</button>
                 </Modal.Footer>
 
             </Modal>
@@ -62,4 +62,4 @@ function Delete({ servisId, reload }: { servisId: Number, reload: Function }) {
     )
 }
 
-export default Delete
+export default Acc

@@ -9,6 +9,8 @@ export const POST = async (request: Request) => {
     await prisma.servisTb.create({
         data: {
             kodeServis:String(formData.get('noservis')),
+            tanggal:String(formData.get('tanggal')),
+            namaTeknisi: String(formData.get('namaTeknisi')),
             nama: String(formData.get('nama')),
             alamat: String(formData.get('alamat')),
             hp: String(formData.get('hp')),
