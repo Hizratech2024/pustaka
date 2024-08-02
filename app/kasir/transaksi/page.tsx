@@ -14,7 +14,7 @@ import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { useSession } from "next-auth/react";
-import { tanggalHariIni, tanggalIndo,cetakfaktur, StyleSelect } from "@/app/helper";
+import { tanggalHariIni, tanggalIndo, cetakfaktur, StyleSelect } from "@/app/helper";
 import { ThemeConsumer } from "@themesberg/react-bootstrap/lib/esm/ThemeProvider";
 
 const Kasir = () => {
@@ -399,8 +399,10 @@ const Kasir = () => {
         showConfirmButton: false,
         timer: 1500
       })
+      window.onload = function () {
+        cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
+      }
 
-      cetakfaktur(inputFields, total,nofaktur,kasir,tanggal);
       refresh();
       refresh2();
       getbarang()

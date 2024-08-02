@@ -94,7 +94,9 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                cetakrequestservis(perlengkapan,software,hardware,nama,alamat,hp,namaBarang,noseri,tanggal,teknisi);
+                window.onload = function () {
+                    cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
+                }
             }
         } catch (error) {
             console.error('Error:', error);

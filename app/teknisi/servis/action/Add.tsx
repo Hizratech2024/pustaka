@@ -3,7 +3,7 @@ import { useState, SyntheticEvent, useEffect, useRef } from "react"
 import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
-import { tanggalHariIni, tanggalIndo,cetakrequestservis } from "@/app/helper";
+import { tanggalHariIni, tanggalIndo, cetakrequestservis } from "@/app/helper";
 import { useSession } from "next-auth/react";
 
 
@@ -111,7 +111,10 @@ function Add({ reload }: { reload: Function }) {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                cetakrequestservis(perlengkapan,software,hardware,nama,alamat,hp,namaBarang,noseri,tanggal,teknisi);
+                window.onload = function () {
+                    cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
+                }
+
             }
         } catch (error) {
             console.error('Error:', error);
