@@ -14,7 +14,7 @@ import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { useSession } from "next-auth/react";
-import { tanggalHariIni, tanggalIndo,cetakfaktur } from "@/app/helper";
+import { tanggalHariIni, tanggalIndo,cetakfaktur, StyleSelect } from "@/app/helper";
 import { ThemeConsumer } from "@themesberg/react-bootstrap/lib/esm/ThemeProvider";
 
 const Kasir = () => {
@@ -483,18 +483,7 @@ const Kasir = () => {
                         onChange={handlechange}
                         value={selected}
 
-                        styles={{
-                          control: (baseStyles, state) => ({
-                            ...baseStyles,
-                            borderColor: state.isFocused ? 'blue' : 'grey',
-                            fontSize: state.isFocused ? 15 : 15,
-                          }),
-                          option: (baseStyles, state) => ({
-                            ...baseStyles,
-                            fontSize: 15,
-                            color: "black",
-                          }),
-                        }}
+                        styles={StyleSelect}
                       />
                     </div>
 
