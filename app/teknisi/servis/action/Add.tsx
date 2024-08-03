@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 import { tanggalHariIni, tanggalIndo, cetakrequestservis } from "@/app/helper";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation"
 
 
 function Add({ reload }: { reload: Function }) {
@@ -23,6 +24,7 @@ function Add({ reload }: { reload: Function }) {
     const [hardware, setHardware] = useState("")
     const [show, setShow] = useState(false);
     const ref = useRef<HTMLInputElement>(null);
+    const router = useRouter()
 
     const [isLoading, setIsLoading] = useState(false)
     if (isLoading) {
@@ -111,9 +113,9 @@ function Add({ reload }: { reload: Function }) {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                window.onload = function () {
-                    cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
-                }
+
+                cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
+                router.refresh()
 
             }
         } catch (error) {

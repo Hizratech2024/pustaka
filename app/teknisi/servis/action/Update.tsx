@@ -9,9 +9,10 @@ import Swal from "sweetalert2"
 import moment from "moment"
 import Select from 'react-select'
 import { cetakrequestservis } from "@/app/helper";
+import { useRouter } from "next/navigation"
 
 function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
-    
+
     const [nama, setNama] = useState(servis.nama)
     const [teknisi, setTeknisi] = useState(servis.namaTeknisi)
     const [tanggal, setTanggal] = useState(servis.tanggal)
@@ -23,6 +24,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
     const [jenis, setJenis] = useState(servis.jenis)
     const [software, setSoftware] = useState(servis.detailSoftware)
     const [hardware, setHardware] = useState(servis.detailHardware)
+    const router = useRouter()
 
     const [isLoading, setIsLoading] = useState(false)
     if (isLoading) {
@@ -63,7 +65,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
         if (jenis == "Software") {
             setHardware('')
         }
-        if(jenis=='Hardware'){
+        if (jenis == 'Hardware') {
             setSoftware('')
         }
         try {
@@ -94,9 +96,9 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                window.onload = function () {
-                    cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
-                }
+
+                cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
+                router.refresh()
             }
         } catch (error) {
             console.error('Error:', error);
