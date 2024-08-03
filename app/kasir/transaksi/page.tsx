@@ -31,7 +31,7 @@ const Kasir = () => {
   const [uang, setUang] = useState("");
   const [databarang, setDatabarang] = useState([])
   const [totalbayar, setTotalbayar] = useState(0);
-
+  const router = useRouter()
   const ref = useRef<HTMLInputElement>(null);
   const refuang = useRef<HTMLInputElement>(null);
   const refqty = useRef<HTMLInputElement>(null);
@@ -399,13 +399,14 @@ const Kasir = () => {
         showConfirmButton: false,
         timer: 1500
       })
-      window.onload = function () {
-        cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
-      }
+
+      cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
+
 
       refresh();
       refresh2();
       getbarang()
+      router.refresh()
     }
 
   }
