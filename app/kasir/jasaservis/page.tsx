@@ -1,15 +1,9 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import Add from './action/Add';
 import { tanggalIndo, warnastatus } from '@/app/helper';
-import Acc from './action/Acc';
-import Delete from './action/Delete';
-import Update from './action/Update';
-import Done from './action/Done';
-import { Button } from 'antd';
-// import Update from './action/Update';
-// import Delete from './action/Delete';
+import Pembayaran from './action/Pembayaran';
+import Cek from './action/Cek';
 
 const Servisan = () => {
 
@@ -24,7 +18,7 @@ const Servisan = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/teknisi/api/servis`);
+      const response = await fetch(`/api/servis`);
       const result = await response.json();
       setDataservis(result);
     } catch (error) {
@@ -38,7 +32,8 @@ const Servisan = () => {
   };
 
   const filteredItems = dataservis.filter(
-    (item: any) => item.nama && item.nama.toLowerCase().includes(filterText.toLowerCase()),
+    (item: any) => item.nama && item.nama.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.kodeServis && item.kodeServis.toLowerCase().includes(filterText.toLowerCase()),
   );
 
   const columns = [
@@ -49,10 +44,14 @@ const Servisan = () => {
       width: '80px'
     },
     {
+      name: 'No Servis',
+      selector: (row: any) => row.kodeServis,
+      sortable: true,
+    },
+    {
       name: 'Nama Pelanggan',
       selector: (row: any) => row.nama,
       sortable: true,
-      width: '220px'
     },
     {
       name: 'Tanggal',
@@ -88,34 +87,20 @@ const Servisan = () => {
     {
       name: 'Action',
       cell: (row: any) => (
-
         <div className="d-flex">
-          {/* <Update servis={row} reload={reload} /> */}
-          {row.status !== "Selesai" ? (
-            <Update servis={row} reload={reload} />
+          
+          {row.status === "Selesai" ? (
+            <Pembayaran servis={row}  reload={reload}  />
           ) : (
-            <button disabled  className="btn btn-success shadow btn-xs sharp mx-1"><i className="fa fa-edit"></i></button>
+            <button disabled  className="btn btn-success shadow btn-xm sharp mx-1"><i className="fa fa-money-check-alt"></i></button>
           )}
 
-          {/* <Delete servisId={row.id} reload={reload} /> */}
-          {row.status !== "Selesai" ? (
-            <Delete servisId={row.id} reload={reload} />
+          {/* <Cek servis={row} /> */}
+          {row.status === "Final" ? (
+            <Cek servis={row} />
           ) : (
-            <button disabled  className="btn btn-danger shadow btn-xs sharp mx-1"><i className="fa fa-trash"></i></button>
+            <button disabled  className="btn btn-danger shadow btn-xm sharp mx-1"><i className="fa fa-eye"></i></button>
           )}
-
-          {row.status === "Proses" ? (
-            <Done servisId={row.id} reload={reload} jenis={row.jenis} />
-          ) : (
-            <button disabled  className="btn btn-info shadow btn-xs sharp mx-1"><i className="fa fa-user-cog"></i></button>
-          )}
-
-          {row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan / Barang dikembalikan" ? (
-            <Acc servisId={row.id} reload={reload} />
-          ) : (
-            <button disabled className="btn btn-primary shadow btn-xs sharp mx-1"><i className="fa fa-check"></i></button>
-          )}
-
         </div>
       ),
     },
@@ -134,7 +119,6 @@ const Servisan = () => {
             <div className="card-body">
               <div className="row mb-3">
                 <div className="col-md-9">
-                  <Add reload={reload} />
                 </div>
                 <div className="col-md-3">
                   <div className="input-group mb-3  input-success">

@@ -36,7 +36,22 @@ function Acc({ servisId, reload }: { servisId: Number, reload: Function }) {
                 showConfirmButton: false,
                 timer: 1500
             })
-       
+    }
+
+    const handleCancel = async (servisId: number) => {
+        setIsLoading(true)
+        handleClose()
+        await axios.patch(`/teknisi/api/cancelservis/${servisId}`)
+        
+            reload()
+            setIsLoading(false)
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Berhasil diproses',
+                showConfirmButton: false,
+                timer: 1500
+            })
     }
 
     return (
@@ -48,12 +63,15 @@ function Acc({ servisId, reload }: { servisId: Number, reload: Function }) {
                 onHide={handleClose}
                 backdrop="static"
                 keyboard={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title></Modal.Title>
+                    </Modal.Header>
                 <Modal.Body>
                     <h6 className="font-bold">Akan diproses ?</h6>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button type="button" className="btn btn-warning light" onClick={handleClose}>Close</button>
-                    <button type="button" className="btn btn-danger light" onClick={() => handleProses(Number(servisId))}>Ya, Lanjutkan</button>
+                    <button type="button" className="btn btn-danger light" onClick={() => handleCancel(Number(servisId))}>Tidak Jadi</button>
+                    <button type="button" className="btn btn-success light" onClick={() => handleProses(Number(servisId))}>Ya, Lanjutkan</button>
                 </Modal.Footer>
 
             </Modal>

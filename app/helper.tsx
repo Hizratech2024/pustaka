@@ -77,14 +77,20 @@ export const warnastatus = (status: any) => {
         case 'Tolak':
             return 'red';
 
+        case 'Dibatalkan / Barang dikembalikan':
+            return 'red';
+
         case 'Verifikasi':
             return 'yellow';
 
         case 'Dalam Proses':
             return 'lightblue';
-            
+
         case 'Menunggu Konfirmasi':
             return 'yellow';
+
+        case 'Final':
+            return 'springgreen';
     }
 };
 
@@ -284,7 +290,7 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
 };
 
 
-export function cetakrequestservis(perlengkapan: any, software: any, hardware: any, nama: any, alamat: any, hp: any, namaBarang: any, noseri: any, tanggal: any, teknisi: any) {
+export function cetakrequestservis(noservis: any, perlengkapan: any, software: any, hardware: any, nama: any, alamat: any, hp: any, namaBarang: any, noseri: any, tanggal: any, teknisi: any) {
     let perlengkapandengankoma = ""
     let softwaredengankoma = ""
     let hardwaredengankoma = ""
@@ -387,6 +393,10 @@ export function cetakrequestservis(perlengkapan: any, software: any, hardware: a
         
         <div class="table">
             <table style="width: 100%;">
+            <tr>
+                    <th>No Servis:</th>
+                    <td colspan="3">${noservis}</td>
+                </tr>
                 <tr>
                     <th style="width: 20%;">Nama:</th>
                     <td style="width: 30%;">${nama}</td>
@@ -457,7 +467,7 @@ export function cetakrequestservis(perlengkapan: any, software: any, hardware: a
                 </ol>
         </div>
         <div class="footer" >
-        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; ">
             <div style="text-align: center;">
                 <p style="margin-bottom: 50px;">I-Tech Komputer</p>
                 <p>MANAJEMEN</p>
@@ -467,7 +477,7 @@ export function cetakrequestservis(perlengkapan: any, software: any, hardware: a
                 <p>Nama : ${nama}</p>
             </div>
         </div>
-        <p style="text-align: center; margin-top: 20px;">Terimakasih atas kunjungannya</p>
+       
     </div>
     `;
 

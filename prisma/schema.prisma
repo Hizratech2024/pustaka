@@ -167,6 +167,9 @@ model ServisTb {
   detailHardware String
   status         String
   namaTeknisi    String
+  biayaSoftware  Int?
+  biayaHardware  Int?
+  keterangan     String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

@@ -114,7 +114,7 @@ function Add({ reload }: { reload: Function }) {
                     timer: 1500
                 })
 
-                cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
+                cetakrequestservis(noservis,perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
                 router.refresh()
 
             }

@@ -60,18 +60,52 @@ export default function MenuKasir() {
                     <li>
                         <Link href="/kasir/transaksi" className="" aria-expanded="false">
                             <div className="menu-icon">
-                                <svg
-                                    viewBox="0 0 16 16"
+                            <svg
+                                    viewBox="0 0 500 500"
                                     fill="currentColor"
                                     width={25} height={24}
                                 >
                                     <path
                                         fill="none"
-                                        d="M6 14.5a1.5 1.5 0 11-3.001-.001A1.5 1.5 0 016 14.5zM16 14.5a1.5 1.5 0 11-3.001-.001A1.5 1.5 0 0116 14.5zM16 8V2H4a1 1 0 00-1-1H0v1h2l.751 6.438A2 2 0 004 12h12v-1H4a1 1 0 01-1-1v-.01L16 8z"
+                                        stroke="currentColor"
+                                        strokeLinejoin="round"
+                                        strokeWidth={32}
+                                        d="M64 64 H448 A32 32 0 0 1 480 96 V352 A32 32 0 0 1 448 384 H64 A32 32 0 0 1 32 352 V96 A32 32 0 0 1 64 64 z"
                                     />
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={32}
+                                        d="M304 448l-8-64h-80l-8 64h96z"
+                                    />
+                                    <path
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={32}
+                                        d="M368 448H144"
+                                    />
+                                    <path d="M32 304v48a32.09 32.09 0 0032 32h384a32.09 32.09 0 0032-32v-48zm224 64a16 16 0 1116-16 16 16 0 01-16 16z" />
                                 </svg>
                             </div>
                             <span className="nav-text">Kasir</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/kasir/jasaservis" className="" aria-expanded="false">
+                            <div className="menu-icon">
+                            <svg
+                                    viewBox="0 0 550 500"
+                                    fill="currentColor"
+                                    width={25} height={24}
+                                >
+                                    <path d="M570.9 372.3c-11.3 14.2-38.8 24.3-38.8 24.3L327 470.2v-54.3l150.9-53.8c17.1-6.1 19.8-14.8 5.8-19.4-13.9-4.6-39.1-3.3-56.2 2.9L327 381.1v-56.4c23.2-7.8 47.1-13.6 75.7-16.8 40.9-4.5 90.9.6 130.2 15.5 44.2 14 49.2 34.7 38 48.9zm-224.4-92.5v-139c0-16.3-3-31.3-18.3-35.6-11.7-3.8-19 7.1-19 23.4v347.9l-93.8-29.8V32c39.9 7.4 98 24.9 129.2 35.4C424.1 94.7 451 128.7 451 205.2c0 74.5-46 102.8-104.5 74.6zM43.2 410.2c-45.4-12.8-53-39.5-32.3-54.8 19.1-14.2 51.7-24.9 51.7-24.9l134.5-47.8v54.5l-96.8 34.6c-17.1 6.1-19.7 14.8-5.8 19.4 13.9 4.6 39.1 3.3 56.2-2.9l46.4-16.9v48.8c-51.6 9.3-101.4 7.3-153.9-10z" />
+                                </svg>
+                            </div>
+                            <span className="nav-text">Pembayaran Servis</span>
                         </Link>
                     </li>
 

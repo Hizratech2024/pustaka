@@ -15,6 +15,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
 
     const [nama, setNama] = useState(servis.nama)
     const [teknisi, setTeknisi] = useState(servis.namaTeknisi)
+    const [noservis, setNoservis] = useState(servis.kodeServis)
     const [tanggal, setTanggal] = useState(servis.tanggal)
     const [alamat, setAlamat] = useState(servis.alamat)
     const [hp, setHp] = useState(servis.hp)
@@ -40,6 +41,8 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
 
     const refreshform = () => {
         setNama(servis.nama)
+        setTeknisi(servis.namaTeknisi)
+        setNoservis(servis.kodeServis)
         setAlamat(servis.alamat)
         setHp(servis.hp)
         setNamabarang(servis.namaBarang)
@@ -97,7 +100,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
                     timer: 1500
                 })
 
-                cetakrequestservis(perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
+                cetakrequestservis(noservis,perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
                 router.refresh()
             }
         } catch (error) {

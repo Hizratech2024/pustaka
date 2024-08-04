@@ -89,7 +89,6 @@ const Kasir = () => {
     setInputFields([])
     setTotal(0)
     setTotalqty(0)
-    otomatisnofaktur()
     setBarcode('')
     setTotalbayar(0)
     ref.current?.focus();
@@ -402,7 +401,7 @@ const Kasir = () => {
 
       cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
 
-
+otomatisnofaktur()
       refresh();
       refresh2();
       getbarang()
