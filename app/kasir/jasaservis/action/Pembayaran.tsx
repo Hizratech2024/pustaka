@@ -18,7 +18,7 @@ import { Minus } from "react-feather";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 
-function Pembayaran({ servis, reload ,routerr,xxx}: { servis: ServisTb, reload: Function,routerr:Function,xxx:void }) {
+function Pembayaran({ servis, reload }: { servis: ServisTb, reload: Function }) {
     const session = useSession()
     const kasir = session.data?.nama
     const [selected, setSelected] = useState(null)
@@ -435,9 +435,7 @@ function Pembayaran({ servis, reload ,routerr,xxx}: { servis: ServisTb, reload: 
             refresh2();
             getbarang()
             reload()
-            // routerr()
-            xxx
-            // router.refresh()
+            router.refresh()
         }
 
     }

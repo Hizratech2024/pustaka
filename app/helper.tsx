@@ -263,33 +263,59 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
         </div>
     `;
 
-
     const printDiv = document.createElement('div');
-    printDiv.innerHTML = tableHTML;
-    document.body.appendChild(printDiv);
+printDiv.innerHTML = tableHTML;
+document.body.appendChild(printDiv);
+
+// Sembunyikan semua elemen kecuali elemen yang dicetak
+const originalContent = Array.from(document.body.children) as HTMLElement[];
+originalContent.forEach(element => {
+  if (element !== printDiv) {
+    element.style.display = 'none';
+  }
+});
+
+printDiv.style.display = 'block';
+
+// Setelah pencetakan selesai
+window.onafterprint = () => {
+  printDiv.style.display = 'none';
+  originalContent.forEach(element => {
+    element.style.display = '';
+  });
+  document.body.removeChild(printDiv);
+};
+
+// Mulai pencetakan
+window.print();
 
 
-    const originalContent = Array.from(document.body.children) as HTMLElement[];
-    for (let i = 0; i < originalContent.length; i++) {
-        originalContent[i].style.display = 'none';
-    }
+    // const printDiv = document.createElement('div');
+    // printDiv.innerHTML = tableHTML;
+    // document.body.appendChild(printDiv);
 
 
-    printDiv.style.display = 'block';
+    // const originalContent = Array.from(document.body.children) as HTMLElement[];
+    // for (let i = 0; i < originalContent.length; i++) {
+    //     originalContent[i].style.display = 'none';
+    // }
 
 
-    window.onafterprint = () => {
-
-        printDiv.style.display = 'none';
+    // printDiv.style.display = 'block';
 
 
-        for (let i = 0; i < originalContent.length; i++) {
-            originalContent[i].style.display = 'block';
-        }
+    // window.onafterprint = () => {
 
-        document.body.removeChild(printDiv);
-    };
-    window.print();
+    //     printDiv.style.display = 'none';
+
+
+    //     for (let i = 0; i < originalContent.length; i++) {
+    //         originalContent[i].style.display = 'block';
+    //     }
+
+    //     document.body.removeChild(printDiv);
+    // };
+    // window.print();
 };
 
 

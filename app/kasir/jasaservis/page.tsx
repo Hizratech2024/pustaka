@@ -5,6 +5,7 @@ import { tanggalIndo, warnastatus } from '@/app/helper';
 import Pembayaran from './action/Pembayaran';
 import Cek from './action/Cek';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Servisan = () => {
 
@@ -13,7 +14,7 @@ const Servisan = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const router = useRouter()
-  
+
   useEffect(() => {
     reload()
   }, [])
@@ -28,7 +29,7 @@ const Servisan = () => {
     }
   }
 
-  const coba=()=>{
+  const coba = () => {
     router.refresh()
   }
 
@@ -95,18 +96,19 @@ const Servisan = () => {
       name: 'Action',
       cell: (row: any) => (
         <div className="d-flex">
-          
+
           {row.status === "Selesai" ? (
-            <Pembayaran servis={row}  reload={reload} routerr={coba} xxx={router.refresh()} />
+            <Pembayaran servis={row}  reload={reload}  />
+           
           ) : (
-            <button disabled  className="btn btn-success shadow btn-xm sharp mx-1"><i className="fa fa-money-check-alt"></i></button>
+            <button disabled className="btn btn-success shadow btn-xm sharp mx-1"><i className="fa fa-money-check-alt"></i></button>
           )}
 
           {/* <Cek servis={row} /> */}
           {row.status === "Final" ? (
             <Cek servis={row} />
           ) : (
-            <button disabled  className="btn btn-danger shadow btn-xm sharp mx-1"><i className="fa fa-eye"></i></button>
+            <button disabled className="btn btn-danger shadow btn-xm sharp mx-1"><i className="fa fa-eye"></i></button>
           )}
         </div>
       ),
