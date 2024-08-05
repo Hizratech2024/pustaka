@@ -318,6 +318,212 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
     // window.print();
 };
 
+export function cetakfakturservis(items: any,items2: any,  total: any, nofaktur: any, kasir: any, tanggal: any) {
+    let counter = 1;
+    let tableHTML = `
+        <style>
+            @media print {
+                @page {
+                    margin: 0;
+                }
+                body {
+                    margin: 1.6cm;
+                    padding-top: 0;
+                }
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+            th {
+                background-color: #72D7B2;
+            }
+            .total {
+                font-weight: bold;
+            }
+            .header-section {
+                margin-bottom: 20px;
+            }
+            .header-section div {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 5px;
+            }
+            .header-section div span:first-child {
+                flex-basis: 20%;
+            }
+            .header-section div span:last-child {
+                flex-basis: 80%;
+                text-align: left;
+            }
+            .nama-column {
+                width: 40%; /* Lebar kolom nama dilebarkan */
+            }
+            .qty-column {
+                width: 10%; /* Lebar kolom qty dikecilkan */
+            }
+             hr {
+                border: 1px solid black;
+                margin: 20px 0;
+            }
+            .header-logo {
+                float: left;
+                margin-right: 10px;
+            }
+            .header-logo img {
+                max-width: 100px;
+                height: auto;
+            }
+            .header-info {
+                overflow: hidden; 
+            }
+            .footer div p:first-child {
+                margin-bottom: 10px;
+            }
+        </style>
+        <div class="header-info">
+           <div class="header-logo">
+               <img src="/tema/images/logoatas.png"  alt="Logo">
+           </div>
+           <div>
+               <h1>TOKO I-TECH KOMPUTER</h1>
+               <p>Jl. Rambutan No. 20D Sidomulyo Timur, Kec. Marpoyan Damai, Pekanbaru, Riau</p>
+               <p>Telp/WA: +6282288073065 / +6282317375495</p>
+           </div>
+        </div>
+        <hr>
+          <div class="header-section">
+            <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
+            <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
+            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(tanggal)}</span></div>
+            <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
+          </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Barang</th>
+                    <th>Qty</th>
+                    <th>Satuan</th>
+                    <th>Harga</th>
+                    <th>Sub Total</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    items2.forEach((item: any, index: any) => {
+        tableHTML += `
+            <tr>
+                <td>${counter++}</td>
+                <td class="nama-column" style="text-align:left;">${item.jenisServis}</td>
+                <td class="qty-column">${item.qty}</td>
+                <td class="qty-column">jasa</td>
+                <td style="text-align:right; width: 19%">Rp ${item.biaya.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; width: 20%">Rp ${(item.qty * item.biaya).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            </tr>
+        `;
+    })
+    items.forEach((item: any, index: any) => {
+        tableHTML += `
+            <tr>
+                <td>${counter++}</td>
+                <td class="nama-column" style="text-align:left;">${item.namaBarang}</td>
+                <td class="qty-column">${item.qty}</td>
+                <td class="qty-column">unit</td>
+                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; width: 20%">Rp ${(item.qty * item.hargaJual).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += `
+            </tbody>
+             <tfoot>
+                
+                <tr>
+                    <td colspan="5" class="total">Grand Total</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="footer" >
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 50px;">Customer</p>
+                    <p>...................................</p>
+                </div>
+                <div  style="text-align: center;">
+                    <p style="margin-bottom: 50px;">I-Tech Komputer</p>
+                    <p>...................................</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">Terimakasih atas kunjungannya</p>
+        </div>
+    `;
+
+    const printDiv = document.createElement('div');
+    printDiv.innerHTML = tableHTML;
+    document.body.appendChild(printDiv);
+
+    // Sembunyikan semua elemen kecuali elemen yang dicetak
+    const originalContent = Array.from(document.body.children) as HTMLElement[];
+    originalContent.forEach(element => {
+        if (element !== printDiv) {
+            element.style.display = 'none';
+        }
+    });
+
+    printDiv.style.display = 'block';
+
+    // Setelah pencetakan selesai
+    window.onafterprint = () => {
+        printDiv.style.display = 'none';
+        originalContent.forEach(element => {
+            element.style.display = '';
+        });
+        document.body.removeChild(printDiv);
+    };
+
+    // Mulai pencetakan
+    window.print();
+
+
+    // const printDiv = document.createElement('div');
+    // printDiv.innerHTML = tableHTML;
+    // document.body.appendChild(printDiv);
+
+
+    // const originalContent = Array.from(document.body.children) as HTMLElement[];
+    // for (let i = 0; i < originalContent.length; i++) {
+    //     originalContent[i].style.display = 'none';
+    // }
+
+
+    // printDiv.style.display = 'block';
+
+
+    // window.onafterprint = () => {
+
+    //     printDiv.style.display = 'none';
+
+
+    //     for (let i = 0; i < originalContent.length; i++) {
+    //         originalContent[i].style.display = 'block';
+    //     }
+
+    //     document.body.removeChild(printDiv);
+    // };
+    // window.print();
+};
+
+
 
 export function cetakrequestservis(noservis: any, perlengkapan: any, software: any, hardware: any, nama: any, alamat: any, hp: any, namaBarang: any, noseri: any, tanggal: any, teknisi: any) {
     let perlengkapandengankoma = ""

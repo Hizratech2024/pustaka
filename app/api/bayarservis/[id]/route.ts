@@ -28,6 +28,7 @@ export const PATCH = async (request: Request, { params }: { params: { id: string
     if (lastId) {
         const noId = lastId.id;
         const pilihbarang = JSON.parse(String(formData.get('selected'))) as any[];
+        const pilihbarang2 = JSON.parse(String(formData.get('selected2'))) as any[];
 
         var x = [];
         for (let i = 0; i < pilihbarang.length; i++) {
@@ -37,6 +38,15 @@ export const PATCH = async (request: Request, { params }: { params: { id: string
                 hargaModal: Number(pilihbarang[i].hargaModal),
                 hargaJual: Number(pilihbarang[i].hargaJual),
                 qty: Number(pilihbarang[i].qty),
+            });
+        }
+        for (let i = 0; i < pilihbarang2.length; i++) {
+            x.push({
+                barangId: pilihbarang2[i].id,
+                penjualanId: noId,
+                hargaModal: Number(pilihbarang2[i].modal),
+                hargaJual: Number(pilihbarang2[i].biaya),
+                qty: Number(pilihbarang2[i].qty),
             });
         }
 

@@ -7,7 +7,7 @@ import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2"
 
-import { cetakfaktur, cetakrequestservis, StyleSelect, tanggalHariIni } from "@/app/helper";
+import { cetakfaktur, cetakfakturservis, cetakrequestservis, StyleSelect, tanggalHariIni } from "@/app/helper";
 import { useRouter } from "next/navigation"
 import { Col, Row } from "@themesberg/react-bootstrap";
 import { Button as Button1 } from 'antd';
@@ -18,16 +18,19 @@ import { Minus } from "react-feather";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 
-function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reload: Function,otomatis:Function,nofak:String }) {
+function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, reload: Function, otomatis: Function, nofak: String }) {
     const session = useSession()
     const kasir = session.data?.nama
     const [selected, setSelected] = useState(null)
     const [inputFields, setInputFields] = useState([]);
+    const [inputFields2, setInputFields2] = useState([]);
     // const [nofaktur, setNofaktur] = useState('');
     const [tanggal, setTanggal] = useState(tanggalHariIni);
     const [barcode, setBarcode] = useState('');
     const [total, setTotal] = useState(0);
+    const [totalawal, setTotalawal] = useState(0);
     const [totalqty, setTotalqty] = useState(0);
+    const [totalqtyawal, setTotalqtyawal] = useState(0);
     const [kembalian, setKembalian] = useState(0);
     const [uang, setUang] = useState("");
     const [databarang, setDatabarang] = useState([])
@@ -55,6 +58,7 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
     const handleClose = () => {
         setShow(false);
         refresh();
+
         setTimeout(function () {
             ref.current?.focus();
         }, 400);
@@ -66,64 +70,63 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
             ref.current?.focus();
         }, 400);
     }
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        updateInputFields(servis.jenis)
+    }
     const handleShow2 = () => setShow2(true);
 
     useEffect(() => {
-        // otomatisnofaktur()
         ref.current?.focus();
         getbarang()
-
     }, [])
 
-    // async function otomatisnofaktur() {
-    //     const response = await axios.get(`/api/kasir`);
-    //     const data = response.data;
-    //     setNofaktur(data)
-    // }
+    function updateInputFields(jenis: any) {
+        let newFields: any = [...inputFields2];
+
+        if (jenis.includes("Software")) {
+            newFields = [...newFields, {
+                id:64,
+                jenisServis: "Instal Software",
+                modal:0,
+                biaya: servis.biayaSoftware,
+                qty: 1,
+                subtotal: Number(servis.biayaSoftware) * 1,
+            }];
+        }
+
+        if (jenis.includes("Hardware")) {
+            newFields = [...newFields, {
+                id:65,
+                jenisServis: "Servis Hardware",
+                modal:0,
+                biaya: servis.biayaHardware,
+                qty: 1,
+                subtotal: Number(servis.biayaHardware) * 1,
+            }];
+        }
+
+        setInputFields2(newFields);
+        calculateTotals(newFields);
+    }
+
+    function calculateTotals(fields: any) {
+        let totalbayar = 0;
+        let totalqty = 0;
+        fields.forEach((item: any) => {
+            totalbayar += item.subtotal;
+            totalqty += Number(item.qty);
+        });
+        setTotal(totalbayar);
+        setTotalawal(totalbayar);
+        setTotalqty(totalqty);
+        setTotalqtyawal(totalqty);
+    }
 
     async function getbarang() {
         const response = await axios.get(`/api/barang`);
         const data = response.data;
         setDatabarang(data);
-    }
-
-
-    let loadOptions = (inputValue: any, callback: any) => {
-        setTimeout(async () => {
-            if (inputValue.length < 2) {
-                callback([]);
-                return;
-            }
-            const data = databarang.filter(
-                (item: any) => item.namaBarang && item.namaBarang.toLowerCase().includes(inputValue.toLowerCase()),
-            );
-            const options = data.map((item: any) => ({
-                value: item.id,
-                label: item.namaBarang,
-                kodeBarang: item.kodeBarang,
-                namaBarang: item.namaBarang,
-                hargaModal: item.hargaModal,
-                hargaJual: item.hargaJual,
-                stok: item.stok,
-            }));
-            callback(options);
-        }, 300);
-    };
-
-    const refresh = () => {
-        setInputFields([])
-        setTotal(0)
-        setTotalqty(0)
-        
-        setBarcode('')
-        setTotalbayar(0)
-        ref.current?.focus();
-    }
-
-    const refresh2 = () => {
-        setUang('')
-        setKembalian(0)
     }
 
     const handlechange = (selected: any) => {
@@ -168,38 +171,22 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
                 setInputFields(data)
                 x = data
             }
-            let totalbayar = 0;
-            let totalqty = 0;
+            let totalbayar = totalawal;
+            let totalqty = totalqtyawal;
             x.forEach((item: any) => {
                 totalbayar += item.subtotal;
                 totalqty += Number(item.qty);
             })
             setTotal(totalbayar)
-            setTotalqty(totalqty)
             setTotalbayar(totalbayar)
+            setTotalqty(totalqty)
             setSelected(null)
             setBarcode("")
             ref.current?.focus();
         }
     }
 
-    const handleRemoveFields = (kodeBarang: any) => {
-        let x = []
-        const values = [...inputFields];
-        values.splice(values.findIndex((value: any) => value.kodeBarang === kodeBarang), 1);
-        setInputFields(values);
-        x = values
-        let totalbayar = 0;
-        let totalqty = 0;
-        x.forEach((item: any) => {
-            totalbayar += item.subtotal;
-            totalqty += Number(item.qty);
-        })
-        setTotal(totalbayar)
-        setTotalbayar(totalbayar)
-        setTotalqty(totalqty)
-        ref.current?.focus();
-    }
+
 
     const handleChangeInput = (kodeBarang: any, event: any) => {
         let z = []
@@ -217,8 +204,8 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
         })
         setInputFields(newInputFields);
         z = newInputFields
-        let totalbayar = 0;
-        let totalqty = 0;
+        let totalbayar = totalawal;
+        let totalqty = totalqtyawal;
         z.forEach((item: any) => {
             totalbayar += item.subtotal;
             totalqty += Number(item.qty);
@@ -228,19 +215,60 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
         setTotalqty(totalqty)
     }
 
+    const handleRemoveFields = (kodeBarang: any) => {
+        let x = []
+        const values = [...inputFields];
+        values.splice(values.findIndex((value: any) => value.kodeBarang === kodeBarang), 1);
+        setInputFields(values);
+        x = values
+        let totalbayar = totalawal;
+        let totalqty = totalqtyawal;
+        x.forEach((item: any) => {
+            totalbayar += item.subtotal;
+            totalqty += Number(item.qty);
+        })
+        setTotal(totalbayar)
+        setTotalbayar(totalbayar)
+        setTotalqty(totalqty)
+        ref.current?.focus();
+    }
 
+    let loadOptions = (inputValue: any, callback: any) => {
+        setTimeout(async () => {
+            if (inputValue.length < 2) {
+                callback([]);
+                return;
+            }
+            const data = databarang.filter(
+                (item: any) => item.namaBarang && item.namaBarang.toLowerCase().includes(inputValue.toLowerCase()),
+            );
+            const options = data.map((item: any) => ({
+                value: item.id,
+                label: item.namaBarang,
+                kodeBarang: item.kodeBarang,
+                namaBarang: item.namaBarang,
+                hargaModal: item.hargaModal,
+                hargaJual: item.hargaJual,
+                stok: item.stok,
+            }));
+            callback(options);
+        }, 300);
+    };
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
+    const refresh = () => {
+        setInputFields([])
+        setInputFields2([])
+        setTotal(0)
+        setTotalqty(0)
+        setBarcode('')
+        setTotalbayar(0)
+        ref.current?.focus();
+    }
+
+    const refresh2 = () => {
+        setUang('')
+        setKembalian(0)
+    }
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -385,8 +413,8 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
                         x = data
                     }
 
-                    let totalbayar = 0;
-                    let totalqty = 0;
+                    let totalbayar = totalawal;
+                    let totalqty = totalqtyawal;
                     x.forEach((item: any) => {
                         totalbayar += item.subtotal;
                         totalqty += Number(item.qty);
@@ -414,6 +442,7 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
         formData.append('tanggal', new Date(tanggal).toISOString())
         formData.append('kasir', String(kasir))
         formData.append('selected', JSON.stringify(inputFields))
+        formData.append('selected2', JSON.stringify(inputFields2))
 
         const xxx = await axios.patch(`/api/bayarservis/${servis.id}`, formData, {
             headers: {
@@ -429,7 +458,7 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
                 timer: 1500
             })
 
-            cetakfaktur(inputFields, total, nofak, kasir, tanggal);
+            cetakfakturservis(inputFields,inputFields2, total, nofak, kasir, tanggal);
             refresh();
             refresh2();
             getbarang()
@@ -473,7 +502,7 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
                                         type="text"
                                         className="form-control"
                                         style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-                                        value={String(nofak)} 
+                                        value={String(nofak)}
                                     />
                                 </div>
 
@@ -526,6 +555,42 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
 
                             </div>
                             <div className="table-responsive">
+                                <table className="table">
+                                    <thead className="">
+                                        <tr className="">
+                                            <th className="" style={{ fontSize: 17, color: "black",fontWeight:"bold" }}>Jenis Servisan</th>
+                                            <th className="" style={{ fontSize: 17, color: "black",fontWeight:"bold" }}>Biaya</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {inputFields2.map((inputField: any) => (
+                                            <tr key={inputField.jenisServis}>
+                                                <td className="border-0 fw-bold">
+                                                    <label
+                                                        className="form-label"
+                                                        style={{ fontSize: 15,width: 200, maxWidth: 200 }}
+                                                    >
+                                                        {inputField.jenisServis}
+                                                    </label>
+                                                </td>
+                                                <td className="border-0 fw-bold">
+                                                    <label
+                                                        className="form-label"
+                                                        style={{ fontSize: 15, color: "black" }}
+                                                    >
+                                                        {inputField.biaya}
+                                                    </label>
+                                                </td>
+
+
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                    <tfoot className="">
+
+
+                                    </tfoot>
+                                </table>
 
                                 <table className="table">
                                     <thead className="">
@@ -632,9 +697,7 @@ function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reloa
                                     </Col>
                                 </Row>
                             </div>
-
                         </div>
-
 
                     </Modal.Body>
                     <Modal.Footer>
