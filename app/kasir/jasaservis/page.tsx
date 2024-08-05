@@ -58,6 +58,7 @@ const Servisan = () => {
       name: 'Nama Pelanggan',
       selector: (row: any) => row.nama,
       sortable: true,
+
     },
     {
       name: 'Tanggal',
@@ -96,7 +97,7 @@ const Servisan = () => {
         <div className="d-flex">
           
           {row.status === "Selesai" ? (
-            <Pembayaran servis={row}  reload={reload} routerr={coba} />
+            <Pembayaran servis={row}  reload={reload} routerr={coba} xxx={router.refresh()} />
           ) : (
             <button disabled  className="btn btn-success shadow btn-xm sharp mx-1"><i className="fa fa-money-check-alt"></i></button>
           )}
