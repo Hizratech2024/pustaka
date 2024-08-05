@@ -101,7 +101,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
                 })
 
                 cetakrequestservis(noservis,perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
-                router.refresh()
+                // router.refresh()
             }
         } catch (error) {
             console.error('Error:', error);

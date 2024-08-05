@@ -115,7 +115,7 @@ function Add({ reload }: { reload: Function }) {
                 })
 
                 cetakrequestservis(noservis,perlengkapan, software, hardware, nama, alamat, hp, namaBarang, noseri, tanggal, teknisi);
-                router.refresh()
+                // router.refresh()
 
             }
         } catch (error) {

@@ -401,11 +401,11 @@ const Kasir = () => {
 
       cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
 
-otomatisnofaktur()
+      otomatisnofaktur()
       refresh();
       refresh2();
       getbarang()
-      router.refresh()
+      // router.refresh()
     }
 
   }

@@ -93,7 +93,7 @@ export const warnastatus = (status: any) => {
             return 'springgreen';
 
         case 'Done':
-            return 'springgreen'; 
+            return 'springgreen';
     }
 };
 
@@ -264,30 +264,30 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
     `;
 
     const printDiv = document.createElement('div');
-printDiv.innerHTML = tableHTML;
-document.body.appendChild(printDiv);
+    printDiv.innerHTML = tableHTML;
+    document.body.appendChild(printDiv);
 
-// Sembunyikan semua elemen kecuali elemen yang dicetak
-const originalContent = Array.from(document.body.children) as HTMLElement[];
-originalContent.forEach(element => {
-  if (element !== printDiv) {
-    element.style.display = 'none';
-  }
-});
+    // Sembunyikan semua elemen kecuali elemen yang dicetak
+    const originalContent = Array.from(document.body.children) as HTMLElement[];
+    originalContent.forEach(element => {
+        if (element !== printDiv) {
+            element.style.display = 'none';
+        }
+    });
 
-printDiv.style.display = 'block';
+    printDiv.style.display = 'block';
 
-// Setelah pencetakan selesai
-window.onafterprint = () => {
-  printDiv.style.display = 'none';
-  originalContent.forEach(element => {
-    element.style.display = '';
-  });
-  document.body.removeChild(printDiv);
-};
+    // Setelah pencetakan selesai
+    window.onafterprint = () => {
+        printDiv.style.display = 'none';
+        originalContent.forEach(element => {
+            element.style.display = '';
+        });
+        document.body.removeChild(printDiv);
+    };
 
-// Mulai pencetakan
-window.print();
+    // Mulai pencetakan
+    window.print();
 
 
     // const printDiv = document.createElement('div');
@@ -514,21 +514,26 @@ export function cetakrequestservis(noservis: any, perlengkapan: any, software: a
     printDiv.innerHTML = formHTML;
     document.body.appendChild(printDiv);
 
+    // Sembunyikan semua elemen kecuali elemen yang dicetak
     const originalContent = Array.from(document.body.children) as HTMLElement[];
-    for (let i = 0; i < originalContent.length; i++) {
-        originalContent[i].style.display = 'none';
-    }
+    originalContent.forEach(element => {
+        if (element !== printDiv) {
+            element.style.display = 'none';
+        }
+    });
 
     printDiv.style.display = 'block';
 
+    // Setelah pencetakan selesai
     window.onafterprint = () => {
         printDiv.style.display = 'none';
-        for (let i = 0; i < originalContent.length; i++) {
-            originalContent[i].style.display = 'block';
-        }
+        originalContent.forEach(element => {
+            element.style.display = '';
+        });
         document.body.removeChild(printDiv);
     };
 
+    // Mulai pencetakan
     window.print();
 };
 
