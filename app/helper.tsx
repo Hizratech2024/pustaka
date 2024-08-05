@@ -72,7 +72,7 @@ export const warnastatus = (status: any) => {
             return 'lightblue';
 
         case 'Selesai':
-            return 'green';
+            return 'lime';
 
         case 'Tolak':
             return 'red';
@@ -91,6 +91,9 @@ export const warnastatus = (status: any) => {
 
         case 'Final':
             return 'springgreen';
+
+        case 'Done':
+            return 'springgreen'; 
     }
 };
 

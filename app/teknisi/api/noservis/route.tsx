@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
+export const dynamic = 'force-dynamic'; 
+
 export const GET = async () => {
     const today = new Date();
     const year = today.getFullYear().toString().slice(-2);
