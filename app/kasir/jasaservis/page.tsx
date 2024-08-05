@@ -6,10 +6,12 @@ import Pembayaran from './action/Pembayaran';
 import Cek from './action/Cek';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import axios from 'axios';
 
 const Servisan = () => {
 
   const [dataservis, setDataservis] = useState([])
+  const [nofaktur, setNofaktur] = useState('');
   const [filterText, setFilterText] = React.useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -17,6 +19,7 @@ const Servisan = () => {
 
   useEffect(() => {
     reload()
+    otomatisnofaktur()
   }, [])
 
   const reload = async () => {
@@ -28,6 +31,12 @@ const Servisan = () => {
       console.error('Error fetching data:', error);
     }
   }
+
+  async function otomatisnofaktur() {
+    const response = await axios.get(`/api/kasir`);
+    const data = response.data;
+    setNofaktur(data)
+}
 
   const coba = () => {
     router.refresh()
@@ -98,7 +107,7 @@ const Servisan = () => {
         <div className="d-flex">
 
           {row.status === "Selesai" ? (
-            <Pembayaran servis={row}  reload={reload}  />
+            <Pembayaran servis={row}  reload={reload} otomatis={otomatisnofaktur} nofak={nofaktur} />
            
           ) : (
             <button disabled className="btn btn-success shadow btn-xm sharp mx-1"><i className="fa fa-money-check-alt"></i></button>

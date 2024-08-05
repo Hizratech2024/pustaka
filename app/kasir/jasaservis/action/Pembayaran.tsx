@@ -18,12 +18,12 @@ import { Minus } from "react-feather";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 
-function Pembayaran({ servis, reload }: { servis: ServisTb, reload: Function }) {
+function Pembayaran({ servis, reload ,otomatis,nofak}: { servis: ServisTb, reload: Function,otomatis:Function,nofak:String }) {
     const session = useSession()
     const kasir = session.data?.nama
     const [selected, setSelected] = useState(null)
     const [inputFields, setInputFields] = useState([]);
-    const [nofaktur, setNofaktur] = useState('');
+    // const [nofaktur, setNofaktur] = useState('');
     const [tanggal, setTanggal] = useState(tanggalHariIni);
     const [barcode, setBarcode] = useState('');
     const [total, setTotal] = useState(0);
@@ -70,17 +70,17 @@ function Pembayaran({ servis, reload }: { servis: ServisTb, reload: Function }) 
     const handleShow2 = () => setShow2(true);
 
     useEffect(() => {
-        otomatisnofaktur()
+        // otomatisnofaktur()
         ref.current?.focus();
         getbarang()
 
     }, [])
 
-    async function otomatisnofaktur() {
-        const response = await axios.get(`/api/kasir`);
-        const data = response.data;
-        setNofaktur(data)
-    }
+    // async function otomatisnofaktur() {
+    //     const response = await axios.get(`/api/kasir`);
+    //     const data = response.data;
+    //     setNofaktur(data)
+    // }
 
     async function getbarang() {
         const response = await axios.get(`/api/barang`);
@@ -410,7 +410,7 @@ function Pembayaran({ servis, reload }: { servis: ServisTb, reload: Function }) 
         const formData = new FormData()
         formData.append('totalItem', String(totalqty))
         formData.append('totalBayar', String(total))
-        formData.append('nofaktur', nofaktur)
+        formData.append('nofaktur', String(nofak))
         formData.append('tanggal', new Date(tanggal).toISOString())
         formData.append('kasir', String(kasir))
         formData.append('selected', JSON.stringify(inputFields))
@@ -429,13 +429,13 @@ function Pembayaran({ servis, reload }: { servis: ServisTb, reload: Function }) 
                 timer: 1500
             })
 
-            cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
-            otomatisnofaktur()
+            cetakfaktur(inputFields, total, nofak, kasir, tanggal);
             refresh();
             refresh2();
             getbarang()
             reload()
-            router.refresh()
+            otomatis()
+            // router.refresh()
         }
 
     }
@@ -473,7 +473,7 @@ function Pembayaran({ servis, reload }: { servis: ServisTb, reload: Function }) 
                                         type="text"
                                         className="form-control"
                                         style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-                                        value={nofaktur} onChange={(e) => setNofaktur(e.target.value)}
+                                        value={String(nofak)} 
                                     />
                                 </div>
 
