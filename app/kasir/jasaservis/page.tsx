@@ -114,7 +114,7 @@ const Servisan = () => {
           )}
 
           {/* <Cek servis={row} /> */}
-          {row.status === "Final" ? (
+          {row.status === "Done" ? (
             <Cek servis={row} />
           ) : (
             <button disabled className="btn btn-danger shadow btn-xm sharp mx-1"><i className="fa fa-eye"></i></button>
