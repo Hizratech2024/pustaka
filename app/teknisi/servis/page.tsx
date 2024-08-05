@@ -91,14 +91,14 @@ const Servisan = () => {
 
         <div className="d-flex">
           {/* <Update servis={row} reload={reload} /> */}
-          {row.status !== "Selesai" || row.status !== "Done"  ?  (
+          {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan / Barang dikembalikan"  ?  (
             <Update servis={row} reload={reload} />
           ) : (
             <button disabled className="btn btn-success shadow btn-xs sharp mx-1"><i className="fa fa-edit"></i></button>
           )}
 
           {/* <Delete servisId={row.id} reload={reload} /> */}
-          {row.status !== "Selesai" || row.status !== "Done"  ? (
+          {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan / Barang dikembalikan" ? (
             <Delete servisId={row.id} reload={reload} />
           ) : (
             <button disabled className="btn btn-danger shadow btn-xs sharp mx-1"><i className="fa fa-trash"></i></button>
