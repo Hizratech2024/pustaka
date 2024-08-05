@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component';
 import { tanggalIndo, warnastatus } from '@/app/helper';
 import Pembayaran from './action/Pembayaran';
 import Cek from './action/Cek';
+import { useRouter } from 'next/navigation';
 
 const Servisan = () => {
 
@@ -11,7 +12,8 @@ const Servisan = () => {
   const [filterText, setFilterText] = React.useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
+  const router = useRouter()
+  
   useEffect(() => {
     reload()
   }, [])
@@ -24,6 +26,10 @@ const Servisan = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  }
+
+  const coba=()=>{
+    router.refresh()
   }
 
   const handleRowsPerPageChange = (newPerPage: number, page: number) => {
@@ -90,7 +96,7 @@ const Servisan = () => {
         <div className="d-flex">
           
           {row.status === "Selesai" ? (
-            <Pembayaran servis={row}  reload={reload}  />
+            <Pembayaran servis={row}  reload={reload} routerr={coba} />
           ) : (
             <button disabled  className="btn btn-success shadow btn-xm sharp mx-1"><i className="fa fa-money-check-alt"></i></button>
           )}
