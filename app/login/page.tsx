@@ -1,12 +1,13 @@
 "use client"
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CryptoJS from 'crypto-js';
 import Modal from 'react-bootstrap/Modal';
 
 const Login = () => {
+  const [showButton, setShowButton] = useState(false);
   const [usernama, setUsernama] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [st, setSt] = useState(false);
@@ -19,11 +20,18 @@ const Login = () => {
     setShow(false);
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowButton(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleShow = () => setShow(true);
   if (isLoading) {
     Swal.fire({
       title: "Mohon tunggu!",
-      position:'top',
+      position: 'top',
       html: "Sedang validasi data",
       allowOutsideClick: false,
       didOpen: () => {
@@ -88,8 +96,11 @@ const Login = () => {
         </div>
         <div className="overlay mt-100">
           <div className="content">
-
-            <button className="login-button" onClick={handleShow} >Login</button>
+            {showButton && (
+              <button className="login-button" onClick={handleShow}>
+                Login
+              </button>
+            )}
           </div>
         </div>
       </div>
