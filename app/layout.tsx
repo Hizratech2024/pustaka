@@ -11,11 +11,11 @@ export default function RootLayout({
   const pathname = usePathname()
   return (
     <html lang="id">
-      <head>
+      {/* <head>
         <meta charSet="utf-8" />
         <title>I-Tech Komputer</title>
         
-      </head>
+      </head> */}
 
       <body>
         <Provider>

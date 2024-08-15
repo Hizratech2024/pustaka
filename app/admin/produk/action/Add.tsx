@@ -68,13 +68,13 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
         }
         setHargaJual(harjual);
     }
-    const handlechangestok = (e: any) => {
-        let stok = e.target.value
-        if (parseInt(stok) <= 0) {
-            stok = '';
-        }
-        setStok(stok);
-    }
+    // const handlechangestok = (e: any) => {
+    //     let stok = e.target.value
+    //     if (parseInt(stok) <= 0) {
+    //         stok = '';
+    //     }
+    //     setStok(stok);
+    // }
 
     function clearForm() {
         setKodebarang('')
@@ -249,8 +249,9 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                                     type="number"
                                     className="form-control"
                                     value={stok}
-                                    onChange={handlechangestok}
-                                    min='1'
+                                    // onChange={handlechangestok}
+                                    onChange={(e=> setStok(e.target.value))}
+                                    // min='1'
                                 />
                             </div>
                         </div>

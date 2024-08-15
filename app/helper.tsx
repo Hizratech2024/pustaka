@@ -80,6 +80,12 @@ export const warnastatus = (status: any) => {
         case 'Dibatalkan / Barang dikembalikan':
             return 'red';
 
+        case 'Sudah dikembalikan':
+            return 'teal';
+
+        case 'Dibatalkan':
+            return 'red';
+
         case 'Verifikasi':
             return 'yellow';
 
@@ -318,7 +324,7 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
     // window.print();
 };
 
-export function cetakfakturservis(items: any,items2: any,  total: any, nofaktur: any, kasir: any, tanggal: any) {
+export function cetakfakturservis(items: any, items2: any, total: any, nofaktur: any, kasir: any, tanggal: any) {
     let counter = 1;
     let tableHTML = `
         <style>

@@ -18,7 +18,7 @@ import { Minus } from "react-feather";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 
-function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, reload: Function, otomatis: Function, nofak: String }) {
+function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: { servis: ServisTb, reload: Function, otomatis: Function, nofak: String, getbarang: Function, databarang: Array<any> }) {
     const session = useSession()
     const kasir = session.data?.nama
     const [selected, setSelected] = useState(null)
@@ -33,7 +33,7 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
     const [totalqtyawal, setTotalqtyawal] = useState(0);
     const [kembalian, setKembalian] = useState(0);
     const [uang, setUang] = useState("");
-    const [databarang, setDatabarang] = useState([])
+    // const [databarang, setDatabarang] = useState([])
     const [totalbayar, setTotalbayar] = useState(0);
 
     const router = useRouter()
@@ -78,17 +78,25 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
 
     useEffect(() => {
         ref.current?.focus();
-        getbarang()
+        // getbarang()
     }, [])
 
     function updateInputFields(jenis: any) {
         let newFields: any = [...inputFields2];
+        const aaa = databarang.find(
+            (item: any) => item.namaBarang && item.namaBarang.toLowerCase().includes("Software".toLowerCase()),
+        );
+        const bbb = databarang.find(
+            (item: any) => item.namaBarang && item.namaBarang.toLowerCase().includes("Hardware".toLowerCase()),
+        );
 
         if (jenis.includes("Software")) {
             newFields = [...newFields, {
-                id:64,
-                jenisServis: "Instal Software",
-                modal:0,
+                // id: 64,
+                // jenisServis: "Instal Software",
+                id: aaa.id,
+                jenisServis: aaa.namaBarang,
+                modal: 0,
                 biaya: servis.biayaSoftware,
                 qty: 1,
                 subtotal: Number(servis.biayaSoftware) * 1,
@@ -97,9 +105,11 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
 
         if (jenis.includes("Hardware")) {
             newFields = [...newFields, {
-                id:65,
-                jenisServis: "Servis Hardware",
-                modal:0,
+                // id: 65,
+                // jenisServis: "Servis Hardware",
+                id: bbb.id,
+                jenisServis: bbb.namaBarang,
+                modal: 0,
                 biaya: servis.biayaHardware,
                 qty: 1,
                 subtotal: Number(servis.biayaHardware) * 1,
@@ -123,11 +133,11 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
         setTotalqtyawal(totalqty);
     }
 
-    async function getbarang() {
-        const response = await axios.get(`/api/barang`);
-        const data = response.data;
-        setDatabarang(data);
-    }
+    // async function getbarang() {
+    //     const response = await axios.get(`/api/barang`);
+    //     const data = response.data;
+    //     setDatabarang(data);
+    // }
 
     const handlechange = (selected: any) => {
         setSelected(selected)
@@ -458,12 +468,13 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
                 timer: 1500
             })
 
-            cetakfakturservis(inputFields,inputFields2, total, nofak, kasir, tanggal);
+            cetakfakturservis(inputFields, inputFields2, total, nofak, kasir, tanggal);
             refresh();
             refresh2();
             getbarang()
             reload()
             otomatis()
+            getbarang()
             // router.refresh()
         }
 
@@ -558,8 +569,8 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
                                 <table className="table">
                                     <thead className="">
                                         <tr className="">
-                                            <th className="" style={{ fontSize: 17, color: "black",fontWeight:"bold" }}>Jenis Servisan</th>
-                                            <th className="" style={{ fontSize: 17, color: "black",fontWeight:"bold" }}>Biaya</th>
+                                            <th className="" style={{ fontSize: 17, color: "black", fontWeight: "bold" }}>Jenis Servisan</th>
+                                            <th className="" style={{ fontSize: 17, color: "black", fontWeight: "bold" }}>Biaya</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -568,7 +579,7 @@ function Pembayaran({ servis, reload, otomatis, nofak }: { servis: ServisTb, rel
                                                 <td className="border-0 fw-bold">
                                                     <label
                                                         className="form-label"
-                                                        style={{ fontSize: 15,width: 200, maxWidth: 200 }}
+                                                        style={{ fontSize: 15, width: 200, maxWidth: 200 }}
                                                     >
                                                         {inputField.jenisServis}
                                                     </label>

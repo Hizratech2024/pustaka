@@ -91,14 +91,14 @@ const Servisan = () => {
 
         <div className="d-flex">
           {/* <Update servis={row} reload={reload} /> */}
-          {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan / Barang dikembalikan"  ?  (
+          {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan"  ?  (
             <Update servis={row} reload={reload} />
           ) : (
             <button disabled className="btn btn-success shadow btn-xs sharp mx-1"><i className="fa fa-edit"></i></button>
           )}
 
           {/* <Delete servisId={row.id} reload={reload} /> */}
-          {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan / Barang dikembalikan" ? (
+          {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan" ? (
             <Delete servisId={row.id} reload={reload} />
           ) : (
             <button disabled className="btn btn-danger shadow btn-xs sharp mx-1"><i className="fa fa-trash"></i></button>
@@ -110,7 +110,7 @@ const Servisan = () => {
             <button disabled className="btn btn-info shadow btn-xs sharp mx-1"><i className="fa fa-user-cog"></i></button>
           )}
 
-          {row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan / Barang dikembalikan" ? (
+          {row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan" ? (
             <Acc servisId={row.id} reload={reload} />
           ) : (
             <button disabled className="btn btn-primary shadow btn-xs sharp mx-1"><i className="fa fa-check"></i></button>

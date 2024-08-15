@@ -147,7 +147,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
                                 <label className="col-sm-6 col-form-label">No Telp</label>
                                 <input
                                     required
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     value={hp} onChange={(e) => setHp(e.target.value)}
                                 />

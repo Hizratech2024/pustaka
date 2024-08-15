@@ -237,8 +237,9 @@ function Update({ barang, daftarkategori, kategoritb, reload }: { barang: Barang
                                     type="number"
                                     className="form-control"
                                     value={stok}
-                                    onChange={handlechangestok}
-                                    min='1'
+                                    // onChange={handlechangestok}
+                                    onChange={(e=> setStok(e.target.value))}
+                                    // min='1'
                                 />
                             </div>
                         </div>

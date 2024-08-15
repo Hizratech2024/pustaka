@@ -325,13 +325,13 @@ export default async function Home() {
                       </svg>
                     </div>
                     <div className="dropdown-menu dropdown-menu-end">
-                      <a className="dropdown-item" href="javascript:void(0);">
+                      <a className="dropdown-item" href="">
                         Option 1
                       </a>
-                      <a className="dropdown-item" href="javascript:void(0);">
+                      <a className="dropdown-item" href="">
                         Option 2
                       </a>
-                      <a className="dropdown-item" href="javascript:void(0);">
+                      <a className="dropdown-item" href="">
                         Option 3
                       </a>
                     </div>
