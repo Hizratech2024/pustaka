@@ -23,7 +23,7 @@ function Delete({ kategoriid, reload }: { kategoriid: Number, reload: Function }
     const handleDelete = async (kategoriid: number) => {
         setIsLoading(true)
         handleClose()
-        await axios.delete(`/api/kategori/${kategoriid}`)
+        await axios.delete(`/admin/api/kategori/${kategoriid}`)
         setTimeout(function () {
             reload()
             setIsLoading(false)

@@ -139,7 +139,7 @@ function Update({ barang, daftarkategori, kategoritb, reload }: { barang: Barang
             formData.append('namaunik', namaunik)
         }
 
-        const xxx = await axios.patch(`/api/barang/${barang.id}`, formData)
+        const xxx = await axios.patch(`/admin/api/barang/${barang.id}`, formData)
 
             if (xxx.data.pesan === 'berhasil') {
                 reload()

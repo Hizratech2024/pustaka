@@ -50,7 +50,7 @@ const Produk = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/api/barang`);
+      const response = await fetch(`/admin/api/barang`);
       const result = await response.json();
       setDatabarang(result);
     } catch (error) {
@@ -60,7 +60,7 @@ const Produk = () => {
 
   const getkategori = async () => {
     try {
-      const response = await fetch(`/api/kategori`);
+      const response = await fetch(`/admin/api/kategori`);
       const result = await response.json();
       const options = result.map((item: any) => ({ label: item.nama, value: item.id }))
       setDatakategori(options);
@@ -160,7 +160,7 @@ const Produk = () => {
       const formData = new FormData()
       formData.append('selected', JSON.stringify(excelData))
 
-      const xxx = await axios.post(`/api/importbarang`, formData, {
+      const xxx = await axios.post(`/admin/api/importbarang`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

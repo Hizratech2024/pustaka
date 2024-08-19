@@ -18,7 +18,7 @@ const Produk = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/api/barang`);
+      const response = await fetch(`/kasir/api/barang`);
       const result = await response.json();
       setDatabarang(result);
     } catch (error) {
@@ -28,7 +28,7 @@ const Produk = () => {
 
   const getkategori = async () => {
     try {
-      const response = await fetch(`/api/kategori`);
+      const response = await fetch(`/kasir/api/kategori`);
       const result = await response.json();
       const options = result.map((item: any) => ({ label: item.nama, value: item.id }))
       setDatakategori(options);

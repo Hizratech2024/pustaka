@@ -1,15 +1,32 @@
 import Link from "next/link";
 import Buttonlogout from "./Buttonlogout";
+import { signOut } from 'next-auth/react'
+import React from 'react'
+import Swal from 'sweetalert2';
 
 export default function MenuKasir() {
-
+    function tombol() {
+        Swal.fire({
+            title: "Anda Yakin..?",
+            text: "Logout dari akun ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, logout sekarang!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                signOut()
+            }
+        });
+    }
     return (
         <div className="deznav">
             <div className="deznav-scroll">
                 <ul className="metismenu" id="menu">
                     <li className="menu-title">System</li>
                     <li>
-                        <Link href="/" className="" aria-expanded="false">
+                        <Link href="/" className="" aria-expanded="false" >
                             <div className="menu-icon">
                                 <svg width={25} height={24} viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"  >
                                     <path d="M3.29077 9L12.2908 2L21.2908 9V20C21.2908 20.5304 21.0801 21.0391 20.705 21.4142C20.3299 21.7893 19.8212 22 19.2908 22H5.29077C4.76034 22 4.25163 21.7893 3.87656 21.4142C3.50149 21.0391 3.29077 20.5304 3.29077 20V9Z" stroke="#252525" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -60,7 +77,7 @@ export default function MenuKasir() {
                     <li>
                         <Link href="/kasir/transaksi" className="" aria-expanded="false">
                             <div className="menu-icon">
-                            <svg
+                                <svg
                                     viewBox="0 0 500 500"
                                     fill="currentColor"
                                     width={25} height={24}
@@ -97,7 +114,7 @@ export default function MenuKasir() {
                     <li>
                         <Link href="/kasir/jasaservis" className="" aria-expanded="false">
                             <div className="menu-icon">
-                            <svg
+                                <svg
                                     viewBox="0 0 550 500"
                                     fill="currentColor"
                                     width={25} height={24}
@@ -133,7 +150,7 @@ export default function MenuKasir() {
                     </li> */}
                 </ul>
                 <div className="switch-btn">
-                    <Link href="">
+                    <Link href="" onClick={tombol}>
                         <svg
                             width={24}
                             height={24}

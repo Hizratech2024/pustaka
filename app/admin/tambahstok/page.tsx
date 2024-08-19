@@ -87,14 +87,14 @@ const TambahStok = () => {
   }, [])
 
   async function getkategori() {
-    const response = await axios.get(`/api/kategori`);
+    const response = await axios.get(`/admin/api/kategori`);
     const data = response.data;
     const options = data.map((item: any) => ({ label: item.nama, value: item.id }))
     setDatakategori(options);
   }
 
   async function getbarang() {
-    const response = await axios.get(`/api/barang`);
+    const response = await axios.get(`/admin/api/barang`);
     const data = response.data;
     setDatabarang(data);
   }
@@ -236,7 +236,7 @@ const TambahStok = () => {
     formData.append('admin', String(admin))
     formData.append('selected', JSON.stringify(inputFields))
 
-    await axios.post(`/api/tambahstok`, formData, {
+    await axios.post(`/admin/api/tambahstok`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

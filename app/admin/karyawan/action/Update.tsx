@@ -87,7 +87,7 @@ function Update({ karyawan, user, reload }: { karyawan: KaryawanTb, user: UserTb
             formData.append('newpass', newpass)
             formData.append('status', status)
 
-            const xxx = await axios.patch(`/api/karyawan/${karyawan.id}`, formData, {
+            const xxx = await axios.patch(`/admin/api/karyawan/${karyawan.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

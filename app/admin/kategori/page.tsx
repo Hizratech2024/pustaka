@@ -18,7 +18,7 @@ const Kategori = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/api/kategori`);
+      const response = await fetch(`/admin/api/kategori`);
       const result = await response.json();
       setDatakategori(result);
     } catch (error) {

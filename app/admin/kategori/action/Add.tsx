@@ -39,7 +39,7 @@ function Add({ reload }: { reload: Function }) {
     const handleSubmit = async (e: SyntheticEvent) => {
         setIsLoading(true)
         e.preventDefault()
-        await axios.post('/api/kategori', {
+        await axios.post('/admin/api/kategori', {
             nama: nama,
         })
         setTimeout(function () {

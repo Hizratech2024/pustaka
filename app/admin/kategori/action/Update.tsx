@@ -37,7 +37,7 @@ function Update({ kategori, reload }: { kategori: KategoriTb, reload: Function }
     const handleUpdate = async (e: SyntheticEvent) => {
         setIsLoading(true)
         e.preventDefault()
-        await axios.patch(`/api/kategori/${kategori.id}`, {
+        await axios.patch(`/admin/api/kategori/${kategori.id}`, {
             nama: nama,
         })
         setTimeout(function () {

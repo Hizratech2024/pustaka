@@ -19,7 +19,7 @@ const Karyawan = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/api/karyawan`);
+      const response = await fetch(`/admin/api/karyawan`);
       const result = await response.json();
       setDatakaryawan(result);
     } catch (error) {

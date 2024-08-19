@@ -25,7 +25,7 @@ function Delete({ karyawanid, reload }: { karyawanid: Number, reload: Function }
     const handleDelete = async (karyawanid: number) => {
         setIsLoading(true)
         handleClose()
-        await axios.delete(`/api/karyawan/${karyawanid}`)
+        await axios.delete(`/admin/api/karyawan/${karyawanid}`)
         setTimeout(function () {
             reload()
             setIsLoading(false)

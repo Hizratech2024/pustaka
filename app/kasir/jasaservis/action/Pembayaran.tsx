@@ -454,7 +454,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
         formData.append('selected', JSON.stringify(inputFields))
         formData.append('selected2', JSON.stringify(inputFields2))
 
-        const xxx = await axios.patch(`/api/bayarservis/${servis.id}`, formData, {
+        const xxx = await axios.patch(`/kasir/api/bayarservis/${servis.id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

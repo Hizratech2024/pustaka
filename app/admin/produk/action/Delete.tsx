@@ -31,7 +31,7 @@ function Delete({foto, barangid, reload }: { foto: string,barangid: Number, relo
             .from(supabaseBUCKET)
             .remove([`barang/${foto}`]);
 
-        await axios.delete(`/api/barang/${barangid}`)
+        await axios.delete(`/admin/api/barang/${barangid}`)
         setTimeout(function () {
             reload()
             setIsLoading(false)

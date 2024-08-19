@@ -86,7 +86,7 @@ function Add({ reload }: { reload: Function }) {
             formData.append('password', password)
             formData.append('status', status)
 
-            const xxx = await axios.post(`/api/karyawan`, formData, {
+            const xxx = await axios.post(`/admin/api/karyawan`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

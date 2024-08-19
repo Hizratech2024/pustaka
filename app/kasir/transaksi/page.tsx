@@ -52,15 +52,16 @@ const Kasir = () => {
   }, [])
 
   async function otomatisnofaktur() {
-    const response = await axios.get(`/api/kasir`);
+    const response = await axios.get(`/kasir/api/kasir`);
     const data = response.data;
     setNofaktur(data)
   }
 
   async function getbarang() {
-    const response = await axios.get(`/api/barang`);
+    const response = await axios.get(`/kasir/api/barang`);
     const data = response.data;
     setDatabarang(data);
+    console.log("Ada isi",data)
   }
 
   let loadOptions = (inputValue: any, callback: any) => {
@@ -385,7 +386,7 @@ const Kasir = () => {
     formData.append('kasir', String(kasir))
     formData.append('selected', JSON.stringify(inputFields))
 
-    const xxx = await axios.post(`/api/kasir`, formData, {
+    const xxx = await axios.post(`/kasir/api/kasir`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

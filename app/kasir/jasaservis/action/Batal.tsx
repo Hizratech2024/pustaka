@@ -6,7 +6,6 @@ import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2"
 
-import { useRouter } from "next/navigation"
 import { ServisTb } from "@prisma/client";
 import { rupiah } from "@/app/helper";
 
@@ -47,7 +46,7 @@ function Batal({ servis, reload, jenis }: { servis: ServisTb, reload: Function, 
 
         try {
             const formData = new FormData()
-            const xxx = await axios.patch(`/api/batalservis/${servis.id}`)
+            const xxx = await axios.patch(`/kasir/api/batalservis/${servis.id}`)
             if (xxx.data.pesan == 'berhasil') {
                 reload()
                 setIsLoading(false)
@@ -64,10 +63,6 @@ function Batal({ servis, reload, jenis }: { servis: ServisTb, reload: Function, 
             console.error('Error:', error);
         }
     }
-
-
-
-
 
     return (
         <div>

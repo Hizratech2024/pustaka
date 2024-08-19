@@ -1,8 +1,26 @@
 import Link from "next/link";
 import Buttonlogout from "./Buttonlogout";
+import { signOut } from 'next-auth/react'
+import React from 'react'
+import Swal from 'sweetalert2';
 
 export default function MenuAdmin() {
-
+    function tombol() {
+        Swal.fire({
+            title: "Anda Yakin..?",
+            text: "Logout dari akun ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, logout sekarang!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                signOut()
+            }
+        });
+    }
+    
     return (
         <div className="deznav">
             <div className="deznav-scroll">
@@ -142,7 +160,7 @@ export default function MenuAdmin() {
 
                 </ul>
                 <div className="switch-btn">
-                    <Link href="">
+                    <Link href="" onClick={tombol}>
                         <svg
                             width={24}
                             height={24}

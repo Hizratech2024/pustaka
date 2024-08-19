@@ -131,7 +131,7 @@ function Add({ reload, daftarkategori }: { reload: Function, daftarkategori: Arr
                 formData.append('namaunik', namaunik)
             }
 
-            const xxx = await axios.post(`/api/barang`, formData, {
+            const xxx = await axios.post(`/admin/api/barang`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

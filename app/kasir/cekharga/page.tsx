@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Swal from "sweetalert2";
 
 const Produk = () => {
-
+  const [databarang, setDatabarang] = useState([])
   const [kodeBarang, setKodebarang] = useState("")
   const [namaBarang, setNamabarang] = useState("")
   const [kategoriId, setKategoriId] = useState("")
@@ -19,7 +19,18 @@ const Produk = () => {
 
   useEffect(() => {
     ref.current?.focus();
+    reload()
   }, [])
+
+  const reload = async () => {
+    try {
+      const response = await fetch(`/kasir/api/barang`);
+      const result = await response.json();
+      setDatabarang(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   const hanndlechange = (e: any) => {
     setBarcode(e.target.value)
@@ -53,10 +64,9 @@ const Produk = () => {
       if (barcode == "") {
         return
       }
-      const barcodeForSearch = barcode.toLowerCase(); 
-      const response = await axios.get(`/api/barang/${barcode}`);
-      const xxx = response.data
-      if (xxx === null) {
+
+      const yyy:any = databarang.find((item: any) => item.kodeBarang.toLowerCase() === (barcode.toLowerCase()))
+      if (yyy === undefined) {
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -69,13 +79,13 @@ const Produk = () => {
         return
       }
       else {
-        setKodebarang(xxx.kodeBarang)
-        setNamabarang(xxx.namaBarang)
-        setMerek(xxx.merek)
-        setKategoriId(xxx.KategoriTb.nama)
-        setUnit(xxx.unit)
-        setStok(xxx.stok)
-        setHargaJual(xxx.hargaJual)
+        setKodebarang(yyy.kodeBarang)
+        setNamabarang(yyy.namaBarang)
+        setMerek(yyy.merek)
+        setKategoriId(yyy.KategoriTb.nama)
+        setUnit(yyy.unit)
+        setStok(yyy.stok)
+        setHargaJual(yyy.hargaJual)
       }
     }
 

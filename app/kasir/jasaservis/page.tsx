@@ -27,7 +27,7 @@ const Servisan = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/api/servis`);
+      const response = await fetch(`/kasir/api/servis`);
       const result = await response.json();
       setDataservis(result);
     } catch (error) {
@@ -37,7 +37,7 @@ const Servisan = () => {
 
   const getbarang = async () => {
     try {
-      const response = await axios.get(`/api/barang`);
+      const response = await axios.get(`/kasir/api/barang`);
       const data = response.data;
       setDatabarang(data);
     } catch (error) {
@@ -46,7 +46,7 @@ const Servisan = () => {
   }
 
   async function otomatisnofaktur() {
-    const response = await axios.get(`/api/kasir`);
+    const response = await axios.get(`/kasir/api/kasir`);
     const data = response.data;
     setNofaktur(data)
   }
