@@ -114,7 +114,7 @@ export default function MenuTeknisi() {
                     </li> */}
                 </ul>
                 <div className="switch-btn">
-                    <Link href="" onClick={tombol}>
+                    <Link href="" onClick={tombol} >
                         <svg
                             width={24}
                             height={24}
@@ -137,7 +137,7 @@ export default function MenuTeknisi() {
                                 strokeLinejoin="round"
                             />
                         </svg>
-                        <span><Buttonlogout /></span>
+                        <span className="nav-text">Logout</span>
                     </Link>
                 </div>
             </div>

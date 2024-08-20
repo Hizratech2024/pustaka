@@ -80,6 +80,19 @@ const options: any = {
     },
 };
 
+const options2: any = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'Ini Diagram Penjualan',
+        },
+    },
+};
+
 export default function Charts() {
     return (
         <>
@@ -102,7 +115,7 @@ export default function Charts() {
                 <div className="col-xl-6">
                     <div className="card overflow-hidden">
                         <div className="card-header border-0 pb-0 flex-wrap">
-                            <Pie data={dataPie} options={options} />
+                            <Pie data={dataPie} options={options2} />
                         </div>
                     </div>
                 </div>

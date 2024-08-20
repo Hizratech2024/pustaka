@@ -31,7 +31,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
     const [totalawal, setTotalawal] = useState(0);
     const [totalqty, setTotalqty] = useState(0);
     const [totalqtyawal, setTotalqtyawal] = useState(0);
-    const [kembalian, setKembalian] = useState(0);
+    const [kembalian, setKembalian] = useState('');
     const [uang, setUang] = useState("");
     // const [databarang, setDatabarang] = useState([])
     const [totalbayar, setTotalbayar] = useState(0);
@@ -277,7 +277,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
 
     const refresh2 = () => {
         setUang('')
-        setKembalian(0)
+        setKembalian('')
     }
 
     const handleSubmit = async (e: SyntheticEvent) => {
@@ -330,7 +330,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
             if (Number(kembalian) <= 0) {
                 let totalbelanja = 0;
                 totalbelanja = (Number(uang) - total)
-                setKembalian(totalbelanja)
+                setKembalian(String(totalbelanja))
                 return
             }
             selesai()
@@ -468,7 +468,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
                 timer: 1500
             })
 
-            cetakfakturservis(inputFields, inputFields2, total, nofak, kasir, tanggal);
+            cetakfakturservis(inputFields, inputFields2, total, nofak, kasir, tanggal, Number(uang));
             refresh();
             refresh2();
             getbarang()
@@ -782,13 +782,23 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
                         </div>
                         <div className="mb-3 row">
                             <label className="col-sm-4 col-form-label" style={{ fontSize: 25, color: "black" }}>Kembalian</label>
-                            <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "red", fontWeight: 'bold' }}>{kembalian ? currencyFormat(kembalian) : null}</label>
+                            {/* <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "red", fontWeight: 'bold' }}>{kembalian ? currencyFormat(kembalian) : null}</label> */}
+                            <div className="col-sm-8">
+                                <input
 
+                                    required
+                                    type="number"
+                                    className="form-control"
+                                    style={{ backgroundColor: 'white', fontSize: 30, color: "green", borderColor: "grey", height: 60, fontWeight: 'bold' }}
+                                    value={kembalian}
+                                    onChange={(e) => e.target.value}
+                                />
+                            </div>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="button" className="btn btn-danger light" onClick={handleClose2}>Close</button>
-                        <button type="submit" className="btn btn-primary light" onClick={selesai}>Simpan</button>
+                        <button type="submit" className="btn btn-primary light" >Simpan</button>
                     </Modal.Footer>
                 </form>
             </Modal>

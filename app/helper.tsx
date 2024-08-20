@@ -131,7 +131,7 @@ export const rupiah = (value: any) => {
     return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 };
 
-export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any) {
+export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any,uangDiterima:any) {
     let tableHTML = `
         <style>
             @media print {
@@ -251,8 +251,17 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
                     <td colspan="5" class="total">Grand Total</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 </tr>
+                <tr>
+                    <td colspan="5" class="total">Jumlah Uang</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="total">Kembalian</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${(uangDiterima - total).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
             </tfoot>
         </table>
+        
 
         <div class="footer" >
             <div style="display: flex; justify-content: space-between; margin-top: 20px;">
@@ -324,7 +333,7 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
     // window.print();
 };
 
-export function cetakfakturservis(items: any, items2: any, total: any, nofaktur: any, kasir: any, tanggal: any) {
+export function cetakfakturservis(items: any, items2: any, total: any, nofaktur: any, kasir: any, tanggal: any,uangDiterima:any) {
     let counter = 1;
     let tableHTML = `
         <style>
@@ -456,6 +465,16 @@ export function cetakfakturservis(items: any, items2: any, total: any, nofaktur:
                     <td colspan="5" class="total">Grand Total</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 </tr>
+
+                  <tr>
+                    <td colspan="5" class="total">Jumlah Uang</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="total">Kembalian</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${(uangDiterima - total).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+
             </tfoot>
         </table>
 

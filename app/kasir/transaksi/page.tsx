@@ -27,7 +27,7 @@ const Kasir = () => {
   const [barcode, setBarcode] = useState('');
   const [total, setTotal] = useState(0);
   const [totalqty, setTotalqty] = useState(0);
-  const [kembalian, setKembalian] = useState(0);
+  const [kembalian, setKembalian] = useState('');
   const [uang, setUang] = useState("");
   const [databarang, setDatabarang] = useState([])
   const [totalbayar, setTotalbayar] = useState(0);
@@ -61,7 +61,7 @@ const Kasir = () => {
     const response = await axios.get(`/kasir/api/barang`);
     const data = response.data;
     setDatabarang(data);
-    console.log("Ada isi",data)
+    console.log("Ada isi", data)
   }
 
   let loadOptions = (inputValue: any, callback: any) => {
@@ -97,7 +97,7 @@ const Kasir = () => {
 
   const refresh2 = () => {
     setUang('')
-    setKembalian(0)
+    setKembalian('')
   }
 
   const handlechange = (selected: any) => {
@@ -264,7 +264,7 @@ const Kasir = () => {
       if (Number(kembalian) <= 0) {
         let totalbelanja = 0;
         totalbelanja = (Number(uang) - total)
-        setKembalian(totalbelanja)
+        setKembalian(String(totalbelanja))
         return
       }
       selesai()
@@ -400,13 +400,13 @@ const Kasir = () => {
         timer: 1500
       })
 
-      cetakfaktur(inputFields, total, nofaktur, kasir, tanggal);
+      cetakfaktur(inputFields, total, nofaktur, kasir, tanggal, Number(uang));
 
       otomatisnofaktur()
       refresh();
       refresh2();
       getbarang()
-      // router.refresh()
+
     }
 
   }
@@ -664,7 +664,7 @@ const Kasir = () => {
                 <input
                   required
                   ref={refuang}
-                  type="text"
+                  type="number"
                   className="form-control"
                   style={{ backgroundColor: 'white', fontSize: 30, color: "green", borderColor: "grey", height: 60, fontWeight: 'bold' }}
                   value={uang} onKeyPress={kalkulasi}
@@ -675,13 +675,23 @@ const Kasir = () => {
             </div>
             <div className="mb-3 row">
               <label className="col-sm-4 col-form-label" style={{ fontSize: 25, color: "black" }}>Kembalian</label>
-              <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "red", fontWeight: 'bold' }}>{kembalian ? currencyFormat(kembalian) : null}</label>
-
+              {/* <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "red", fontWeight: 'bold' }}>{kembalian ? currencyFormat(kembalian) : null}</label> */}
+              <div className="col-sm-8">
+                <input
+                
+                  required
+                  type="number"
+                  className="form-control"
+                  style={{ backgroundColor: 'white', fontSize: 30, color: "green", borderColor: "grey", height: 60, fontWeight: 'bold' }}
+                  value={kembalian}
+                  onChange={(e)=>e.target.value}
+                />
+              </div>
             </div>
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="btn btn-danger light" onClick={handleClose}>Close</button>
-            <button type="submit" className="btn btn-primary light" onClick={selesai}>Simpan</button>
+            <button type="submit" className="btn btn-primary light" >Simpan</button>
           </Modal.Footer>
         </form>
       </Modal>

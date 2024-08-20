@@ -20,7 +20,7 @@ export default function MenuAdmin() {
             }
         });
     }
-    
+
     return (
         <div className="deznav">
             <div className="deznav-scroll">
@@ -160,7 +160,7 @@ export default function MenuAdmin() {
 
                 </ul>
                 <div className="switch-btn">
-                    <Link href="" onClick={tombol}>
+                    <Link href="" onClick={tombol} >
                         <svg
                             width={24}
                             height={24}
@@ -183,7 +183,7 @@ export default function MenuAdmin() {
                                 strokeLinejoin="round"
                             />
                         </svg>
-                        <span><Buttonlogout /></span>
+                        <span className="nav-text">Logout</span>
                     </Link>
                 </div>
             </div>
