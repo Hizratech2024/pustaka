@@ -798,7 +798,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="button" className="btn btn-danger light" onClick={handleClose2}>Close</button>
-                        <button type="submit" className="btn btn-primary light" >Simpan</button>
+                        <button type="submit" className="btn btn-primary light">Simpan</button>
                     </Modal.Footer>
                 </form>
             </Modal>

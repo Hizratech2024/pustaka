@@ -47,7 +47,7 @@ const dataPie = {
     datasets: [
         {
             label: 'Product Sales Share',
-            data: [300, 50, 100, 40, 120],
+            data: [300, 50, 120, 40, 150],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.6)',
                 'rgba(54, 162, 235, 0.6)',

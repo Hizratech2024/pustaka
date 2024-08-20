@@ -45,7 +45,6 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-
         const passwordDecrypt = CryptoJS.AES.decrypt(credentials.password, kunci2).toString(CryptoJS.enc.Utf8);
 
         const password = CryptoJS.AES.decrypt(passwordDecrypt, kunci1).toString(CryptoJS.enc.Utf8);
@@ -90,3 +89,7 @@ export const authOptions: NextAuthOptions = {
   },
 
 }
+function GoogleProvider(arg0: { clientId: string | undefined; clientSecret: string | undefined; }): import("next-auth/providers/index").Provider {
+  throw new Error("Function not implemented.");
+}
+
