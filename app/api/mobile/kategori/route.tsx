@@ -11,7 +11,7 @@ export const POST = async (request: Request) => {
             nama: body.nama,
         }
     })
-    return NextResponse.json(kategori, { status: 201 })
+    return NextResponse.json( {pesan: 'berhasil',status:200})
 }
 
 export const GET = async () => {
