@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 export const POST = async (request: Request) => {
 
-    const body: KategoriTb = await request.json()
+    const body = await request.json();
     const kategori = await prisma.kategoriTb.create({    
         data: {
             nama: body.nama,
