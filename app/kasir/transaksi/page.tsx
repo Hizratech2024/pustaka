@@ -256,7 +256,7 @@ const Kasir = () => {
   };
 
   const kalkulasi = (e: any) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter') {  
       e.preventDefault();
       if (Number(uang) < total) {
         return
@@ -691,7 +691,7 @@ const Kasir = () => {
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="btn btn-danger light" onClick={handleClose}>Close</button>
-            <button type="submit" className="btn btn-primary light" >Simpan</button>
+            <button type="submit" className="btn btn-primary light" onClick={selesai} >Simpan</button>
           </Modal.Footer>
         </form>
       </Modal>
