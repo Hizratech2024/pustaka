@@ -7,6 +7,8 @@ import { mingguDepan, rupiah, tanggalHariIni, tanggalIndo } from '@/app/helper';
 import { useReactToPrint } from 'react-to-print';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
+import * as XLSX from 'xlsx';
+import moment from 'moment';
 
 const LabaPenjualan = () => {
 
@@ -241,6 +243,31 @@ const LabaPenjualan = () => {
     </div>
   );
 
+  const exportToExcel2 = () => {
+    const dataToExport = filteredItems.map((item:any) => {
+      return item.DetailPenjualanTb.map((detail:any) => ({
+        noFaktur:item.nofaktur,
+        tanggal:moment(item.tanggal).format('DD MMM YYYY'),
+        kasir:item.kasir,
+        kodebarang: detail.barangId,
+        hargamodal: detail.hargaModal,
+        hargajual: detail.hargaJual,
+        qty: detail.qty,
+
+      }));
+    }).flat();
+
+    if (dataToExport.length === 0) {
+      console.error("No data to export");
+      return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Absen Karyawan');
+    XLSX.writeFile(workbook, 'Absen_Karyawan.xlsx');
+  };
+
   return (
     <div>
       <div className="row">
@@ -305,6 +332,9 @@ const LabaPenjualan = () => {
                 }}
               />
               <GrandTotalComponent />
+              <button type='button' onClick={exportToExcel2} className="btn btn-success btn-icon-text">
+                Ekspor ke Excel
+              </button>
             </div>
           </div>
         </div>
