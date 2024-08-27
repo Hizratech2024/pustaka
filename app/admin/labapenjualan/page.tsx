@@ -244,16 +244,16 @@ const LabaPenjualan = () => {
   );
 
   const exportToExcel2 = () => {
-    const dataToExport = filteredItems.map((item:any) => {
-      return item.DetailPenjualanTb.map((detail:any) => ({
-        noFaktur:item.nofaktur,
-        tanggal:moment(item.tanggal).format('DD MMM YYYY'),
-        kasir:item.kasir,
-        kodebarang: detail.barangId,
+    const dataToExport = filteredItems.map((item: any) => {
+      return item.DetailPenjualanTb.map((detail: any) => ({
+        noFaktur: item.nofaktur,
+        tanggal: moment(item.tanggal).format('DD MMM YYYY'),
+        kasir: item.kasir,
+        namabarang: detail.BarangTb.namaBarang,
         hargamodal: detail.hargaModal,
         hargajual: detail.hargaJual,
         qty: detail.qty,
-
+        laba: (detail.qty * detail.hargaJual) - (detail.qty * detail.hargaModal)
       }));
     }).flat();
 
@@ -264,8 +264,8 @@ const LabaPenjualan = () => {
 
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Absen Karyawan');
-    XLSX.writeFile(workbook, 'Absen_Karyawan.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Laporan');
+    XLSX.writeFile(workbook, 'Laporan.xlsx');
   };
 
   return (

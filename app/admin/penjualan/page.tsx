@@ -212,7 +212,7 @@ const Penjualan = () => {
         noFaktur:item.nofaktur,
         tanggal:moment(item.tanggal).format('DD MMM YYYY'),
         kasir:item.kasir,
-        kodebarang: detail.barangId,
+        namabarang: detail.BarangTb.namaBarang,
         hargamodal: detail.hargaModal,
         hargajual: detail.hargaJual,
         qty: detail.qty,
@@ -227,9 +227,10 @@ const Penjualan = () => {
 
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Absen Karyawan');
-    XLSX.writeFile(workbook, 'Absen_Karyawan.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Laporan');
+    XLSX.writeFile(workbook, 'Laporan.xlsx');
   };
+
 
   return (
     <div>
