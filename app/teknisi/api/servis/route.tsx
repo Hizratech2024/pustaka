@@ -44,6 +44,9 @@ export const GET = async (request: NextRequest) => {
         },
         orderBy: {
             id: "asc"
+        },
+        include:{
+            KaryawanTb:true
         }
     });
     return NextResponse.json(servis, { status: 200 })

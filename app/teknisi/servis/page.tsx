@@ -92,7 +92,7 @@ const Servisan = () => {
         <div className="d-flex">
           {/* <Update servis={row} reload={reload} /> */}
           {row.status === "Proses" || row.status === "Menunggu Konfirmasi" || row.status === "Dibatalkan"  ?  (
-            <Update servis={row} reload={reload} />
+            <Update servis={row} reload={reload} karyawan={row.KaryawanTb} />   
           ) : (
             <button disabled className="btn btn-success shadow btn-xs sharp mx-1"><i className="fa fa-edit"></i></button>
           )}

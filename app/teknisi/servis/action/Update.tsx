@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { useState, SyntheticEvent } from "react"
-import { ServisTb } from "@prisma/client"
+import { KaryawanTb, ServisTb } from "@prisma/client"
 import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2"
@@ -11,10 +11,10 @@ import Select from 'react-select'
 import { cetakrequestservis } from "@/app/helper";
 import { useRouter } from "next/navigation"
 
-function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
+function Update({ servis, reload,karyawan }: { servis: ServisTb, reload: Function,karyawan:KaryawanTb }) {
 
     const [nama, setNama] = useState(servis.nama)
-    const [teknisi, setTeknisi] = useState(servis.namaTeknisi)
+    const [teknisi, setTeknisi] = useState(karyawan.nama)
     const [noservis, setNoservis] = useState(servis.kodeServis)
     const [tanggal, setTanggal] = useState(servis.tanggal)
     const [alamat, setAlamat] = useState(servis.alamat)
@@ -41,7 +41,7 @@ function Update({ servis, reload }: { servis: ServisTb, reload: Function }) {
 
     const refreshform = () => {
         setNama(servis.nama)
-        setTeknisi(servis.namaTeknisi)
+        setTeknisi(karyawan.nama)
         setNoservis(servis.kodeServis)
         setAlamat(servis.alamat)
         setHp(servis.hp)
