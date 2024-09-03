@@ -31,7 +31,7 @@ declare module "next-auth"{
         id: Number;
         usernama: String,
         nama: String,
-        sekolahId: Number,
+        karyawanId: Number,
         namasekolah: Number,
         status: string;
     }

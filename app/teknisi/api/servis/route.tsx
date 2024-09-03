@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
+import { getToken } from "next-auth/jwt";
 
 const prisma = new PrismaClient()
 
@@ -12,7 +13,7 @@ export const POST = async (request: Request) => {
         data: {
             kodeServis:String(formData.get('noservis')),
             tanggal:String(formData.get('tanggal')),
-            namaTeknisi: String(formData.get('namaTeknisi')),
+            karyawanId: Number(formData.get('namaTeknisi')),
             nama: String(formData.get('nama')),
             alamat: String(formData.get('alamat')),
             hp: String(formData.get('hp')),
@@ -30,8 +31,17 @@ export const POST = async (request: Request) => {
 }
 
 
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
+    const token = await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET
+      })
+      const karyawanId = Number(token!.karyawanId);
+
     const servis = await prisma.servisTb.findMany({
+        where:{
+            karyawanId: karyawanId
+        },
         orderBy: {
             id: "asc"
         }

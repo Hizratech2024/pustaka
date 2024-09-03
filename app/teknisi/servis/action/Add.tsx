@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 
 function Add({ reload }: { reload: Function }) {
     const session = useSession()
-    const teknisi = session.data?.nama
+    const teknisi = session.data?.karyawanId
     const [noservis, setNoservis] = useState("")
     const [tanggal, setTanggal] = useState(tanggalHariIni);
     const [nama, setNama] = useState("")

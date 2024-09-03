@@ -19,7 +19,7 @@ import { ThemeConsumer } from "@themesberg/react-bootstrap/lib/esm/ThemeProvider
 
 const Kasir = () => {
   const session = useSession()
-  const kasir = session.data?.nama
+  const kasir = session.data?.karyawanId
   const [selected, setSelected] = useState(null)
   const [inputFields, setInputFields] = useState([]);
   const [nofaktur, setNofaktur] = useState('');
@@ -27,7 +27,7 @@ const Kasir = () => {
   const [barcode, setBarcode] = useState('');
   const [total, setTotal] = useState(0);
   const [totalqty, setTotalqty] = useState(0);
-  const [kembalian, setKembalian] = useState('');
+  const [kembalian, setKembalian] = useState('-1');
   const [uang, setUang] = useState("");
   const [databarang, setDatabarang] = useState([])
   const [totalbayar, setTotalbayar] = useState(0);
@@ -97,7 +97,7 @@ const Kasir = () => {
 
   const refresh2 = () => {
     setUang('')
-    setKembalian('')
+    setKembalian('-1')
   }
 
   const handlechange = (selected: any) => {
@@ -256,12 +256,12 @@ const Kasir = () => {
   };
 
   const kalkulasi = (e: any) => {
-    if (e.key === 'Enter') {  
+    if (e.key === 'Enter') {
       e.preventDefault();
       if (Number(uang) < total) {
         return
       }
-      if (Number(kembalian) <= 0) {
+      if (Number(kembalian) < 0) {
         let totalbelanja = 0;
         totalbelanja = (Number(uang) - total)
         setKembalian(String(totalbelanja))
@@ -377,41 +377,56 @@ const Kasir = () => {
   };
 
   const selesai = async () => {
-    handleClose()
-    const formData = new FormData()
-    formData.append('totalItem', String(totalqty))
-    formData.append('totalBayar', String(total))
-    formData.append('nofaktur', nofaktur)
-    formData.append('tanggal', new Date(tanggal).toISOString())
-    formData.append('kasir', String(kasir))
-    formData.append('selected', JSON.stringify(inputFields))
-
-    const xxx = await axios.post(`/kasir/api/kasir`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    if (xxx.data.pesan === 'berhasil') {
+    if (Number(kembalian) < 0) {
       Swal.fire({
         position: 'top-end',
-        icon: 'success',
-        title: 'Berhasil simpan',
+        icon: 'warning',
+        title: 'Uang Kembalian belum ada',
         showConfirmButton: false,
         timer: 1500
       })
+      setTimeout(function () {
+        refuang.current?.focus();
+      }, 2000);
+    }
+    else {
+      handleClose()
+      const formData = new FormData()
+      formData.append('totalItem', String(totalqty))
+      formData.append('totalBayar', String(total))
+      formData.append('nofaktur', nofaktur)
+      formData.append('tanggal', new Date(tanggal).toISOString())
+      formData.append('kasir', String(kasir))
+      formData.append('selected', JSON.stringify(inputFields))
 
-      cetakfaktur(inputFields, total, nofaktur, kasir, tanggal, Number(uang));
+      const xxx = await axios.post(`/kasir/api/kasir`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      if (xxx.data.pesan === 'berhasil') {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Berhasil simpan',
+          showConfirmButton: false,
+          timer: 1500
+        })
 
-      otomatisnofaktur()
-      refresh();
-      refresh2();
-      getbarang()
+        cetakfaktur(inputFields, total, nofaktur, kasir, tanggal, Number(uang));
 
+        otomatisnofaktur()
+        refresh();
+        refresh2();
+        getbarang()
+
+      }
     }
 
   }
 
   const handleUang = (e: any) => {
+    setKembalian('-1')
     let value = e.target.value
     if (parseInt(value) <= 0) {
       value = '';
@@ -675,23 +690,13 @@ const Kasir = () => {
             </div>
             <div className="mb-3 row">
               <label className="col-sm-4 col-form-label" style={{ fontSize: 25, color: "black" }}>Kembalian</label>
-              {/* <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "red", fontWeight: 'bold' }}>{kembalian ? currencyFormat(kembalian) : null}</label> */}
-              <div className="col-sm-8">
-                <input
-                
-                  required
-                  type="number"
-                  className="form-control"
-                  style={{ backgroundColor: 'white', fontSize: 30, color: "green", borderColor: "grey", height: 60, fontWeight: 'bold' }}
-                  value={kembalian}
-                  onChange={(e)=>e.target.value}
-                />
-              </div>
+              <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "blue", fontWeight: 'bold' }}>{Number(kembalian) >= 0 ? currencyFormat(Number(kembalian)) : null}</label>
+             
             </div>
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="btn btn-danger light" onClick={handleClose}>Close</button>
-            <button type="submit" className="btn btn-primary light" onClick={selesai} >Simpan</button>
+            <button type="button" className="btn btn-primary light" onClick={selesai} >Simpan</button>
           </Modal.Footer>
         </form>
       </Modal>

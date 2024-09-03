@@ -40,7 +40,8 @@ export const POST = async (request: Request) => {
     }
 
     await prisma.barangTb.createMany({
-        data: x
+        data: x,
     })
+    
     return NextResponse.json({ pesan: 'berhasil' })
 }

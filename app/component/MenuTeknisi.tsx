@@ -90,6 +90,27 @@ export default function MenuTeknisi() {
                         </Link>
                     </li>
 
+                    <li className="menu-title">Laporan</li>
+                    <li>
+                        <a href="#laporan" className="has-arrow " aria-expanded="false">
+                            <div className="menu-icon">
+                                <svg width={25} height={24} viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M17.5687 13.8887C18.2435 13.8887 18.8098 14.4455 18.7066 15.1118C18.1013 19.0318 14.7456 21.9423 10.6982 21.9423C6.22029 21.9423 2.59082 18.3129 2.59082 13.836C2.59082 10.1476 5.39293 6.71181 8.54766 5.93497C9.22556 5.7676 9.92029 6.24445 9.92029 6.94234C9.92029 11.6708 10.0792 12.8939 10.9771 13.5592C11.875 14.2244 12.9308 13.8887 17.5687 13.8887Z" stroke="#252525" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M21.9834 9.95121C22.0371 6.91331 18.3055 2.01647 13.7581 2.10068C13.4045 2.107 13.1213 2.40173 13.1055 2.75437C12.9908 5.25226 13.1455 8.4891 13.2318 9.95647C13.2581 10.4133 13.6171 10.7723 14.0729 10.7986C15.5813 10.8849 18.936 11.0028 21.3981 10.6302C21.7329 10.5796 21.9781 10.2891 21.9834 9.95121Z" stroke="#252525" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+
+                            </div>
+                            <span className="nav-text">Laporan</span>
+                        </a>
+                        <ul aria-expanded="false" id="laporan">
+                            <li className="mini-dashboard">Laporan</li>
+
+                            <li>
+                                <Link href="/teknisi/laporanservis">Laporan Servis</Link>
+                            </li>
+                        </ul>
+                    </li>
+
                     {/* <li className="menu-title">Laporan</li>
                     <li>
                         <a href="#laporan" className="has-arrow " aria-expanded="false">

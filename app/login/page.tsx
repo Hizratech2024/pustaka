@@ -21,10 +21,10 @@ const Login = () => {
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowButton(true);
-    }, 2000);
-    return () => clearTimeout(timer);
+    // const timer = setTimeout(() => {
+    //   setShowButton(true);
+    // }, 2000);
+    // return () => clearTimeout(timer);
   }, []);
 
   const handleShow = () => setShow(true);
@@ -96,11 +96,14 @@ const Login = () => {
         </div>
         <div className="overlay mt-100">
           <div className="content">
-            {showButton && (
+            {/* {showButton && (
               <button className="login-button" onClick={handleShow}>
                 Login
               </button>
-            )}
+            )} */}
+            <button className="login-button" onClick={handleShow}>
+              Login
+            </button>
           </div>
         </div>
       </div>

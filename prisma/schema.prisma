@@ -110,7 +110,9 @@ model KaryawanTb {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  UserTb UserTb?
+  UserTb      UserTb?
+  PenjualanTb PenjualanTb[]
+  ServisTb    ServisTb[]
 }
 
 model UserTb {
@@ -129,13 +131,14 @@ model PenjualanTb {
   id         Int      @id @default(autoincrement())
   nofaktur   String   @unique
   tanggal    DateTime
-  kasir      String
+  karyawanId Int
   totalItem  Int
   totalBayar Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   DetailPenjualanTb DetailPenjualanTb[]
+  KaryawanTb        KaryawanTb          @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
 }
 
 model DetailPenjualanTb {
@@ -166,11 +169,13 @@ model ServisTb {
   detailSoftware String
   detailHardware String
   status         String
-  namaTeknisi    String
+  karyawanId     Int
   biayaSoftware  Int?
   biayaHardware  Int?
   biayaCancel    Int?
   keterangan     String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  KaryawanTb KaryawanTb @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
 }

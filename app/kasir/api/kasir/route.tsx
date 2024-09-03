@@ -11,7 +11,7 @@ export const POST = async (request: Request) => {
     await prisma.penjualanTb.create({
         data: {
             nofaktur: String(formData.get('nofaktur')),
-            kasir: String(formData.get('kasir')),
+            karyawanId: Number(formData.get('kasir')),
             tanggal:String(formData.get('tanggal')),
             totalItem: Number(formData.get('totalItem')),
             totalBayar: Number(formData.get('totalBayar')),

@@ -3,20 +3,18 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-export const dynamic = 'force-dynamic'; 
+export const dynamic = 'force-dynamic';
 
 export const GET = async () => {
-  const laporan = await prisma.penjualanTb.findMany({
-    include: {
-      KaryawanTb:true,
-      DetailPenjualanTb: {
-        include: {
-          BarangTb: true,
-        }
-      }
+  const laporan = await prisma.servisTb.findMany({
+    where: {
+      status: 'Done'
     },
     orderBy: {
-      nofaktur: "asc"
+      kodeServis: "asc"
+    },
+    include:{
+      KaryawanTb:true
     }
   });
   return NextResponse.json(laporan, { status: 200 })

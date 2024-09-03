@@ -153,7 +153,10 @@ export default function MenuAdmin() {
                                 <Link href="/admin/penjualan">Laporan Penjualan</Link>
                             </li>
                             <li>
-                                <Link href="/admin/labapenjualan">Laporan Laba Penjualan</Link>
+                                <Link href="/admin/labapenjualan">Laporan Laba</Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/laporanservis">Laporan Servis</Link>
                             </li>
                         </ul>
                     </li>

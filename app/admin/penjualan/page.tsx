@@ -53,16 +53,6 @@ const Penjualan = () => {
     setCurrentPage(page);
   };
 
-  // const ttt = useReactToPrint({
-  //   content: () => {
-  //     if (componentRef.current) {
-  //       return componentRef.current;
-  //     }
-  //     return null;
-  //   },
-  //   documentTitle: 'Print Laporan Barang',
-  // });
-
   const showw = async () => {
     const awal = new Date(tanggalawal).toISOString()
     const akhir = new Date(tanggalakhir + 'T23:59:59.999Z').toISOString()
@@ -111,7 +101,7 @@ const Penjualan = () => {
       name: 'No',
       cell: (row: any, index: number) => <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>,
       sortable: false,
-      width: '80px'
+      width: '61px'
     },
     {
       name: 'No Faktur',
@@ -124,7 +114,7 @@ const Penjualan = () => {
     },
     {
       name: 'Kasir',
-      selector: (row: any) => row.kasir,
+      selector: (row: any) => row.KaryawanTb.nama,
     },
     {
       name: 'Nama Barang',
@@ -157,7 +147,7 @@ const Penjualan = () => {
           ))}
         </div>
       ),
-      width: '150px'
+      width: '143px'
     },
     {
       name: 'Qty',
@@ -173,7 +163,7 @@ const Penjualan = () => {
           ))}
         </div>
       ),
-      width: '80px'
+      width: '61px'
     },
     {
       name: 'Sub Total',
@@ -189,7 +179,7 @@ const Penjualan = () => {
           ))}
         </div>
       ),
-      width: '180px'
+      width: '143px'
     },
   ];
 

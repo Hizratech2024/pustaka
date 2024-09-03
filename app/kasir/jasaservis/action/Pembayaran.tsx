@@ -20,7 +20,7 @@ import "primereact/resources/primereact.min.css";
 
 function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: { servis: ServisTb, reload: Function, otomatis: Function, nofak: String, getbarang: Function, databarang: Array<any> }) {
     const session = useSession()
-    const kasir = session.data?.nama
+    const kasir = session.data?.karyawanId
     const [selected, setSelected] = useState(null)
     const [inputFields, setInputFields] = useState([]);
     const [inputFields2, setInputFields2] = useState([]);
@@ -31,17 +31,19 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
     const [totalawal, setTotalawal] = useState(0);
     const [totalqty, setTotalqty] = useState(0);
     const [totalqtyawal, setTotalqtyawal] = useState(0);
-    const [kembalian, setKembalian] = useState('');
+    const [kembalian, setKembalian] = useState('-1');
     const [uang, setUang] = useState("");
     // const [databarang, setDatabarang] = useState([])
-    const [totalbayar, setTotalbayar] = useState(0);
+    // const [totalbayar, setTotalbayar] = useState(0);
+    const [totalbayarbarang, setTotalbayarBarang] = useState(0);
+    const [totalqtybarang, setTotalqtyBarang] = useState(0);
 
-    const router = useRouter()
     const ref = useRef<HTMLInputElement>(null);
     const refuang = useRef<HTMLInputElement>(null);
     const refqty = useRef<HTMLInputElement>(null);
 
     const [isLoading, setIsLoading] = useState(false)
+
     if (isLoading) {
         Swal.fire({
             title: "Mohon tunggu!",
@@ -92,10 +94,10 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
 
         if (jenis.includes("Software")) {
             newFields = [...newFields, {
-                // id: 64,
-                // jenisServis: "Instal Software",
-                id: aaa.id,
-                jenisServis: aaa.namaBarang,
+                id: 'instalsoftwarehizra',
+                jenisServis: "Instal Software",
+                // id: aaa.id,
+                // jenisServis: aaa.namaBarang,
                 modal: 0,
                 biaya: servis.biayaSoftware,
                 qty: 1,
@@ -105,10 +107,10 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
 
         if (jenis.includes("Hardware")) {
             newFields = [...newFields, {
-                // id: 65,
-                // jenisServis: "Servis Hardware",
-                id: bbb.id,
-                jenisServis: bbb.namaBarang,
+                id: "ServisHardwarehizra",
+                jenisServis: "Servis Hardware",
+                // id: bbb.id,
+                // jenisServis: bbb.namaBarang,
                 modal: 0,
                 biaya: servis.biayaHardware,
                 qty: 1,
@@ -183,13 +185,19 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
             }
             let totalbayar = totalawal;
             let totalqty = totalqtyawal;
+            let totalbayarbarang = 0;
+            let totalqtybarang = 0;
             x.forEach((item: any) => {
                 totalbayar += item.subtotal;
+                totalbayarbarang += item.subtotal;
                 totalqty += Number(item.qty);
+                totalqtybarang += Number(item.qty);
             })
             setTotal(totalbayar)
-            setTotalbayar(totalbayar)
             setTotalqty(totalqty)
+            // setTotalbayar(totalbayar)
+            setTotalbayarBarang(totalbayarbarang)
+            setTotalqtyBarang(totalqtybarang)
             setSelected(null)
             setBarcode("")
             ref.current?.focus();
@@ -216,13 +224,19 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
         z = newInputFields
         let totalbayar = totalawal;
         let totalqty = totalqtyawal;
+        let totalbayarbarang = 0;
+        let totalqtybarang = 0;
         z.forEach((item: any) => {
             totalbayar += item.subtotal;
+            totalbayarbarang += item.subtotal;
             totalqty += Number(item.qty);
+            totalqtybarang += Number(item.qty);
         })
         setTotal(totalbayar)
-        setTotalbayar(totalbayar)
         setTotalqty(totalqty)
+        // setTotalbayar(totalbayar)
+        setTotalbayarBarang(totalbayarbarang)
+        setTotalqtyBarang(totalqtybarang)
     }
 
     const handleRemoveFields = (kodeBarang: any) => {
@@ -233,13 +247,19 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
         x = values
         let totalbayar = totalawal;
         let totalqty = totalqtyawal;
+        let totalbayarbarang = 0;
+        let totalqtybarang = 0;
         x.forEach((item: any) => {
             totalbayar += item.subtotal;
+            totalbayarbarang += item.subtotal;
             totalqty += Number(item.qty);
+            totalqtybarang += Number(item.qty);
         })
         setTotal(totalbayar)
-        setTotalbayar(totalbayar)
         setTotalqty(totalqty)
+        // setTotalbayar(totalbayar)
+        setTotalbayarBarang(totalbayarbarang)
+        setTotalqtyBarang(totalqtybarang)
         ref.current?.focus();
     }
 
@@ -271,13 +291,13 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
         setTotal(0)
         setTotalqty(0)
         setBarcode('')
-        setTotalbayar(0)
+        // setTotalbayar(0)
         ref.current?.focus();
     }
 
     const refresh2 = () => {
         setUang('')
-        setKembalian('')
+        setKembalian('-1')
     }
 
     const handleSubmit = async (e: SyntheticEvent) => {
@@ -327,7 +347,7 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
             if (Number(uang) < total) {
                 return
             }
-            if (Number(kembalian) <= 0) {
+            if (Number(kembalian) < 0) {
                 let totalbelanja = 0;
                 totalbelanja = (Number(uang) - total)
                 setKembalian(String(totalbelanja))
@@ -425,13 +445,19 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
 
                     let totalbayar = totalawal;
                     let totalqty = totalqtyawal;
+                    let totalbayarbarang = 0;
+                    let totalqtybarang = 0;
                     x.forEach((item: any) => {
                         totalbayar += item.subtotal;
+                        totalbayarbarang += item.subtotal;
                         totalqty += Number(item.qty);
+                        totalqtybarang += Number(item.qty);
                     })
                     setTotal(totalbayar)
-                    setTotalbayar(totalbayar)
                     setTotalqty(totalqty)
+                    // setTotalbayar(totalbayar)
+                    setTotalbayarBarang(totalbayarbarang)
+                    setTotalqtyBarang(totalqtybarang)
                     setBarcode("")
                 }
             }
@@ -443,44 +469,63 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
     };
 
     const selesai = async () => {
-        handleClose()
-        handleClose2()
-        const formData = new FormData()
-        formData.append('totalItem', String(totalqty))
-        formData.append('totalBayar', String(total))
-        formData.append('nofaktur', String(nofak))
-        formData.append('tanggal', new Date(tanggal).toISOString())
-        formData.append('kasir', String(kasir))
-        formData.append('selected', JSON.stringify(inputFields))
-        formData.append('selected2', JSON.stringify(inputFields2))
-
-        const xxx = await axios.patch(`/kasir/api/bayarservis/${servis.id}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-        if (xxx.data.pesan === 'berhasil') {
+        if (Number(kembalian) < 0) {
             Swal.fire({
                 position: 'top-end',
-                icon: 'success',
-                title: 'Berhasil simpan',
+                icon: 'warning',
+                title: 'Uang Kembalian belum ada',
                 showConfirmButton: false,
                 timer: 1500
             })
+            setTimeout(function () {
+                refuang.current?.focus();
+            }, 2000);
+        }
+        else {
+            handleClose()
+            handleClose2()
+            const jualbarang = inputFields.length == 0 ? 'no' : 'yes'
+            const formData = new FormData()
+            formData.append('totalItem', String(totalqty))
+            formData.append('totalqtybarang', String(totalqtybarang))
+            formData.append('totalBayar', String(total))
+            formData.append('totalbayarbarang', String(totalbayarbarang))
+            formData.append('nofaktur', String(nofak))
+            formData.append('tanggal', new Date(tanggal).toISOString())
+            formData.append('kasir', String(kasir))
+            formData.append('jualbarang', String(jualbarang))
+            formData.append('selected', JSON.stringify(inputFields))
+            formData.append('selected2', JSON.stringify(inputFields2))
 
-            cetakfakturservis(inputFields, inputFields2, total, nofak, kasir, tanggal, Number(uang));
-            refresh();
-            refresh2();
-            getbarang()
-            reload()
-            otomatis()
-            getbarang()
-            // router.refresh()
+            const xxx = await axios.patch(`/kasir/api/bayarservis/${servis.id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            if (xxx.data.pesan === 'berhasil') {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Berhasil simpan',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+                cetakfakturservis(inputFields, inputFields2, total, nofak, kasir, tanggal, Number(uang));
+                refresh();
+                refresh2();
+                getbarang()
+                reload()
+                otomatis()
+                getbarang()
+                // router.refresh()
+            }
         }
 
     }
 
     const handleUang = (e: any) => {
+        setKembalian('-1')
         let value = e.target.value
         if (parseInt(value) <= 0) {
             value = '';
@@ -782,8 +827,8 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
                         </div>
                         <div className="mb-3 row">
                             <label className="col-sm-4 col-form-label" style={{ fontSize: 25, color: "black" }}>Kembalian</label>
-                            {/* <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "red", fontWeight: 'bold' }}>{kembalian ? currencyFormat(kembalian) : null}</label> */}
-                            <div className="col-sm-8">
+                            <label className="col-sm-8 col-form-label" style={{ fontSize: 30, color: "blue", fontWeight: 'bold' }}>{Number(kembalian) >= 0 ? currencyFormat(Number(kembalian)) : null}</label>
+                            {/* <div className="col-sm-8">
                                 <input
 
                                     required
@@ -793,12 +838,12 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
                                     value={kembalian}
                                     onChange={(e) => e.target.value}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="button" className="btn btn-danger light" onClick={handleClose2}>Close</button>
-                        <button type="submit" className="btn btn-primary light">Simpan</button>
+                        <button type="button" className="btn btn-primary light" onClick={selesai}>Simpan</button>
                     </Modal.Footer>
                 </form>
             </Modal>
