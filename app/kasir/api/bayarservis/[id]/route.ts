@@ -18,6 +18,8 @@ export const PATCH = async (request: Request, { params }: { params: { id: string
                 tanggal: String(formData.get('tanggal')),
                 totalItem: Number(formData.get('totalqtybarang')),
                 totalBayar: Number(formData.get('totalbayarbarang')),
+                jumlahUang: Number(formData.get('jumlahUang')),
+                kembalian: Number(formData.get('kembalian')),
             },
         })
 

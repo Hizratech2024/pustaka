@@ -134,6 +134,8 @@ model PenjualanTb {
   karyawanId Int
   totalItem  Int
   totalBayar Int
+  jumlahUang Int
+  kembalian  Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

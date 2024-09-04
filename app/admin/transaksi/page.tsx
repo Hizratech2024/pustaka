@@ -14,7 +14,7 @@ import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { useSession } from "next-auth/react";
-import { tanggalHariIni, tanggalIndo, cetakfaktur,cetakulangfaktur, StyleSelect, rupiah } from "@/app/helper";
+import { tanggalHariIni, tanggalIndo, cetakfaktur, cetakulangfaktur, StyleSelect, rupiah } from "@/app/helper";
 import DataTable from 'react-data-table-component';
 
 const Kasir = () => {
@@ -64,23 +64,21 @@ const Kasir = () => {
   }, [])
 
   async function otomatisnofaktur() {
-    const response = await axios.get(`/kasir/api/kasir`);
+    const response = await axios.get(`/admin/api/kasir`);
     const data = response.data;
     setNofaktur(data)
   }
 
   async function getbarang() {
-    const response = await axios.get(`/kasir/api/barang`);
+    const response = await axios.get(`/admin/api/barang`);
     const data = response.data;
     setDatabarang(data);
-    console.log("Ada isi", data)
   }
 
   const ctkfaktur = async () => {
     try {
-      const response = await fetch(`/kasir/api/cetakulangfaktur`);
+      const response = await fetch(`/admin/api/cetakulangfaktur`);
       const result = await response.json();
-      console.log('ttt',result)
       setCetakfakturulang(result)
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -411,7 +409,7 @@ const Kasir = () => {
       formData.append('kembalian', String(kembalian))
       formData.append('selected', JSON.stringify(inputFields))
 
-      const xxx = await axios.post(`/kasir/api/kasir`, formData, {
+      const xxx = await axios.post(`/admin/api/kasir`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -464,6 +462,16 @@ const Kasir = () => {
       sortable: true,
     },
     {
+      name: 'Tanggal',
+      selector: (row: any) => tanggalIndo(row.tanggal),
+      sortable: true,
+    },
+    {
+      name: 'Kasir',
+      selector: (row: any) => row.KaryawanTb.nama,
+      sortable: true,
+    },
+    {
       name: 'Nama Barang',
       selector: (row: any) => row.DetailPenjualanTb,
       cell: (row: any) => (
@@ -513,15 +521,15 @@ const Kasir = () => {
       width: '61px'
     },
     {
-        name: 'Action',
-        cell: (row: any) => (
-   
-                <div className="d-flex">
-                    <button type="button" className="btn btn-info" onClick={()=>printulang(row)}>Cetak</button>
-                </div>
-           
-        ),
-        width: '150px'
+      name: 'Action',
+      cell: (row: any) => (
+
+        <div className="d-flex">
+          <button type="button" className="btn btn-info" onClick={() => printulang(row)}>Cetak</button>
+        </div>
+
+      ),
+      width: '150px'
     },
   ];
 
@@ -529,7 +537,7 @@ const Kasir = () => {
     cetakulangfaktur(row.DetailPenjualanTb, row.totalBayar, row.nofaktur, row.KaryawanTb.nama, row.tanggal, row.jumlahUang)
     handleClose2()
   }
-  
+
 
   return (
     <div>
@@ -759,7 +767,6 @@ const Kasir = () => {
                 <tfoot className="">
                   <tr>
                     <th className=""></th>
-                    {/* <th className=""></th> */}
                     <th className="" style={{ fontSize: 25, color: 'black' }}>Total Bayar</th>
                     <th className=""></th>
                     <th className=""></th>

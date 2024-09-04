@@ -83,7 +83,7 @@ export default function MenuAdmin() {
                     </li>
 
                     <li>
-                        <Link href="/kasir/transaksi" className="" aria-expanded="false">
+                        <Link href="/admin/transaksi" className="" aria-expanded="false">
                             <div className="menu-icon">
                                 <svg
                                     viewBox="0 0 500 500"

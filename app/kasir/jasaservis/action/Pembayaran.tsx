@@ -494,6 +494,8 @@ function Pembayaran({ servis, reload, otomatis, nofak, getbarang, databarang }: 
             formData.append('tanggal', new Date(tanggal).toISOString())
             formData.append('kasir', String(kasir))
             formData.append('jualbarang', String(jualbarang))
+            formData.append('jumlahUang', String(uang))
+            formData.append('kembalian', String(kembalian))
             formData.append('selected', JSON.stringify(inputFields))
             formData.append('selected2', JSON.stringify(inputFields2))
 
