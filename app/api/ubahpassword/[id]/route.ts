@@ -16,7 +16,7 @@ export const PATCH = async (request: Request, { params }: { params: { id: string
 
 
     if (!cekuser) {
-        return null
+        return NextResponse.json({ status: 404, pesan: "User tidak ditemukan" })
     }
 
     const isPasswordValid = await bcrypt.compare(passwordlama, cekuser.password)

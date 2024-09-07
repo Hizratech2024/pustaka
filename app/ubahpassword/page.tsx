@@ -66,6 +66,17 @@ const UbahPassword = () => {
           },
         })
 
+        if (xxx.data.pesan == 'User tidak ditemukan') {
+          setIsLoading(false)
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'User tidak ditemukan',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+
         if (xxx.data.pesan == 'Password salah') {
           setIsLoading(false)
           Swal.fire({
