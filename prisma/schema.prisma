@@ -107,6 +107,7 @@ model KaryawanTb {
   alamat       String
   hp           String   @unique
   email        String   @unique
+  foto         String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

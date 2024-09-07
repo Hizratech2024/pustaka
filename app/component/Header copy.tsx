@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { signOut } from 'next-auth/react'
+import React from 'react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
 import { supabaseBUCKET, supabaseUrl } from '../helper'
 
 export default function Header() {
-    const [nama, setNama] = useState("")
-    const [email, setEmail] = useState("")
-    const [foto, setFoto] = useState("")
-
+    const session = useSession()
+    const xxx = session.data
+    const foto = xxx?.foto
     function tombol() {
         Swal.fire({
             title: "Anda Yakin..?",
@@ -24,23 +23,6 @@ export default function Header() {
             }
         });
     }
-
-    useEffect(() => {
-        reload()
-    }, [])
-
-    const reload = async () => {
-        try {
-            const response = await fetch(`/api/karyawan`);
-            const result = await response.json();
-            setNama(result.nama)
-            setEmail(result.email)
-            setFoto(result.foto)
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
     return (
         <div>
             <div className="nav-header">
@@ -63,7 +45,7 @@ export default function Header() {
                         <div className="collapse navbar-collapse justify-content-between">
                             <div className="header-left">
                                 <h3 className='pt-2 px-3'>Selamat Datang... <a style={{ fontWeight: 'bold', color: 'red' }}>
-                                    {nama}
+                                    {xxx?.nama}
                                 </a>!</h3>
                             </div>
                             <ul className="navbar-nav header-right">
@@ -73,7 +55,7 @@ export default function Header() {
                                         <div className="header-profile2">
                                             <a
                                                 className="nav-link"
-                                                href=""
+                                                href="javascript:void(0);"
                                                 role="button"
                                                 data-bs-toggle="dropdown"
                                             >
@@ -94,8 +76,8 @@ export default function Header() {
                                                         }
                                                     </div>
                                                     <div className="header-info">
-                                                        <h6> {nama}</h6>
-                                                        <p> {email}</p>
+                                                        <h6> {xxx?.nama}</h6>
+                                                        <p> {xxx?.usernama}</p>
                                                     </div>
                                                 </div>
                                             </a>

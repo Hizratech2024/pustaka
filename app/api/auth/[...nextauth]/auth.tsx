@@ -61,6 +61,7 @@ export const authOptions: NextAuthOptions = {
           status: user.status,
           hp: user.KaryawanTb.hp,
           karyawanId: user.karyawanId,
+          foto: user.KaryawanTb.foto,
         } as any;
       }
     })

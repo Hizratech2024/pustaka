@@ -34,5 +34,6 @@ declare module "next-auth"{
         karyawanId: Number,
         namasekolah: Number,
         status: string;
+        foto: string;
     }
 }
