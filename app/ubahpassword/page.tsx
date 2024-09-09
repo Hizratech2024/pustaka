@@ -160,15 +160,7 @@ const UbahPassword = () => {
                       value={passwordbaru} onChange={(e) => setPasswordBaru(e.target.value)}
                     />
                   </div>
-                  <div className="col-sm-4">
-                    {error && (
-                      <div className="row mb-3">
-                        <div className="col-md-12 d-flex justify-content-center">
-                          <span style={{ color: 'red' }}>{error}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                 
                 </div>
 
                 <div className=" row mb-5">
