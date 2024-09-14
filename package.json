@@ -1,5 +1,5 @@
 {
-  "name": "hizrakasir",
+  "name": "pustaka",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -47,6 +47,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "@types/crypto-js": "^4.2.1",
     "@types/node": "^20",
     "@types/react": "^18",

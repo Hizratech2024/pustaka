@@ -1,40 +1,107 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
-
-// datasource db {
-//   provider = "postgresql"
-//   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-// }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model BarangTb {
-  id         Int      @id @default(autoincrement())
-  kodeBarang String   @unique
-  namaBarang String
-  kategoriId Int
-  merek      String
-  unit       String
-  hargaModal Int
-  hargaJual  Int
-  stok       Int
-  foto       String?
-  deskripsi  String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+// model AdminTb {
+//   id        Int      @id @default(autoincrement())
+//   nama      String
+//   usernama  String   @unique
+//   password  String
+//   role      String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
 
-  KategoriTb         KategoriTb           @relation(fields: [kategoriId], references: [id], onDelete: Cascade)
-  DetailtambahstokTb DetailtambahstokTb[]
-  // detailTransaksiTb  DetailTransaksiTb[]
-  DetailPenjualanTb  DetailPenjualanTb[]
+//   SekolahTb SekolahTb?
+// }
+
+model SekolahTb {
+  id        Int      @id @default(autoincrement())
+  // adminId   Int      @unique
+  userId    Int      @unique
+  nama      String?
+  npsn      String?
+  alamat    String?
+  email     String?
+  telp      String?
+  hp        String?
+  logo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  UserTb UserTb @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model KaryawanTb {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  nama         String
+  tempatLahir  String
+  tanggalLahir DateTime
+  alamat       String
+  hp           String   @unique
+  email        String   @unique
+  // usernama     String   @unique
+  foto         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // UserTb UserTb?
+  UserTb UserTb @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MemberTb {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  nama         String
+  tempatLahir  String
+  tanggalLahir DateTime
+  alamat       String
+  hp           String   @unique
+  email        String   @unique
+  usernama     String   @unique
+  foto         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // UsermemberTb UsermemberTb?
+  UserTb       UserTb         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  PeminjamanTb PeminjamanTb[]
+  UlasanBukuTb UlasanBukuTb[]
+}
+
+model UserTb {
+  id        Int      @id @default(autoincrement())
+  // karyawanId Int      @unique
+  nama      String
+  usernama  String   @unique
+  password  String
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  KaryawanTb KaryawanTb?
+  MemberTb   MemberTb?
+  SekolahTb  SekolahTb?
+  // KaryawanTb KaryawanTb @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+}
+
+model UlasanBukuTb {
+  id        Int      @id @default(autoincrement())
+  memberId  Int
+  bukuId    Int
+  rating    Int
+  komentar  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  MemberTb MemberTb @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  BukuTb BukuTb @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+
 }
 
 model KategoriTb {
@@ -43,142 +110,117 @@ model KategoriTb {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  BarangTb BarangTb[]
+  BukuTb BukuTb[]
 }
 
-model TambahstokTb {
-  id         Int      @id @default(autoincrement())
-  tanggal    DateTime
-  admin      String
-  totalItem  Int
-  totalBayar Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model BukuTb {
+  id          Int      @id @default(autoincrement())
+  kategoriId  Int
+  kodeBuku    String   @unique
+  judul       String
+  penerbit    String
+  tahunTerbit String
+  penulis     String
+  bahasa      String
+  stok        Int
+  deskripsi   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  DetailtambahstokTb DetailtambahstokTb[]
+  KategoriTb       KategoriTb         @relation(fields: [kategoriId], references: [id], onDelete: Cascade)
+  LetakBukuTb      LetakBukuTb[]
+  DetailPeminjaman DetailPeminjaman[]
+  UlasanBukuTb UlasanBukuTb[]
 }
 
-model DetailtambahstokTb {
+model LemariTb {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  jumlahRak String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  RakTb RakTb[]
+}
+
+model RakTb {
+  id        Int      @id @default(autoincrement())
+  lemariId  Int
+  nama      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LemariTb    LemariTb      @relation(fields: [lemariId], references: [id], onDelete: Cascade)
+  LetakBukuTb LetakBukuTb[]
+}
+
+model LetakBukuTb {
+  id        Int      @id @default(autoincrement())
+  rakId     Int
+  bukuId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  RakTb  RakTb  @relation(fields: [rakId], references: [id], onDelete: Cascade)
+  BukuTb BukuTb @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+}
+
+model PeminjamanTb {
+  id                  Int       @id @default(autoincrement())
+  memberId            Int
+  tanggalPeminjaman   DateTime
+  tanggalPengembalian DateTime?
+  batasWaktu          DateTime
+  totalItem           Int
+  status              String
+  denda               Int?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  MemberTb          MemberTb           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  DetailPeminjamand DetailPeminjaman[]
+}
+
+model DetailPeminjaman {
   id           Int      @id @default(autoincrement())
-  barangId     Int
-  tambahstokId Int
-  hargaModal   Int
-  hargaJual    Int
+  peminjamanId Int
+  bukuId       Int
   qty          Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  BarangTb     BarangTb     @relation(fields: [barangId], references: [id], onDelete: Cascade)
-  TambahstokTb TambahstokTb @relation(fields: [tambahstokId], references: [id], onDelete: Cascade)
+  BukuTb       BukuTb       @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+  PeminjamanTb PeminjamanTb @relation(fields: [peminjamanId], references: [id], onDelete: Cascade)
 }
 
-// model TransaksiTB {
+// model logloginTb {
 //   id         Int      @id @default(autoincrement())
-//   nofaktur   String   @unique
-//   tanggal    DateTime
-//   kasir      String
-//   totalItem  Int
-//   totalBayar Int
-//   createdAt  DateTime @default(now())
-//   updatedAt  DateTime @updatedAt
+//   karyawanId Int
+//   tanggal    DateTime @default(now())
 
-//   detailTransaksiTb DetailTransaksiTb[]
+//   KaryawanTb KaryawanTb @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
 // }
 
-// model DetailTransaksiTb {
-//   id          Int      @id @default(autoincrement())
-//   barangId    Int
-//   transaksiId Int
-//   hargaModal  Int
-//   hargaJual   Int
-//   qty         Int
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
+// model LogkaryawanTb {
+//   id         Int      @id @default(autoincrement())
+//   karyawanId Int
+//   nama       String
+//   hp         String
+//   status     String
+//   tanggal    DateTime @default(now())
+//   userId     Int
 
-//   BarangTb    BarangTb    @relation(fields: [barangId], references: [id], onDelete: Cascade)
-//   TransaksiTB TransaksiTB @relation(fields: [transaksiId], references: [id], onDelete: Cascade)
+//   UserTb UserTb @relation(fields: [userId], references: [id], onDelete: Cascade)
 // }
 
-model KaryawanTb {
-  id           Int      @id @default(autoincrement())
-  nama         String
-  tempatLahir  String
-  tanggalLahir DateTime
-  alamat       String
-  hp           String   @unique
-  email        String   @unique
-  foto         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+// model LogbarangTb {
+//   id         Int      @id @default(autoincrement())
+//   barangId   Int
+//   kodeBarang String
+//   nama       String
+//   status     String
+//   tanggal    DateTime @default(now())
+//   userId     Int
 
-  UserTb      UserTb?
-  PenjualanTb PenjualanTb[]
-  ServisTb    ServisTb[]
-}
-
-model UserTb {
-  id         Int      @id @default(autoincrement())
-  karyawanId Int      @unique
-  usernama   String   @unique
-  password   String
-  status     String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  KaryawanTb KaryawanTb @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
-}
-
-model PenjualanTb {
-  id         Int      @id @default(autoincrement())
-  nofaktur   String   @unique
-  tanggal    DateTime
-  karyawanId Int
-  totalItem  Int
-  totalBayar Int
-  jumlahUang Int
-  kembalian  Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  DetailPenjualanTb DetailPenjualanTb[]
-  KaryawanTb        KaryawanTb          @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
-}
-
-model DetailPenjualanTb {
-  id          Int      @id @default(autoincrement())
-  barangId    Int
-  penjualanId Int
-  hargaModal  Int
-  hargaJual   Int
-  qty         Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  BarangTb    BarangTb    @relation(fields: [barangId], references: [id], onDelete: Cascade)
-  PenjualanTb PenjualanTb @relation(fields: [penjualanId], references: [id], onDelete: Cascade)
-}
-
-model ServisTb {
-  id             Int      @id @default(autoincrement())
-  kodeServis     String
-  tanggal        DateTime
-  nama           String
-  alamat         String
-  hp             String
-  namaBarang     String
-  noSeri         String
-  perlengkapan   String
-  jenis          String
-  detailSoftware String
-  detailHardware String
-  status         String
-  karyawanId     Int
-  biayaSoftware  Int?
-  biayaHardware  Int?
-  biayaCancel    Int?
-  keterangan     String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  KaryawanTb KaryawanTb @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
-}
+//   UserTb UserTb @relation(fields: [userId], references: [id], onDelete: Cascade)
+// }

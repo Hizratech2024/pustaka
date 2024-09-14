@@ -1,10 +1,24 @@
-import Charts from "./component/Charst"
+import Link from "next/link";
+
 export default async function Home() {
 
   return (
-    <div>
-      <h2 style={{ color: 'black' }}>Dashboard</h2>
-      <Charts/>
-    </div>
+    <>
+      <div>
+        <div className="pagetitle">
+          <h1>Dashboard</h1>
+          <nav>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <Link href="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+       
+      </div>
+    </>
   )
+
 }

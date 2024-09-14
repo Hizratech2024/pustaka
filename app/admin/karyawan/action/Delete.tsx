@@ -4,11 +4,10 @@ import axios from "axios"
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 
-function Delete({ karyawanid, reload }: { karyawanid: Number, reload: Function }) {
+function Delete({ userId, reload }: { userId: Number, reload: Function }) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     const [isLoading, setIsLoading] = useState(false)
     if (isLoading) {
         Swal.fire({
@@ -21,27 +20,26 @@ function Delete({ karyawanid, reload }: { karyawanid: Number, reload: Function }
         })
     }
 
-
-    const handleDelete = async (karyawanid: number) => {
+    const handleDelete = async () => {
         setIsLoading(true)
+        await axios.delete(`/admin/api/karyawan/${userId}`)
+        reload()
         handleClose()
-        await axios.delete(`/admin/api/karyawan/${karyawanid}`)
-        setTimeout(function () {
-            reload()
-            setIsLoading(false)
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Berhasil dihapus',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        }, 1500);
+        setIsLoading(false)
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Berhasil dihapus',
+            showConfirmButton: false,
+            timer: 1500
+        })
     }
 
     return (
         <div>
-            <span onClick={handleShow} className="btn btn-danger shadow btn-xs sharp mx-1"><i className="fa fa-trash"></i></span>
+            <button onClick={handleShow} type="button" className="btn btn-danger sharp mx-1" >
+                <i className="fa fa-trash"></i>
+            </button>
             <Modal
                 dialogClassName="modal-md"
                 show={show}
@@ -49,11 +47,11 @@ function Delete({ karyawanid, reload }: { karyawanid: Number, reload: Function }
                 backdrop="static"
                 keyboard={false}>
                 <Modal.Body>
-                    <h6 className="font-bold">Anda yakin menghapus data ini ?</h6>
-                </Modal.Body>
+                            <h6>Anda yakin menghapus data ini ?</h6>
+                            </Modal.Body>
                 <Modal.Footer>
                     <button type="button" className="btn btn-warning light" onClick={handleClose}>Close</button>
-                    <button type="button" className="btn btn-danger light" onClick={() => handleDelete(Number(karyawanid))}>Ya, Hapus</button>
+                    <button type="button" className="btn btn-danger light" onClick={handleDelete}>Ya, Hapus</button>
                 </Modal.Footer>
 
             </Modal>

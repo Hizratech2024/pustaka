@@ -54,6 +54,15 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
+        const karyawanId = user.karyawanId
+
+        // await prisma.logloginTb.create({
+        //   data: {
+        //     karyawanId: karyawanId
+        //   },
+        // })
+
+
         return {
           id: user.id + '',
           usernama: user.usernama,
@@ -64,6 +73,7 @@ export const authOptions: NextAuthOptions = {
           foto: user.KaryawanTb.foto,
         } as any;
       }
+
     })
   ],
 

@@ -1,31 +1,22 @@
 "use client"
 import { useState, SyntheticEvent, useEffect, useRef } from "react"
 import axios from "axios"
-import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
-import Select from 'react-select'
-import { StyleSelect, tanggalHariIni } from "@/app/helper";
-
-const options = [
-    { value: 'Admin', label: 'Admin' },
-    { value: 'Kasir', label: 'Kasir' },
-    { value: 'Teknisi', label: 'Teknisi' },
-];
+import Modal from 'react-bootstrap/Modal';
+import { tanggalHariIni } from "@/app/helper";
+import { stat } from "fs";
 
 function Add({ reload }: { reload: Function }) {
     const [nama, setNama] = useState("")
+    const [usernama, setUsernama] = useState("")
+    const [password, setPassword] = useState('')
     const [tempatLahir, setTempatlahir] = useState("")
     const [tanggalLahir, setTanggallahir] = useState(tanggalHariIni)
     const [alamat, setAlamat] = useState("")
     const [hp, setHp] = useState("")
-    const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [status, setStatus] = useState("")
-    const [show, setShow] = useState(false);
     const ref = useRef<HTMLInputElement>(null);
-    const refemail = useRef<HTMLInputElement>(null);
-    const refhp = useRef<HTMLInputElement>(null);
-    const [selectjabatan, setSelectjabatan] = useState(null);
     const [st, setSt] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     if (isLoading) {
@@ -39,38 +30,28 @@ function Add({ reload }: { reload: Function }) {
         })
     }
 
+    const [show, setShow] = useState(false)
+
+    const handleShow = () => setShow(true)
+
     const handleClose = () => {
         setShow(false);
-        clearForm();
+        clearForm()
     }
-
-    const handleChange = (selectedOption: any) => {
-        setSelectjabatan(selectedOption);
-        setStatus(selectedOption.value);
-    };
-
-    const setfokusemail = () => {
-        refemail.current?.focus();
-    }
-
-    const handleShow = () => setShow(true);
-
-    useEffect(() => {
-        ref.current?.focus();
-    }, [])
 
     function clearForm() {
         setNama('')
-        setTempatlahir('')
+        setUsernama('')
+        setPassword('')
+        setStatus('')
         setTanggallahir(tanggalHariIni)
+        setTempatlahir('')
         setAlamat('')
         setHp('')
-        setPassword('')
         setEmail('')
-        setStatus('')
-        setSelectjabatan(null)
         setSt(false)
     }
+
 
     const handleSubmit = async (e: SyntheticEvent) => {
         setIsLoading(true)
@@ -78,12 +59,13 @@ function Add({ reload }: { reload: Function }) {
         try {
             const formData = new FormData()
             formData.append('nama', nama)
+            formData.append('usernama', usernama)
+            formData.append('password', password)
             formData.append('tempatlahir', tempatLahir)
             formData.append('tanggallahir', new Date(tanggalLahir).toISOString())
             formData.append('alamat', alamat)
             formData.append('hp', hp)
             formData.append('email', email)
-            formData.append('password', password)
             formData.append('status', status)
 
             const xxx = await axios.post(`/admin/api/karyawan`, formData, {
@@ -92,45 +74,51 @@ function Add({ reload }: { reload: Function }) {
                 },
             })
 
-            setTimeout(function () {
+            if (xxx.data.pesan == 'usernama ada') {
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Usernama sudah terdaftar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
 
-                if (xxx.data.pesan == 'Email sudah ada') {
-                    setIsLoading(false)
-                    setfokusemail()
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'warning',
-                        title: 'Email sudah terdaftar',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-                if (xxx.data.pesan == 'No Hp sudah ada') {
-                    setIsLoading(false)
-                    refhp.current?.focus();
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'warning',
-                        title: 'No Hp sudah terdaftar',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
+            if (xxx.data.pesan == 'Email sudah ada') {
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Email sudah terdaftar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+            if (xxx.data.pesan == 'No Hp sudah ada') {
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'No Hp sudah terdaftar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
 
-                if (xxx.data.pesan == 'berhasil') {
-                    handleClose();
-                    clearForm();
-                    reload()
-                    setIsLoading(false)
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Berhasil Simpan',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            }, 1500);
+            if (xxx.data.pesan == 'berhasil') {
+                clearForm();
+                reload()
+                handleClose()
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Berhasil Simpan',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -138,8 +126,9 @@ function Add({ reload }: { reload: Function }) {
 
     return (
         <div>
-            <button onClick={handleShow} type="button" className="btn btn-success btn-icon-text">
-                Add Karyawan</button>
+            <button type="button" className="btn btn-primary" onClick={handleShow}>
+                Tambah
+            </button>
             <Modal
                 dialogClassName="modal-lg"
                 show={show}
@@ -151,9 +140,8 @@ function Add({ reload }: { reload: Function }) {
                         <Modal.Title>Tambah Data Karyawan</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
                         <div className="row">
-                            <div className="mb-3 col-md-12">
+                            <div className="mb-3 col-md-6">
                                 <label className="col-sm-6 col-form-label">Nama Karyawan</label>
                                 <input
                                     autoFocus
@@ -162,6 +150,18 @@ function Add({ reload }: { reload: Function }) {
                                     className="form-control"
                                     value={nama} onChange={(e) => setNama(e.target.value)}
                                 />
+                            </div>
+                            <div className="mb-3 col-md-6">
+                                <label className="col-sm-6 col-form-label">Jabatan</label>
+                                <select
+                                    required
+                                    className="form-control"
+                                    value={status} onChange={(e) => setStatus(e.target.value)}
+                                >
+                                    <option value=''>Pilih Jabatan</option>
+                                    <option value='Petugas'>Petugas</option>
+                                    <option value='Administrasi'>Administrasi</option>
+                                </select>
                             </div>
                         </div>
 
@@ -202,34 +202,30 @@ function Add({ reload }: { reload: Function }) {
                                 <label className="col-sm-6 col-form-label">No Hp</label>
                                 <input
                                     required
-                                    ref={refhp}
                                     type="number"
                                     className="form-control"
                                     value={hp} onChange={(e) => setHp(e.target.value)}
                                 />
                             </div>
                             <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">Jabatan</label>
-                                <Select
+                                <label className="col-sm-6 col-form-label" >Email</label>
+                                <input
                                     required
-                                    placeholder="Search..."
-                                    options={options}
-                                    onChange={handleChange}
-                                    value={selectjabatan}
-                                    styles={StyleSelect}
+                                    type="email"
+                                    className="form-control"
+                                    value={email} onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                         </div>
 
                         <div className="row">
                             <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label" >Email</label>
+                                <label className="col-sm-6 col-form-label">Usernama</label>
                                 <input
                                     required
-                                    ref={refemail}
-                                    type="email"
+                                    type="text"
                                     className="form-control"
-                                    value={email} onChange={(e) => setEmail(e.target.value)}
+                                    value={usernama} onChange={(e) => setUsernama(e.target.value)}
                                 />
                             </div>
                             <div className="mb-3 col-md-6">
@@ -255,7 +251,6 @@ function Add({ reload }: { reload: Function }) {
                                 </div>
                             </div>
                         </div>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="button" className="btn btn-danger light" onClick={handleClose}>Close</button>

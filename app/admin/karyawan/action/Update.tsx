@@ -4,31 +4,21 @@
 import { useState, SyntheticEvent } from "react"
 import { KaryawanTb, UserTb } from "@prisma/client"
 import axios from "axios"
-import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2"
+import Modal from 'react-bootstrap/Modal';
 import moment from "moment"
-import Select from 'react-select'
-import { StyleSelect } from "@/app/helper";
 
-const options = [
-    { value: 'Admin', label: 'Admin' },
-    { value: 'Kasir', label: 'Kasir' },
-    { value: 'Teknisi', label: 'Teknisi' },
-];
 
-function Update({ karyawan, user, reload }: { karyawan: KaryawanTb, user: UserTb, reload: Function }) {
-
-    const [nama, setNama] = useState(karyawan.nama)
+function Update({ user, reload, karyawan }: { user: UserTb, reload: Function, karyawan: KaryawanTb }) {
+    const [nama, setNama] = useState(user.nama)
+    const [usernama, setUsernama] = useState(user.usernama)
+    const [password, setPassword] = useState('')
     const [tempatLahir, setTempatlahir] = useState(karyawan.tempatLahir)
-    const [tanggalLahir, setTanggallahir] = useState(moment(karyawan.tanggalLahir).format("YYYY-MM-DD"))
+    const [tanggalLahir, setTanggallahir] = useState(moment(karyawan.tanggalLahir).format('YYYY-MM-DD'))
     const [alamat, setAlamat] = useState(karyawan.alamat)
     const [hp, setHp] = useState(karyawan.hp)
-    const [password, setPassword] = useState('')
     const [email, setEmail] = useState(karyawan.email)
-    const [status, setStatus] = useState(user.status)
-    const [selectjabatan, setSelectjabatan] = useState([
-        { value: user.status, label: user.status },
-    ]);
+    const [status, setStatus] = useState(user.role)
     const [st, setSt] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     if (isLoading) {
@@ -42,94 +32,98 @@ function Update({ karyawan, user, reload }: { karyawan: KaryawanTb, user: UserTb
         })
     }
 
-    const refreshform = () => {
-        setNama(karyawan.nama)
-        setTempatlahir(karyawan.tempatLahir)
-        setTanggallahir(moment(karyawan.tanggalLahir).format("YYYY-MM-DD"))
-        setAlamat(karyawan.alamat)
-        setHp(karyawan.hp)
-        setEmail(karyawan.email)
-        setStatus(user.status)
-        setPassword('')
-        setSelectjabatan([
-            { value: user.status, label: user.status },
-        ]);
-    }
-
     const [show, setShow] = useState(false)
+
+    const handleShow = () => setShow(true)
 
     const handleClose = () => {
         setShow(false);
         refreshform()
     }
 
-    const handleShow = () => setShow(true)
-
-    const handleChange = (selectedOption: any) => {
-        setSelectjabatan(selectedOption);
-        setStatus(selectedOption.value);
-    };
+    function refreshform() {
+        setNama(user.nama)
+        setUsernama(user.usernama)
+        setPassword('')
+        setStatus(user.role)
+        setTanggallahir(moment(karyawan.tanggalLahir).format('YYYY-MM-DD'))
+        setTempatlahir(karyawan.tempatLahir)
+        setAlamat(karyawan.alamat)
+        setHp(karyawan.hp)
+        setEmail(karyawan.email)
+        setSt(false)
+    }
 
     const handleUpdate = async (e: SyntheticEvent) => {
         setIsLoading(true)
         e.preventDefault()
         const newpass = password === '' ? 'no' : 'yes'
-        console.log('pas', newpass)
         try {
             const formData = new FormData()
+            formData.append('newpass', newpass)
             formData.append('nama', nama)
+            formData.append('usernama', usernama)
+            formData.append('password', password)
             formData.append('tempatlahir', tempatLahir)
             formData.append('tanggallahir', new Date(tanggalLahir).toISOString())
             formData.append('alamat', alamat)
             formData.append('hp', hp)
             formData.append('email', email)
-            formData.append('password', password)
-            formData.append('newpass', newpass)
             formData.append('status', status)
 
-            const xxx = await axios.patch(`/admin/api/karyawan/${karyawan.id}`, formData, {
+            const xxx = await axios.patch(`/admin/api/karyawan/${user.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            setTimeout(function () {
 
-                if (xxx.data.pesan == 'sudah ada email') {
-                    setIsLoading(false)
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'warning',
-                        title: 'Email ini sudah terdaftar',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
+            if (xxx.data.pesan == 'usernama sudah ada') {
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Usernama ini sudah terdaftar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
 
-                if (xxx.data.pesan == 'sudah ada hp') {
-                    setIsLoading(false)
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'warning',
-                        title: 'No Hp ini sudah terdaftar',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+            if (xxx.data.pesan == 'sudah ada email') {
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Email ini sudah terdaftar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
 
-                }
-                if (xxx.data.pesan == 'berhasil') {
-                    setShow(false);
-                    setIsLoading(false)
-                    reload()
-                    setPassword('')
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Berhasil diubah',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            }, 1500);
+            if (xxx.data.pesan == 'sudah ada hp') {
+                setIsLoading(false)
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'No Hp ini sudah terdaftar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+            }
+
+            if (xxx.data.pesan == 'berhasil') {
+                setShow(false)
+                setIsLoading(false)
+                reload()
+                setPassword('')
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Berhasil diubah',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -137,7 +131,9 @@ function Update({ karyawan, user, reload }: { karyawan: KaryawanTb, user: UserTb
 
     return (
         <div>
-            <span onClick={handleShow} className="btn btn-success shadow btn-xs sharp mx-1"><i className="fa fa-edit"></i></span>
+            <button onClick={handleShow} type="button" className="btn btn-success sharp mx-1" >
+                <i className="fa fa-edit"></i>
+            </button>
             <Modal
                 dialogClassName="modal-lg"
                 show={show}
@@ -149,108 +145,118 @@ function Update({ karyawan, user, reload }: { karyawan: KaryawanTb, user: UserTb
                         <Modal.Title>Edit Data Karyawan</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
-                        <div className="row">
-                            <div className="mb-3 col-md-12">
-                                <label className="col-sm-6 col-form-label">Nama Karyawan</label>
-                                <input
-                                    autoFocus
-                                    required
-                                    type="text"
-                                    className="form-control"
-                                    value={nama} onChange={(e) => setNama(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">Tempat Lahir</label>
-                                <input
-                                    required
-                                    type="text"
-                                    className="form-control"
-                                    value={tempatLahir} onChange={(e) => setTempatlahir(e.target.value)}
-                                />
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">Tanggal Lahir</label>
-                                <input
-                                    required
-                                    type="date"
-                                    className="form-control"
-                                    value={tanggalLahir} onChange={(e) => setTanggallahir(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="mb-3 col-md-12">
-                                <label className="col-sm-6 col-form-label">Alamat</label>
-                                <textarea
-                                    required
-                                    className="form-control"
-                                    value={alamat} onChange={(e) => setAlamat(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">No Hp</label>
-                                <input
-                                    required
-                                    type="number"
-                                    className="form-control"
-                                    value={hp} onChange={(e) => setHp(e.target.value)}
-                                />
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">Jabatan</label>
-                                <Select
-                                    required
-                                    placeholder="Search..."
-                                    options={options}
-                                    onChange={handleChange}
-                                    value={selectjabatan}
-                                    styles={StyleSelect}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">Email</label>
-                                <input
-                                    required
-                                    type="email"
-                                    className="form-control"
-                                    value={email} onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="col-sm-6 col-form-label">Password</label>
-                                <div className="input-group">
+                        <div className="modal-body">
+                            <div className="row">
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">Nama Karyawan</label>
                                     <input
-                                        type={st ? "text" : "password"}
+                                        autoFocus
+                                        required
+                                        type="text"
                                         className="form-control"
-                                        aria-label="Recipient's username"
-                                        aria-describedby="basic-addon2"
-                                        value={password} onChange={(e) => setPassword(e.target.value)}
+                                        value={nama} onChange={(e) => setNama(e.target.value)}
                                     />
-                                    {st ?
-                                        <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
-                                            <i className="mdi mdi-eye-off" />
-                                        </button>
-                                        :
-                                        <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
-                                            <i className="mdi mdi-eye" />
-                                        </button>
-                                    }
+                                </div>
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">Jabatan</label>
+                                    <select
+                                        required
+                                        className="form-control"
+                                        value={status} onChange={(e) => setStatus(e.target.value)}
+                                    >
+                                        <option value=''>Pilih Jabatan</option>
+                                        <option value='Petugas'>Petugas</option>
+                                        <option value='Administrasi'>Administrasi</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">Tempat Lahir</label>
+                                    <input
+                                        required
+                                        type="text"
+                                        className="form-control"
+                                        value={tempatLahir} onChange={(e) => setTempatlahir(e.target.value)}
+                                    />
+                                </div>
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">Tanggal Lahir</label>
+                                    <input
+                                        required
+                                        type="date"
+                                        className="form-control"
+                                        value={tanggalLahir} onChange={(e) => setTanggallahir(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="mb-3 col-md-12">
+                                    <label className="col-sm-6 col-form-label">Alamat</label>
+                                    <textarea
+                                        required
+                                        className="form-control"
+                                        value={alamat} onChange={(e) => setAlamat(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">No Hp</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        className="form-control"
+                                        value={hp} onChange={(e) => setHp(e.target.value)}
+                                    />
+                                </div>
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label" >Email</label>
+                                    <input
+                                        required
+                                        type="email"
+                                        className="form-control"
+                                        value={email} onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">Usernama</label>
+                                    <input
+                                        required
+                                        type="text"
+                                        className="form-control"
+                                        value={usernama} onChange={(e) => setUsernama(e.target.value)}
+                                    />
+                                </div>
+                                <div className="mb-3 col-md-6">
+                                    <label className="col-sm-6 col-form-label">Password</label>
+                                    <div className="input-group">
+                                        <input
+                                            type={st ? "text" : "password"}
+                                            className="form-control"
+                                            aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2"
+                                            value={password} onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                        {st ?
+                                            <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
+                                                <i className="mdi mdi-eye-off" />
+                                            </button>
+                                            :
+                                            <button onClick={() => setSt(!st)} className="btn btn-success" type="button">
+                                                <i className="mdi mdi-eye" />
+                                            </button>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="button" className="btn btn-danger light" onClick={handleClose}>Close</button>
