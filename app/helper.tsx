@@ -10,6 +10,30 @@ export let supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 export let supabaseBUCKET = 'uploadfile'
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
+export function SelectTahun() {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let i = currentYear - 70; i <= currentYear + 1; i++) {
+        years.push(i);
+    }
+
+    return years;
+};
+
+export function Bahasa() {
+    const bahasa = [
+        "Inggris", "Spanyol", "Mandarin", "Hindi", "Arab", "Portugis",
+        "Bengali", "Rusia", "Jepang", "Punjabi", "Jerman", "Jawa", "Perancis",
+        "Korea", "Vietnam", "Tamil", "Urdu", "Italia", "Turki", "Belanda",
+        "Persia", "Swahili", "Yunani", "Ibrani", "Thai", "Polandia", "Melayu", "Ukraina",
+        "Rumania", "Hongaria", "Ceko", "Finlandia", "Norwegia", "Swedia", "Denmark","Indonesia"
+      ];
+    
+      const sortedBahasa = bahasa.sort((a, b) => a.localeCompare(b));
+
+    return sortedBahasa;
+};
+
 export function kalkulasiWaktu(newsTime: any) {
     const timeDifference = currentTime.getTime() - new Date(newsTime).getTime();
     const Hari = Math.floor(timeDifference / (24 * 1000 * 60 * 60));
@@ -131,7 +155,7 @@ export const rupiah = (value: any) => {
     return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 };
 
-export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any,uangDiterima:any) {
+export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any, uangDiterima: any) {
     let tableHTML = `
         <style>
             @media print {
@@ -302,7 +326,7 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
     window.print();
 };
 
-export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any,uangDiterima:any) {
+export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any, uangDiterima: any) {
     let tableHTML = `
         <style>
             @media print {
@@ -473,7 +497,7 @@ export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: a
     window.print();
 };
 
-export function cetakfakturservis(items: any, items2: any, total: any, nofaktur: any, kasir: any, tanggal: any,uangDiterima:any) {
+export function cetakfakturservis(items: any, items2: any, total: any, nofaktur: any, kasir: any, tanggal: any, uangDiterima: any) {
     let counter = 1;
     let tableHTML = `
         <style>

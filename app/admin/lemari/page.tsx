@@ -6,9 +6,9 @@ import Delete from './action/Delete';
 import Swal from 'sweetalert2';
 import Update from './action/Update';
 
-const Karyawan = () => {
+const Lemari = () => {
 
-    const [datakaryawan, setDatakaryawan] = useState([])
+    const [datalemari, setDatalemari] = useState([])
     const [filterText, setFilterText] = React.useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -19,9 +19,9 @@ const Karyawan = () => {
 
     const reload = async () => {
         try {
-            const response = await fetch(`/admin/api/karyawan`);
+            const response = await fetch(`/admin/api/lemari`);
             const result = await response.json();
-            setDatakaryawan(result);
+            setDatalemari(result);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -32,7 +32,7 @@ const Karyawan = () => {
         setCurrentPage(page);
     };
 
-    const filteredItems = datakaryawan.filter(
+    const filteredItems = datalemari.filter(
         (item: any) => item.nama && item.nama.toLowerCase().includes(filterText.toLowerCase()),
     );
 
@@ -44,28 +44,21 @@ const Karyawan = () => {
             width: '80px'
         },
         {
-            name: 'Nama',
-            selector: (row: any) => row.KaryawanTb.nama,
+            name: 'Nama Lemari',
+            selector: (row: any) => row.nama,
             sortable: true,
         },
         {
-            name: 'Alamat',
-            selector: (row: any) => row.KaryawanTb.alamat,
-        },
-        {
-            name: 'No Hp',
-            selector: (row: any) => row.KaryawanTb.hp,
-        },
-        {
-            name: 'Status',
-            selector: (row: any) => row.role,
+            name: 'Jumlah Rak',
+            selector: (row: any) => row.jumlahRak,
+            sortable: true,
         },
         {
             name: 'Action',
             cell: (row: any) => (
                 <div className="d-flex">
-                    <Update user={row} karyawan={row.KaryawanTb} reload={reload} />
-                    <Delete userId={row.id} reload={reload} />
+                    <Update lemari={row} reload={reload} />
+                    <Delete lemariId={row.id} reload={reload} />
                 </div>
             ),
         },
@@ -74,10 +67,10 @@ const Karyawan = () => {
     return (
         <div>
             <div className="row">
-                <div className="col-md-12 grid-margin stretch-card">
+                <div className="col-lg-12">
                     <div className="card">
                         <div className="card-header">
-                            <h6 className="card-title" style={{ fontFamily: 'initial', fontWeight: 'bold' }}>Data Karyawan</h6>
+                            <h6 className="card-title" >Data Lemari</h6>
                         </div>
                         <div className="card-body">
                             <div className="row mb-3">
@@ -128,4 +121,4 @@ const Karyawan = () => {
     )
 }
 
-export default Karyawan
+export default Lemari

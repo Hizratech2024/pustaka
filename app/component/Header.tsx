@@ -7,8 +7,8 @@ export default function Header() {
             <header id="header" className="header fixed-top d-flex align-items-center">
                 <div className="d-flex align-items-center justify-content-between">
                     <Link href="/" className="logo d-flex align-items-center">
-                        <img src="/tema/img/logo.png" alt="" />
-                        <span className="d-none d-lg-block">I-Tech Services</span>
+                        <img width={50} height={50} src="/tema/img/logo3.png" alt="" />
+                        <span className="d-none d-lg-block">SMAN 1 Pekanbaru</span>
                     </Link>
                     <i className="bi bi-list toggle-sidebar-btn" />
                 </div>

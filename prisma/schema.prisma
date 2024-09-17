@@ -57,13 +57,14 @@ model KaryawanTb {
 model MemberTb {
   id           Int      @id @default(autoincrement())
   userId       Int      @unique
+  nis          Int
   nama         String
   tempatLahir  String
   tanggalLahir DateTime
   alamat       String
   hp           String   @unique
   email        String   @unique
-  usernama     String   @unique
+  status       String
   foto         String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -100,8 +101,7 @@ model UlasanBukuTb {
   updatedAt DateTime @updatedAt
 
   MemberTb MemberTb @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  BukuTb BukuTb @relation(fields: [bukuId], references: [id], onDelete: Cascade)
-
+  BukuTb   BukuTb   @relation(fields: [bukuId], references: [id], onDelete: Cascade)
 }
 
 model KategoriTb {
@@ -130,13 +130,13 @@ model BukuTb {
   KategoriTb       KategoriTb         @relation(fields: [kategoriId], references: [id], onDelete: Cascade)
   LetakBukuTb      LetakBukuTb[]
   DetailPeminjaman DetailPeminjaman[]
-  UlasanBukuTb UlasanBukuTb[]
+  UlasanBukuTb     UlasanBukuTb[]
 }
 
 model LemariTb {
   id        Int      @id @default(autoincrement())
   nama      String
-  jumlahRak String
+  jumlahRak Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -174,6 +174,7 @@ model PeminjamanTb {
   totalItem           Int
   status              String
   denda               Int?
+  keterangan          String?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 

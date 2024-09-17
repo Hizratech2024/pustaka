@@ -12,6 +12,7 @@ export default function
             <script src="/tema/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
             <script src="/tema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
             <script src="/tema/js/main.js"></script>
+            <script src="/tema/js/datatables.init.js"></script>
             <script src="/tema/vendor/chart.js/chart.umd.js"></script>
             <script src="/tema/vendor/echarts/echarts.min.js"></script>
             <script src="/tema/vendor/quill/quill.min.js"></script>
