@@ -1,162 +1,209 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@supabase/supabase-js";
 import moment from "moment";
-import 'moment/locale/id';
-moment.locale('id');
+import "moment/locale/id";
+moment.locale("id");
+
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 const currentTime = new Date();
 
-export let supabaseUrl = 'https://gjrkyteltltxgxtgxogj.supabase.co'
-export let supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdqcmt5dGVsdGx0eGd4dGd4b2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjEwMjc0NTQsImV4cCI6MjAzNjYwMzQ1NH0.g-lD3Vu1bHYNweSvUGxgYazef6Xf16Hz88wgpggh9I4'
-export let supabaseBUCKET = 'uploadfile'
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export let supabaseUrl = "https://gjrkyteltltxgxtgxogj.supabase.co";
+export let supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdqcmt5dGVsdGx0eGd4dGd4b2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjEwMjc0NTQsImV4cCI6MjAzNjYwMzQ1NH0.g-lD3Vu1bHYNweSvUGxgYazef6Xf16Hz88wgpggh9I4";
+export let supabaseBUCKET = "uploadfile";
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
+export function Font() {
+  console.log(montserrat);
+  return montserrat;
+}
 
 export function SelectTahun() {
-    const currentYear = new Date().getFullYear();
-    const years = [];
-    for (let i = currentYear - 70; i <= currentYear + 1; i++) {
-        years.push(i);
-    }
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let i = currentYear - 70; i <= currentYear + 1; i++) {
+    years.push(i);
+  }
 
-    return years;
-};
+  return years;
+}
 
 export function Bahasa() {
-    const bahasa = [
-        "Inggris", "Spanyol", "Mandarin", "Hindi", "Arab", "Portugis",
-        "Bengali", "Rusia", "Jepang", "Punjabi", "Jerman", "Jawa", "Perancis",
-        "Korea", "Vietnam", "Tamil", "Urdu", "Italia", "Turki", "Belanda",
-        "Persia", "Swahili", "Yunani", "Ibrani", "Thai", "Polandia", "Melayu", "Ukraina",
-        "Rumania", "Hongaria", "Ceko", "Finlandia", "Norwegia", "Swedia", "Denmark","Indonesia"
-      ];
-    
-      const sortedBahasa = bahasa.sort((a, b) => a.localeCompare(b));
+  const bahasa = [
+    "Inggris",
+    "Spanyol",
+    "Mandarin",
+    "Hindi",
+    "Arab",
+    "Portugis",
+    "Bengali",
+    "Rusia",
+    "Jepang",
+    "Punjabi",
+    "Jerman",
+    "Jawa",
+    "Perancis",
+    "Korea",
+    "Vietnam",
+    "Tamil",
+    "Urdu",
+    "Italia",
+    "Turki",
+    "Belanda",
+    "Persia",
+    "Swahili",
+    "Yunani",
+    "Ibrani",
+    "Thai",
+    "Polandia",
+    "Melayu",
+    "Ukraina",
+    "Rumania",
+    "Hongaria",
+    "Ceko",
+    "Finlandia",
+    "Norwegia",
+    "Swedia",
+    "Denmark",
+    "Indonesia",
+  ];
 
-    return sortedBahasa;
-};
+  const sortedBahasa = bahasa.sort((a, b) => a.localeCompare(b));
+
+  return sortedBahasa;
+}
 
 export function kalkulasiWaktu(newsTime: any) {
-    const timeDifference = currentTime.getTime() - new Date(newsTime).getTime();
-    const Hari = Math.floor(timeDifference / (24 * 1000 * 60 * 60));
-    const Jam = Math.floor(timeDifference / (1000 * 60 * 60));
-    const Menit = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    const Detik = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  const timeDifference = currentTime.getTime() - new Date(newsTime).getTime();
+  const Hari = Math.floor(timeDifference / (24 * 1000 * 60 * 60));
+  const Jam = Math.floor(timeDifference / (1000 * 60 * 60));
+  const Menit = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  const Detik = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-    if (Hari <= 0 && Jam <= 0 && Menit <= 0) {
-        return ` Baru saja`;
-    }
-    if (Hari <= 0 && Jam <= 0) {
-        return ` ${Menit} menit yang lalu`;
-    }
-    if (Hari <= 0 && Jam > 0) {
-        return ` ${Jam} jam yang lalu`;
-    }
-    if (Hari > 0 && Hari <= 30) {
-        return `${Hari} hari yang lalu`;
-    }
+  if (Hari <= 0 && Jam <= 0 && Menit <= 0) {
+    return ` Baru saja`;
+  }
+  if (Hari <= 0 && Jam <= 0) {
+    return ` ${Menit} menit yang lalu`;
+  }
+  if (Hari <= 0 && Jam > 0) {
+    return ` ${Jam} jam yang lalu`;
+  }
+  if (Hari > 0 && Hari <= 30) {
+    return `${Hari} hari yang lalu`;
+  }
 
-    if (Hari > 30 && Hari <= 360) {
-        const bulan = Math.floor(timeDifference / (24 * 1000 * 60 * 60) / 30);
-        return `${bulan} bulan yang lalu`;
-    }
+  if (Hari > 30 && Hari <= 360) {
+    const bulan = Math.floor(timeDifference / (24 * 1000 * 60 * 60) / 30);
+    return `${bulan} bulan yang lalu`;
+  }
 
-    if (Hari > 360) {
-        const tahun = Math.floor(timeDifference / (24 * 1000 * 60 * 60) / 360);
-        return `${tahun} tahun yang lalu`;
-    }
+  if (Hari > 360) {
+    const tahun = Math.floor(timeDifference / (24 * 1000 * 60 * 60) / 360);
+    return `${tahun} tahun yang lalu`;
+  }
 }
 
 export const StyleSelect = {
-    control: (provided: any, state: any) => ({
-        ...provided,
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        fontSize: 15,
-        boxShadow: state.isFocused ? '0 0 0 2px #007bff' : null,
-    }),
-    option: (provided: any, state: any) => ({
-        ...provided,
-        fontSize: 15,
-        color: "black",
-    }),
-    menu: (provided: any) => ({
-        ...provided,
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    }),
-    menuList: (provided: any) => ({
-        ...provided,
-        maxHeight: '180px',
-        overflowY: 'auto',
-    }),
+  control: (provided: any, state: any) => ({
+    ...provided,
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    fontSize: 15,
+    boxShadow: state.isFocused ? "0 0 0 2px #007bff" : null,
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    fontSize: 15,
+    color: "black",
+  }),
+  menu: (provided: any) => ({
+    ...provided,
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  }),
+  menuList: (provided: any) => ({
+    ...provided,
+    maxHeight: "180px",
+    overflowY: "auto",
+  }),
 };
 
 export const warnastatus = (status: any) => {
-    switch (status) {
+  switch (status) {
+    case "Proses":
+      return "lightblue";
 
-        case 'Proses':
-            return 'lightblue';
+    case "Selesai":
+      return "lime";
 
-        case 'Selesai':
-            return 'lime';
+    case "Tolak":
+      return "red";
 
-        case 'Tolak':
-            return 'red';
+    case "Dibatalkan / Barang dikembalikan":
+      return "red";
 
-        case 'Dibatalkan / Barang dikembalikan':
-            return 'red';
+    case "Sudah dikembalikan":
+      return "teal";
 
-        case 'Sudah dikembalikan':
-            return 'teal';
+    case "Dibatalkan":
+      return "red";
 
-        case 'Dibatalkan':
-            return 'red';
+    case "Verifikasi":
+      return "yellow";
 
-        case 'Verifikasi':
-            return 'yellow';
+    case "Dalam Proses":
+      return "lightblue";
 
-        case 'Dalam Proses':
-            return 'lightblue';
+    case "Menunggu Konfirmasi":
+      return "yellow";
 
-        case 'Menunggu Konfirmasi':
-            return 'yellow';
+    case "Final":
+      return "springgreen";
 
-        case 'Final':
-            return 'springgreen';
-
-        case 'Done':
-            return 'springgreen';
-    }
+    case "Done":
+      return "springgreen";
+  }
 };
 
 export function tanggalIndo(tanggal: any) {
-    const tanggalFormatIndonesia = moment(tanggal).format('DD MMMM YYYY');
-    return tanggalFormatIndonesia
+  const tanggalFormatIndonesia = moment(tanggal).format("DD MMMM YYYY");
+  return tanggalFormatIndonesia;
 }
 
 export function tanggalHariIni() {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
 
-    return `${yyyy}-${mm}-${dd}`;
-};
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 export function mingguDepan() {
-    const today = new Date();
-    today.setDate(today.getDate() + 7);
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
+  const today = new Date();
+  today.setDate(today.getDate() + 7);
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
 
-    return `${yyyy}-${mm}-${dd}`;
-};
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 export const rupiah = (value: any) => {
-    return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+  return value.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
 };
 
-export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any, uangDiterima: any) {
-    let tableHTML = `
+export function cetakfaktur(
+  items: any,
+  total: any,
+  nofaktur: any,
+  kasir: any,
+  tanggal: any,
+  uangDiterima: any
+) {
+  let tableHTML = `
         <style>
             @media print {
                 @page {
@@ -237,7 +284,9 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
           <div class="header-section">
             <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
             <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
-            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(tanggal)}</span></div>
+            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(
+              tanggal
+            )}</span></div>
             <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
           </div>
         <table>
@@ -254,34 +303,55 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
             <tbody>
     `;
 
-    items.forEach((item: any, index: any) => {
-        tableHTML += `
+  items.forEach((item: any, index: any) => {
+    tableHTML += `
             <tr>
                 <td>${index + 1}</td>
-                <td class="nama-column" style="text-align:left;">${item.namaBarang}</td>
+                <td class="nama-column" style="text-align:left;">${
+                  item.namaBarang
+                }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">unit</td>
-                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td style="text-align:right; width: 20%">Rp ${(item.qty * item.hargaJual).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString(
+                  "id-ID",
+                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                )}</td>
+                <td style="text-align:right; width: 20%">Rp ${(
+                  item.qty * item.hargaJual
+                ).toLocaleString("id-ID", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}</td>
             </tr>
         `;
-    });
+  });
 
-    tableHTML += `
+  tableHTML += `
             </tbody>
              <tfoot>
                 
                 <tr>
                     <td colspan="5" class="total">Grand Total</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString(
+                      "id-ID",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                    )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Jumlah Uang</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString(
+                      "id-ID",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                    )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Kembalian</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${(uangDiterima - total).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${(
+                      uangDiterima - total
+                    ).toLocaleString("id-ID", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}</td>
                 </tr>
             </tfoot>
         </table>
@@ -302,32 +372,39 @@ export function cetakfaktur(items: any, total: any, nofaktur: any, kasir: any, t
         </div>
     `;
 
-    const printDiv = document.createElement('div');
-    printDiv.innerHTML = tableHTML;
-    document.body.appendChild(printDiv);
+  const printDiv = document.createElement("div");
+  printDiv.innerHTML = tableHTML;
+  document.body.appendChild(printDiv);
 
-    const originalContent = Array.from(document.body.children) as HTMLElement[];
-    originalContent.forEach(element => {
-        if (element !== printDiv) {
-            element.style.display = 'none';
-        }
+  const originalContent = Array.from(document.body.children) as HTMLElement[];
+  originalContent.forEach((element) => {
+    if (element !== printDiv) {
+      element.style.display = "none";
+    }
+  });
+
+  printDiv.style.display = "block";
+
+  window.onafterprint = () => {
+    printDiv.style.display = "none";
+    originalContent.forEach((element) => {
+      element.style.display = "";
     });
+    document.body.removeChild(printDiv);
+  };
 
-    printDiv.style.display = 'block';
+  window.print();
+}
 
-    window.onafterprint = () => {
-        printDiv.style.display = 'none';
-        originalContent.forEach(element => {
-            element.style.display = '';
-        });
-        document.body.removeChild(printDiv);
-    };
-
-    window.print();
-};
-
-export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: any, tanggal: any, uangDiterima: any) {
-    let tableHTML = `
+export function cetakulangfaktur(
+  items: any,
+  total: any,
+  nofaktur: any,
+  kasir: any,
+  tanggal: any,
+  uangDiterima: any
+) {
+  let tableHTML = `
         <style>
             @media print {
                 @page {
@@ -408,7 +485,9 @@ export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: a
           <div class="header-section">
             <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
             <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
-            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(tanggal)}</span></div>
+            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(
+              tanggal
+            )}</span></div>
             <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
           </div>
         <table>
@@ -425,34 +504,55 @@ export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: a
             <tbody>
     `;
 
-    items.forEach((item: any, index: any) => {
-        tableHTML += `
+  items.forEach((item: any, index: any) => {
+    tableHTML += `
             <tr>
                 <td>${index + 1}</td>
-                <td class="nama-column" style="text-align:left;">${item.BarangTb.namaBarang}</td>
+                <td class="nama-column" style="text-align:left;">${
+                  item.BarangTb.namaBarang
+                }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">unit</td>
-                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td style="text-align:right; width: 20%">Rp ${(item.qty * item.hargaJual).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString(
+                  "id-ID",
+                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                )}</td>
+                <td style="text-align:right; width: 20%">Rp ${(
+                  item.qty * item.hargaJual
+                ).toLocaleString("id-ID", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}</td>
             </tr>
         `;
-    });
+  });
 
-    tableHTML += `
+  tableHTML += `
             </tbody>
              <tfoot>
                 
                 <tr>
                     <td colspan="5" class="total">Grand Total</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString(
+                      "id-ID",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                    )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Jumlah Uang</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString(
+                      "id-ID",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                    )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Kembalian</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${(uangDiterima - total).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${(
+                      uangDiterima - total
+                    ).toLocaleString("id-ID", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}</td>
                 </tr>
             </tfoot>
         </table>
@@ -473,33 +573,41 @@ export function cetakulangfaktur(items: any, total: any, nofaktur: any, kasir: a
         </div>
     `;
 
-    const printDiv = document.createElement('div');
-    printDiv.innerHTML = tableHTML;
-    document.body.appendChild(printDiv);
+  const printDiv = document.createElement("div");
+  printDiv.innerHTML = tableHTML;
+  document.body.appendChild(printDiv);
 
-    const originalContent = Array.from(document.body.children) as HTMLElement[];
-    originalContent.forEach(element => {
-        if (element !== printDiv) {
-            element.style.display = 'none';
-        }
+  const originalContent = Array.from(document.body.children) as HTMLElement[];
+  originalContent.forEach((element) => {
+    if (element !== printDiv) {
+      element.style.display = "none";
+    }
+  });
+
+  printDiv.style.display = "block";
+
+  window.onafterprint = () => {
+    printDiv.style.display = "none";
+    originalContent.forEach((element) => {
+      element.style.display = "";
     });
+    document.body.removeChild(printDiv);
+  };
 
-    printDiv.style.display = 'block';
+  window.print();
+}
 
-    window.onafterprint = () => {
-        printDiv.style.display = 'none';
-        originalContent.forEach(element => {
-            element.style.display = '';
-        });
-        document.body.removeChild(printDiv);
-    };
-
-    window.print();
-};
-
-export function cetakfakturservis(items: any, items2: any, total: any, nofaktur: any, kasir: any, tanggal: any, uangDiterima: any) {
-    let counter = 1;
-    let tableHTML = `
+export function cetakfakturservis(
+  items: any,
+  items2: any,
+  total: any,
+  nofaktur: any,
+  kasir: any,
+  tanggal: any,
+  uangDiterima: any
+) {
+  let counter = 1;
+  let tableHTML = `
         <style>
             @media print {
                 @page {
@@ -580,7 +688,9 @@ export function cetakfakturservis(items: any, items2: any, total: any, nofaktur:
           <div class="header-section">
             <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
             <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
-            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(tanggal)}</span></div>
+            <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(
+              tanggal
+            )}</span></div>
             <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
           </div>
         <table>
@@ -596,47 +706,78 @@ export function cetakfakturservis(items: any, items2: any, total: any, nofaktur:
             </thead>
             <tbody>
     `;
-    items2.forEach((item: any, index: any) => {
-        tableHTML += `
+  items2.forEach((item: any, index: any) => {
+    tableHTML += `
             <tr>
                 <td>${counter++}</td>
-                <td class="nama-column" style="text-align:left;">${item.jenisServis}</td>
+                <td class="nama-column" style="text-align:left;">${
+                  item.jenisServis
+                }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">jasa</td>
-                <td style="text-align:right; width: 19%">Rp ${item.biaya.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td style="text-align:right; width: 20%">Rp ${(item.qty * item.biaya).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; width: 19%">Rp ${item.biaya.toLocaleString(
+                  "id-ID",
+                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                )}</td>
+                <td style="text-align:right; width: 20%">Rp ${(
+                  item.qty * item.biaya
+                ).toLocaleString("id-ID", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}</td>
             </tr>
         `;
-    })
-    items.forEach((item: any, index: any) => {
-        tableHTML += `
+  });
+  items.forEach((item: any, index: any) => {
+    tableHTML += `
             <tr>
                 <td>${counter++}</td>
-                <td class="nama-column" style="text-align:left;">${item.namaBarang}</td>
+                <td class="nama-column" style="text-align:left;">${
+                  item.namaBarang
+                }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">unit</td>
-                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td style="text-align:right; width: 20%">Rp ${(item.qty * item.hargaJual).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString(
+                  "id-ID",
+                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                )}</td>
+                <td style="text-align:right; width: 20%">Rp ${(
+                  item.qty * item.hargaJual
+                ).toLocaleString("id-ID", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}</td>
             </tr>
         `;
-    });
+  });
 
-    tableHTML += `
+  tableHTML += `
             </tbody>
              <tfoot>
                 
                 <tr>
                     <td colspan="5" class="total">Grand Total</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString(
+                      "id-ID",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                    )}</td>
                 </tr>
 
                   <tr>
                     <td colspan="5" class="total">Jumlah Uang</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString(
+                      "id-ID",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                    )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Kembalian</td>
-                    <td class="total" style="text-align:right; width: 20%">Rp ${(uangDiterima - total).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="total" style="text-align:right; width: 20%">Rp ${(
+                      uangDiterima - total
+                    ).toLocaleString("id-ID", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}</td>
                 </tr>
 
             </tfoot>
@@ -657,90 +798,94 @@ export function cetakfakturservis(items: any, items2: any, total: any, nofaktur:
         </div>
     `;
 
-    const printDiv = document.createElement('div');
-    printDiv.innerHTML = tableHTML;
-    document.body.appendChild(printDiv);
+  const printDiv = document.createElement("div");
+  printDiv.innerHTML = tableHTML;
+  document.body.appendChild(printDiv);
 
-    // Sembunyikan semua elemen kecuali elemen yang dicetak
-    const originalContent = Array.from(document.body.children) as HTMLElement[];
-    originalContent.forEach(element => {
-        if (element !== printDiv) {
-            element.style.display = 'none';
-        }
+  // Sembunyikan semua elemen kecuali elemen yang dicetak
+  const originalContent = Array.from(document.body.children) as HTMLElement[];
+  originalContent.forEach((element) => {
+    if (element !== printDiv) {
+      element.style.display = "none";
+    }
+  });
+
+  printDiv.style.display = "block";
+
+  // Setelah pencetakan selesai
+  window.onafterprint = () => {
+    printDiv.style.display = "none";
+    originalContent.forEach((element) => {
+      element.style.display = "";
     });
+    document.body.removeChild(printDiv);
+  };
 
-    printDiv.style.display = 'block';
+  // Mulai pencetakan
+  window.print();
 
-    // Setelah pencetakan selesai
-    window.onafterprint = () => {
-        printDiv.style.display = 'none';
-        originalContent.forEach(element => {
-            element.style.display = '';
-        });
-        document.body.removeChild(printDiv);
-    };
+  // const printDiv = document.createElement('div');
+  // printDiv.innerHTML = tableHTML;
+  // document.body.appendChild(printDiv);
 
-    // Mulai pencetakan
-    window.print();
+  // const originalContent = Array.from(document.body.children) as HTMLElement[];
+  // for (let i = 0; i < originalContent.length; i++) {
+  //     originalContent[i].style.display = 'none';
+  // }
 
+  // printDiv.style.display = 'block';
 
-    // const printDiv = document.createElement('div');
-    // printDiv.innerHTML = tableHTML;
-    // document.body.appendChild(printDiv);
+  // window.onafterprint = () => {
 
+  //     printDiv.style.display = 'none';
 
-    // const originalContent = Array.from(document.body.children) as HTMLElement[];
-    // for (let i = 0; i < originalContent.length; i++) {
-    //     originalContent[i].style.display = 'none';
-    // }
+  //     for (let i = 0; i < originalContent.length; i++) {
+  //         originalContent[i].style.display = 'block';
+  //     }
 
+  //     document.body.removeChild(printDiv);
+  // };
+  // window.print();
+}
 
-    // printDiv.style.display = 'block';
+export function cetakrequestservis(
+  noservis: any,
+  perlengkapan: any,
+  software: any,
+  hardware: any,
+  nama: any,
+  alamat: any,
+  hp: any,
+  namaBarang: any,
+  noseri: any,
+  tanggal: any,
+  teknisi: any
+) {
+  let perlengkapandengankoma = "";
+  let softwaredengankoma = "";
+  let hardwaredengankoma = "";
+  if (perlengkapan == "") {
+    perlengkapandengankoma = "-";
+  } else {
+    perlengkapandengankoma = perlengkapan.split("\n").join(", ");
+  }
 
+  if (software == "") {
+    softwaredengankoma = "-";
+  } else {
+    softwaredengankoma = software.split("\n").join(", ");
+  }
 
-    // window.onafterprint = () => {
+  if (hardware == "") {
+    hardwaredengankoma = "-";
+  } else {
+    hardwaredengankoma = hardware.split("\n").join(", ");
+  }
 
-    //     printDiv.style.display = 'none';
+  const masalah =
+    "Software :" + softwaredengankoma + "," + "Hardware :" + hardwaredengankoma;
 
-
-    //     for (let i = 0; i < originalContent.length; i++) {
-    //         originalContent[i].style.display = 'block';
-    //     }
-
-    //     document.body.removeChild(printDiv);
-    // };
-    // window.print();
-};
-
-
-export function cetakrequestservis(noservis: any, perlengkapan: any, software: any, hardware: any, nama: any, alamat: any, hp: any, namaBarang: any, noseri: any, tanggal: any, teknisi: any) {
-    let perlengkapandengankoma = ""
-    let softwaredengankoma = ""
-    let hardwaredengankoma = ""
-    if (perlengkapan == "") {
-        perlengkapandengankoma = "-"
-    }
-    else {
-        perlengkapandengankoma = perlengkapan.split('\n').join(', ');
-    }
-
-    if (software == "") {
-        softwaredengankoma = "-"
-    }
-    else {
-        softwaredengankoma = software.split('\n').join(', ');
-    }
-
-    if (hardware == "") {
-        hardwaredengankoma = "-"
-    }
-    else {
-        hardwaredengankoma = hardware.split('\n').join(', ');
-    }
-
-    const masalah = "Software :" + softwaredengankoma + "," + "Hardware :" + hardwaredengankoma
-
-    let formHTML = `
+  let formHTML = `
         <style>
             @media print {
                 @page {
@@ -904,30 +1049,29 @@ export function cetakrequestservis(noservis: any, perlengkapan: any, software: a
     </div>
     `;
 
-    const printDiv = document.createElement('div');
-    printDiv.innerHTML = formHTML;
-    document.body.appendChild(printDiv);
+  const printDiv = document.createElement("div");
+  printDiv.innerHTML = formHTML;
+  document.body.appendChild(printDiv);
 
-    // Sembunyikan semua elemen kecuali elemen yang dicetak
-    const originalContent = Array.from(document.body.children) as HTMLElement[];
-    originalContent.forEach(element => {
-        if (element !== printDiv) {
-            element.style.display = 'none';
-        }
+  // Sembunyikan semua elemen kecuali elemen yang dicetak
+  const originalContent = Array.from(document.body.children) as HTMLElement[];
+  originalContent.forEach((element) => {
+    if (element !== printDiv) {
+      element.style.display = "none";
+    }
+  });
+
+  printDiv.style.display = "block";
+
+  // Setelah pencetakan selesai
+  window.onafterprint = () => {
+    printDiv.style.display = "none";
+    originalContent.forEach((element) => {
+      element.style.display = "";
     });
+    document.body.removeChild(printDiv);
+  };
 
-    printDiv.style.display = 'block';
-
-    // Setelah pencetakan selesai
-    window.onafterprint = () => {
-        printDiv.style.display = 'none';
-        originalContent.forEach(element => {
-            element.style.display = '';
-        });
-        document.body.removeChild(printDiv);
-    };
-
-    // Mulai pencetakan
-    window.print();
-};
-
+  // Mulai pencetakan
+  window.print();
+}
