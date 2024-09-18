@@ -5,16 +5,18 @@ const Delete = ({
   letakbukuId,
   reload,
   reloadtabel,
-  rakId,
   qty,
   bukuId,
+  rakId,
+  reloadbuku,
 }: {
   letakbukuId: Number;
   reload: Function;
   reloadtabel: Function;
-  rakId: String;
   qty: Number;
   bukuId: Number;
+  rakId: Number;
+  reloadbuku: Function;
 }) => {
   const handleDelete = async () => {
     try {
@@ -30,35 +32,36 @@ const Delete = ({
       });
 
       if (result.isConfirmed) {
-        try {
-          // Hapus data dari letakbuku
-          await axios.delete(`/admin/api/letakbuku/${letakbukuId}`);
+        const formData = new FormData();
+        formData.append("qty", String(qty));
+        formData.append("bukuId", String(bukuId));
+        // Hapus data dari letakbuku
 
-          // Tambahkan qty ke stok buku menggunakan PATCH
-          await axios.patch(`/admin/api/buku/${bukuId}/tambah-qty`, { qty });
+        const xxx = await axios.post(
+          `/admin/api/letakbuku/${letakbukuId}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-          // Tampilkan pesan sukses
-          Swal.fire(
-            "Dihapus!",
-            "Data berhasil dihapus dan stok buku diperbarui.",
-            "success"
-          );
-        } catch (error) {
-          console.error("Terjadi kesalahan:", error);
-          Swal.fire(
-            "Error!",
-            "Terjadi kesalahan saat menghapus data atau memperbarui stok buku.",
-            "error"
-          );
+        // Tampilkan pesan sukses
+        if (xxx.data.pesan === "berhasil") {
+          reload();
+          reloadtabel(rakId);
+          reloadbuku();
+          Swal.fire({
+            icon: "success",
+            title: "Berhasil dihapus",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
-
-        // Reload atau lakukan pembaruan tabel di sini (jika perlu)
-        reload();
-        reloadtabel(rakId);
       }
     } catch (error) {
-      // Tampilkan pesan error jika ada masalah
-      Swal.fire("Error!", "Terjadi kesalahan saat menghapus data.", "error");
+      console.error("Error:", error);
     }
   };
 

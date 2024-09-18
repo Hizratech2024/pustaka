@@ -166,9 +166,10 @@ const LetakBuku = () => {
                 letakbukuId={row.id}
                 reload={reload}
                 reloadtabel={reloadtabel}
-                rakId={rakId}
                 qty={row.qty}
-                bukuId={row.BukuTb.id}
+                bukuId={row.bukuId}
+                rakId={row.rakId}
+                reloadbuku={reloadbuku}
               />
             </div>
           ),
@@ -216,9 +217,10 @@ const LetakBuku = () => {
                 letakbukuId={row.id}
                 reload={reload}
                 reloadtabel={reloadtabel}
-                rakId={rakId}
                 qty={row.qty}
-                bukuId={row.BukuTb.id}
+                bukuId={row.bukuId}
+                rakId={row.rakId}
+                reloadbuku={reloadbuku}
               />
             </div>
           ),
@@ -350,6 +352,7 @@ const LetakBuku = () => {
                 buku={databuku}
                 dataAll={dataletakbuku}
                 reloadtabel={reloadtabel}
+                reloadbuku={reloadbuku}
               />
             </div>
           </div>

@@ -10,87 +10,112 @@ export const PATCH = async (
   { params }: { params: { id: string } }
 ) => {
   const formData = await request.formData();
-  let temukanId = 0;
+  const qty = Number(formData.get("qty"));
+  const bukuId = Number(formData.get("bukuId"));
+  const idLain = Number(formData.get("IdLain"));
+  const rakId = Number(formData.get("rakId"));
 
-  const xxx = await prisma.letakBukuTb.findFirst({
+  try {
+    // Cari buku di rak lain
+    const xxx = await prisma.letakBukuTb.findUnique({
+      where: {
+        id: Number(params.id),
+      },
+    });
+
+    let jumlah = 0;
+
+    if (xxx) {
+      jumlah = xxx.qty;
+    }
+
+    if (qty > jumlah) {
+      return NextResponse.json({ pesan: "melebihi" });
+    }
+
+    const hasil = jumlah - qty;
+
+    // Update stok buku di rak lain
+    await prisma.letakBukuTb.update({
+      where: {
+        id: Number(params.id),
+      },
+      data: {
+        qty: hasil,
+      },
+    });
+
+    // Cari buku di rak tujuan
+    const yyy = await prisma.letakBukuTb.findFirst({
+      where: {
+        bukuId: bukuId,
+        rakId: rakId,
+      },
+    });
+
+    if (yyy) {
+      // Update stok buku di rak tujuan
+      await prisma.letakBukuTb.update({
+        where: {
+          id: yyy.id,
+        },
+        data: {
+          qty: yyy.qty + qty,
+        },
+      });
+    } else {
+      // Buat entri baru jika tidak ada
+      await prisma.letakBukuTb.create({
+        data: {
+          bukuId: bukuId,
+          rakId: rakId,
+          qty: qty,
+        },
+      });
+    }
+
+    return NextResponse.json({ pesan: "berhasil" });
+  } catch (error) {
+    console.error("Server Error:", error);
+  }
+};
+
+export const POST = async (
+  request: Request,
+  { params }: { params: { id: string } }
+) => {
+  const formData = await request.formData();
+  const qty = Number(formData.get("qty"));
+  const bukuId = Number(formData.get("bukuId"));
+
+  let jumlah = 0;
+
+  await prisma.letakBukuTb.delete({
     where: {
-      bukuId: Number(params.id),
+      id: Number(params.id),
+    },
+  });
+
+  const xxx = await prisma.bukuTb.findUnique({
+    where: {
+      id: bukuId,
     },
   });
 
   if (xxx) {
-    temukanId = xxx.id;
+    jumlah = xxx.qty;
   }
 
-  await prisma.letakBukuTb.update({
+  const hasil = jumlah + qty;
+
+  await prisma.bukuTb.update({
     where: {
-      id: Number(temukanId),
+      id: bukuId,
     },
     data: {
-      rakId: Number(formData.get("rakId")),
+      qty: hasil,
     },
   });
 
-  return NextResponse.json({ status: 200, pesan: "berhasil" });
+  return NextResponse.json({ pesan: "berhasil" });
 };
-
-export const DELETE = async (
-  request: Request,
-  { params }: { params: { id: string } }
-) => {
-  try {
-    // Temukan letakBukuTb berdasarkan id untuk mendapatkan bukuId dan qty
-    const letakBuku = await prisma.letakBukuTb.findUnique({
-      where: {
-        id: Number(params.id),
-      },
-    });
-
-    if (!letakBuku) {
-      return NextResponse.json(
-        { error: "Data letak buku tidak ditemukan." },
-        { status: 404 }
-      );
-    }
-
-    const { bukuId, qty } = letakBuku;
-
-    // Tambahkan qty ke stok buku
-    await prisma.bukuTb.update({
-      where: { id: Number(bukuId) },
-      data: {
-        qty: {
-          increment: qty, // Tambahkan qty ke stok buku
-        },
-      },
-    });
-
-    // Hapus data letakBukuTb
-    const deletedLetakBuku = await prisma.letakBukuTb.delete({
-      where: {
-        id: Number(params.id),
-      },
-    });
-
-    return NextResponse.json(
-      { message: "Data berhasil dihapus dan stok buku diperbarui." },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Terjadi kesalahan saat menghapus data." },
-      { status: 500 }
-    );
-  }
-};
-
-// export const DELETE = async (request: Request, { params }: { params: { id: string } }) => {
-
-//     const user = await prisma.letakBukuTb.delete({
-//         where: {
-//             id: Number(params.id)
-//         }
-//     })
-//     return NextResponse.json(user, { status: 200 })
-// }
