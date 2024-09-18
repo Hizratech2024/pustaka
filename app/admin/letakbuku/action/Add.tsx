@@ -92,6 +92,97 @@ function Add({
       selector: (row: any) => row.qty,
       sortable: true,
     },
+    // {
+    //   name: "Action",
+    //   cell: (row: any) => {
+    //     // Cek apakah buku ini ada di rak saat ini
+    //     const bukuDiRakSaatIni = dataAll.some(
+    //       (data: any) =>
+    //         data.bukuId === Number(row.id) && data.rakId === Number(rakId)
+    //     );
+
+    //     // Dapatkan jumlah stok buku di rak saat ini
+    //     const qtyDiRakSaatIni =
+    //       dataAll.find(
+    //         (data: any) =>
+    //           data.bukuId === Number(row.id) && data.rakId === Number(rakId)
+    //       )?.qty || 0;
+
+    //     // Dapatkan stok total buku
+    //     const stokBuku =
+    //       dataAll.find((data: any) => data.bukuId === Number(row.id))?.BukuTb
+    //         .stok || 0;
+
+    //     // Cek apakah stok buku masih ada di rak lain
+    //     const stokDiRakLain = dataAll
+    //       .filter(
+    //         (data: any) =>
+    //           data.bukuId === Number(row.id) && data.rakId !== Number(rakId)
+    //       )
+    //       .reduce((acc, data: any) => acc + data.qty, 0);
+
+    //     const totalStokDiRakLain = stokBuku - stokDiRakLain;
+
+    //     if (!bukuDiRakSaatIni && totalStokDiRakLain > 0) {
+    //       // Buku belum ada di rak saat ini dan stok buku masih ada
+    //       return (
+    //         <div className="d-flex">
+    //           <button
+    //             type="button"
+    //             className="btn btn-success light"
+    //             onClick={() => handleShow2(row)}
+    //           >
+    //             Tambah
+    //           </button>
+    //         </div>
+    //       );
+    //     } else if (
+    //       bukuDiRakSaatIni &&
+    //       qtyDiRakSaatIni === 0 &&
+    //       totalStokDiRakLain === 0
+    //     ) {
+    //       // Buku ada di rak saat ini, stok di rak sudah habis dan stok buku sudah habis di rak lain
+    //       return (
+    //         <div className="d-flex">
+    //           <button
+    //             type="button"
+    //             className="btn btn-warning light"
+    //             onClick={() => tombolUpdate(row)}
+    //           >
+    //             Pindah
+    //           </button>
+    //         </div>
+    //       );
+    //     } else if (bukuDiRakSaatIni && qtyDiRakSaatIni > 0) {
+    //       // Buku ada di rak saat ini dan stok buku masih ada
+    //       return (
+    //         <div className="d-flex">
+    //           <button
+    //             type="button"
+    //             className="btn btn-warning light"
+    //             onClick={() => tombolUpdate(row)}
+    //           >
+    //             Pindah
+    //           </button>
+    //         </div>
+    //       );
+    //     } else {
+    //       // Kondisi default (rak kosong, stok ada atau tidak)
+    //       return (
+    //         <div className="d-flex">
+    //           <button
+    //             type="button"
+    //             className="btn btn-success light"
+    //             onClick={() => handleShow2(row)}
+    //           >
+    //             Tambah
+    //           </button>
+    //         </div>
+    //       );
+    //     }
+    //   },
+    //   width: "150px",
+    // },
     {
       name: "Action",
       cell: (row: any) =>
@@ -130,7 +221,12 @@ function Add({
               Tambah
             </button>
           </div>
-        ) : (
+        ) : dataAll.some(
+            (data: any) =>
+              data.bukuId === Number(row.id) &&
+              data.rakId !== Number(rakId) &&
+              data.BukuTb.qty === 0
+          ) ? (
           //   null
           <div className="d-flex">
             <button
@@ -139,6 +235,17 @@ function Add({
               onClick={() => tombolUpdate(row)}
             >
               Pindah
+            </button>
+          </div>
+        ) : (
+          //   null
+          <div className="d-flex">
+            <button
+              type="button"
+              className="btn btn-success light"
+              onClick={() => handleShow2(row)}
+            >
+              Tambah
             </button>
           </div>
         ),

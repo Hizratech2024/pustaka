@@ -167,6 +167,8 @@ const LetakBuku = () => {
                 reload={reload}
                 reloadtabel={reloadtabel}
                 rakId={rakId}
+                qty={row.qty}
+                bukuId={row.BukuTb.id}
               />
             </div>
           ),
@@ -215,6 +217,8 @@ const LetakBuku = () => {
                 reload={reload}
                 reloadtabel={reloadtabel}
                 rakId={rakId}
+                qty={row.qty}
+                bukuId={row.BukuTb.id}
               />
             </div>
           ),
