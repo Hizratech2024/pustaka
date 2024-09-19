@@ -7,7 +7,7 @@ export default function Menu() {
         <ul className="sidebar-nav" id="sidebar-nav">
           <li className="nav-heading">Home</li>
           <li className="nav-item">
-            <Link className="nav-link " href="/">
+            <Link className="nav-link active" href="/">
               <i className="bi bi-grid" />
               <span>Dashboard</span>
             </Link>
@@ -98,37 +98,13 @@ export default function Menu() {
           </li>
 
           <li className="nav-heading">Transaksi</li>
-          {/* End Forms Nav */}
           <li className="nav-item">
-            <a
-              className="nav-link collapsed"
-              data-bs-target="#tables-nav"
-              data-bs-toggle="collapse"
-              href="#"
-            >
-              <i className="bi bi-layout-text-window-reverse" />
-              <span>Tables</span>
-              <i className="bi bi-chevron-down ms-auto" />
-            </a>
-            <ul
-              id="tables-nav"
-              className="nav-content collapse "
-              data-bs-parent="#sidebar-nav"
-            >
-              <li>
-                <a href="tables-general.html">
-                  <i className="bi bi-circle" />
-                  <span>General Tables</span>
-                </a>
-              </li>
-              <li>
-                <a href="tables-data.html">
-                  <i className="bi bi-circle" />
-                  <span>Data Tables</span>
-                </a>
-              </li>
-            </ul>
+            <Link href={"/admin/transaksi/peminjaman"} className="nav-link">
+              <i className="fa-solid fa-book"></i>
+              <span>Peminjaman</span>
+            </Link>
           </li>
+
           {/* End Tables Nav */}
           <li className="nav-item">
             <a
@@ -203,13 +179,44 @@ export default function Menu() {
               </li>
             </ul>
           </li>
-          {/* End Icons Nav */}
+
           <li className="nav-heading">Laporan</li>
           <li className="nav-item">
-            <a className="nav-link collapsed" href="users-profile.html">
+            <a
+              className="nav-link collapsed"
+              data-bs-target="#forms-nav-laporan"
+              data-bs-toggle="collapse"
+              href="#"
+            >
               <i className="bi bi-bar-chart" />
               <span>Laporan</span>
+              <i className="bi bi-chevron-down ms-auto" />
             </a>
+            <ul
+              id="forms-nav-laporan"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <Link href="/admin/peminjaman">
+                  <i className="bi bi-circle" />
+                  <span>Peminjaman</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/pemesanan">
+                  <i className="bi bi-circle" />
+                  <span>Pemesanan</span>
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+          {/* <li className="nav-item">
+            <Link className="nav-link" href="/admin/laporan">
+              <i className="bi bi-bar-chart" />
+              <span>Laporan</span>
+            </Link>
           </li>
           {/* <li className="nav-item">
                         <a className="nav-link collapsed" href="pages-faq.html">

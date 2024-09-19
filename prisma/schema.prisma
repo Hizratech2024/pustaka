@@ -224,6 +224,14 @@ model DetailPemesananTb {
   PemesananTb PemesananTb @relation(fields: [pemesananId], references: [id], onDelete: Cascade)
 }
 
+model SlideTb {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  foto      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // model logloginTb {
 //   id         Int      @id @default(autoincrement())
 //   karyawanId Int

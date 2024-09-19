@@ -6,6 +6,7 @@ import Delete from "./action/Delete";
 import Swal from "sweetalert2";
 import Update from "./action/Update";
 import { Font } from "@/app/helper";
+import Link from "next/link";
 
 const Kategori = () => {
   const [datakategori, setDatakategori] = useState([]);

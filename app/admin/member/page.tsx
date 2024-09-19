@@ -1,57 +1,88 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-
+"use client";
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { Font } from "@/app/helper";
 
 const Zona = () => {
-  const [datazona, setDatazona] = useState([])
-  const [filterText, setFilterText] = useState('');
+  const [member, setMember] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
+  const montserrat = Font();
+
   useEffect(() => {
-    reload()
-  }, [])
+    reload();
+  }, []);
 
   const reload = async () => {
     try {
-      const response = await fetch(`/admin/api/zona`);
+      const response = await fetch(`/admin/api/member`);
       const result = await response.json();
-      setDatazona(result);
+      setMember(result);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
-  }
+  };
 
   const handleRowsPerPageChange = (newPerPage: number, page: number) => {
     setItemsPerPage(newPerPage);
     setCurrentPage(page);
   };
 
-  const filteredItems = datazona.filter(
-    (item: any) => item.nama && item.nama.toLowerCase().includes(filterText.toLowerCase()),
+  const filteredItems = member.filter(
+    (item: any) =>
+      item.nama && item.nama.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const columns = [
     {
-      name: 'No',
-      cell: (row: any, index: number) => <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>,
+      name: "No",
+      cell: (row: any, index: number) => (
+        <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>
+      ),
       sortable: false,
-      width: '80px'
+      width: "80px",
     },
     {
-      name: 'Nama Zona',
+      name: "Nis",
+      selector: (row: any) => row.nis,
+      sortable: true,
+    },
+    {
+      name: "Nama",
       selector: (row: any) => row.nama,
       sortable: true,
     },
     {
-      name: 'Action',
-      cell: (row: any) => (
-        <div className="d-flex">
-
-        </div>
-      ),
-      width: '150px'
+      name: "Tempat Lahir",
+      selector: (row: any) => row.tempatLahir,
+      sortable: true,
+    },
+    {
+      name: "Tanggal Lahir",
+      selector: (row: any) => row.tanggalLahir,
+      sortable: true,
+    },
+    {
+      name: "No HP",
+      selector: (row: any) => row.hp,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row: any) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Status",
+      selector: (row: any) => row.status,
+      sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row: any) => <div className="d-flex"></div>,
+      width: "150px",
     },
   ];
 
@@ -61,16 +92,21 @@ const Zona = () => {
         <div className="col-md-12 grid-margin stretch-card">
           <div className="card">
             <div className="card-header">
-              <h6 className="card-title" style={{ fontFamily: 'initial', fontWeight: 'bold' }}>Data Member</h6>
+              <h6
+                className={`card-title ${montserrat.className}`}
+                style={{ fontWeight: "bold" }}
+              >
+                Data Member
+              </h6>
             </div>
             <div className="card-body">
               <div className="row mb-3">
-                <div className="col-md-9">
-                  {/* <Add reload={reload} /> */}
-                </div>
+                <div className="col-md-9">{/* <Add reload={reload} /> */}</div>
                 <div className="col-md-3">
                   <div className="input-group mb-3  input-success">
-                    <span className="input-group-text border-0"><i className="mdi mdi-magnify"></i></span>
+                    <span className="input-group-text border-0">
+                      <i className="mdi mdi-magnify"></i>
+                    </span>
                     <input
                       id="search"
                       type="text"
@@ -97,7 +133,7 @@ const Zona = () => {
                 customStyles={{
                   headRow: {
                     style: {
-                      backgroundColor: '#53d0b2',
+                      backgroundColor: "#53d0b2",
                     },
                   },
                 }}
@@ -105,9 +141,9 @@ const Zona = () => {
             </div>
           </div>
         </div>
-      </div >
-    </div >
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Zona
+export default Zona;
