@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Font } from "@/app/helper";
+import Add from "./action/add";
 
 const Zona = () => {
   const [member, setMember] = useState([]);
@@ -99,9 +100,13 @@ const Zona = () => {
                 Data Member
               </h6>
             </div>
+
             <div className="card-body">
-              <div className="row mb-3">
-                <div className="col-md-9">{/* <Add reload={reload} /> */}</div>
+              <div className="row mb-3 flex items-center">
+                <div className="col-md-9">
+                  {" "}
+                  <Add />
+                </div>
                 <div className="col-md-3">
                   <div className="input-group mb-3  input-success">
                     <span className="input-group-text border-0">
