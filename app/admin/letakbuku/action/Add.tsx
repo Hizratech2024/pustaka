@@ -54,7 +54,7 @@ function Add({
 
   const handleClose3 = () => {
     setShow3(false);
-    setIdLain('')
+    setIdLain("");
     setQty(""); // Clear quantity input when closing modal
   };
 
@@ -69,7 +69,10 @@ function Add({
   );
 
   const CariDataBuku = dataAll.filter(
-    (item) => item.bukuId === Number(bukuId) && item.rakId !== Number(rakId) && item.qty !== 0
+    (item) =>
+      item.bukuId === Number(bukuId) &&
+      item.rakId !== Number(rakId) &&
+      item.qty !== 0
   );
 
   const columns = [
@@ -110,12 +113,12 @@ function Add({
             data.rakId === Number(rakId) &&
             data.qty === data.BukuTb.stok
         ) ? null : dataAll.some(
-          (data: any) =>
-            data.bukuId === Number(row.id) &&
-            data.rakId === Number(rakId) &&
-            data.BukuTb.qty !== 0 &&
-            data.qty !== data.BukuTb.stok
-        ) ? (
+            (data: any) =>
+              data.bukuId === Number(row.id) &&
+              data.rakId === Number(rakId) &&
+              data.BukuTb.qty !== 0 &&
+              data.qty !== data.BukuTb.stok
+          ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -126,12 +129,12 @@ function Add({
             </button>
           </div>
         ) : dataAll.some(
-          (data: any) =>
-            data.bukuId === Number(row.id) &&
-            data.rakId === Number(rakId) &&
-            data.BukuTb.qty === 0 &&
-            data.qty !== data.BukuTb.stok
-        ) ? (
+            (data: any) =>
+              data.bukuId === Number(row.id) &&
+              data.rakId === Number(rakId) &&
+              data.BukuTb.qty === 0 &&
+              data.qty !== data.BukuTb.stok
+          ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -142,11 +145,11 @@ function Add({
             </button>
           </div>
         ) : dataAll.some(
-          (data: any) =>
-            data.bukuId === Number(row.id) &&
-            data.rakId !== Number(rakId) &&
-            data.BukuTb.qty !== 0
-        ) ? (
+            (data: any) =>
+              data.bukuId === Number(row.id) &&
+              data.rakId !== Number(rakId) &&
+              data.BukuTb.qty !== 0
+          ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -157,11 +160,11 @@ function Add({
             </button>
           </div>
         ) : dataAll.some(
-          (data: any) =>
-            data.bukuId === Number(row.id) &&
-            data.rakId !== Number(rakId) &&
-            data.BukuTb.qty === 0
-        ) ? (
+            (data: any) =>
+              data.bukuId === Number(row.id) &&
+              data.rakId !== Number(rakId) &&
+              data.BukuTb.qty === 0
+          ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -364,7 +367,7 @@ function Add({
           </Modal.Header>
           <Modal.Body>
             <input
-            autoFocus
+              autoFocus
               type="text"
               placeholder="Jumlah Buku"
               className="form-control"
@@ -408,7 +411,8 @@ function Add({
               <option value="">Pilih Rak</option>
               {CariDataBuku.map((item) => (
                 <option key={item.id} value={item.id}>
-                  Lemari {item.RakTb.LemariTb.nama} - Rak {item.RakTb.nama} -  Jumlah {item.qty}
+                  Lemari {item.RakTb.LemariTb.nama} - Rak {item.RakTb.nama} -
+                  Jumlah {item.qty}
                 </option>
               ))}
             </select>
