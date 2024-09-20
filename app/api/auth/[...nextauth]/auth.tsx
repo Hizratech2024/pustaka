@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
           },
           include: {
             KaryawanTb: true,
-
+            MemberTb: true,
           }
         })
 
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const karyawanId = user.karyawanId
+        // const karyawanId = user.karyawanId
 
         // await prisma.logloginTb.create({
         //   data: {
@@ -66,11 +66,11 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id + '',
           usernama: user.usernama,
-          nama: user.KaryawanTb.nama,
-          status: user.status,
-          hp: user.KaryawanTb.hp,
-          karyawanId: user.karyawanId,
-          foto: user.KaryawanTb.foto,
+          namaKaryawan: user.KaryawanTb?.nama,
+          namaMembern: user.MemberTb?.nama,
+          hp: user.KaryawanTb?.hp,
+          // karyawanId: user.karyawanId,
+          foto: user.KaryawanTb?.foto,
         } as any;
       }
 
