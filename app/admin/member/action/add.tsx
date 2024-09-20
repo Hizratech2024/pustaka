@@ -3,7 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Modal from "react-bootstrap/Modal";
 
-const Add = () => {
+const Add = ({ reload }: { reload: Function }) => {
   const [nama, setNama] = useState("");
   const [nis, setNis] = useState("");
   const [tempatLahir, setTempatLahir] = useState("");
@@ -11,9 +11,24 @@ const Add = () => {
   const [alamat, setAlamat] = useState("");
   const [nope, setNope] = useState("");
   const [email, setEmail] = useState("");
-  const [foto, setFoto] = useState("");
+  // const [foto, setFoto] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("VIP 0");
 
   const [show, setShow] = useState(false);
+  const [st, setSt] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  if (isLoading) {
+    Swal.fire({
+      title: "Mohon tunggu!",
+      html: "Sedang mengirim data ke server",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  }
 
   const handleShow = () => setShow(true);
 
@@ -22,35 +37,90 @@ const Add = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
     try {
       const formData = new FormData();
       formData.append("nis", nis);
       formData.append("nama", nama);
       formData.append("tempatLahir", tempatLahir);
-      formData.append("tanggalLahir", tanggalLahir);
+      formData.append("tanggalLahir", new Date(tanggalLahir).toISOString());
       formData.append("alamat", alamat);
       formData.append("nope", nope);
       formData.append("email", email);
-      formData.append("foto", foto);
+      // formData.append("foto", foto);
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("status", status);
 
-      const res = await axios.post("admin/api/member", formData, {
+      const xxx = await axios.post("/admin/api/member", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      if (res.data.pesan === "berhasil") {
+      if (xxx.data.pesan == "usernama ada") {
+        setIsLoading(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "Usernama sudah terdaftar",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+
+      if (xxx.data.pesan == "Email sudah ada") {
+        setIsLoading(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "Email sudah terdaftar",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      if (xxx.data.pesan == "No Hp sudah ada") {
+        setIsLoading(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "No Hp sudah terdaftar",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+
+      if (xxx.data.pesan === "berhasil") {
         Swal.fire({
           icon: "success",
           title: "Data Berhasil",
-          text: "Data Berhasil",
+          text: "Data Berhasil Di Tambah",
         });
         clearForm();
         handleClose();
-        window.location.reload();
+        reload();
+        setIsLoading(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Berhasil Simpan",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else if (xxx.data.pesan === "gagal") {
+        setIsLoading(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Gagal Simpan",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("Terjadi Kesalahan", error);
+    }
   };
 
   const clearForm = () => {
@@ -61,7 +131,7 @@ const Add = () => {
     setAlamat("");
     setNope("");
     setEmail("");
-    setFoto("");
+    // setFoto("");
   };
   return (
     <div>
@@ -100,6 +170,7 @@ const Add = () => {
                   className="form-control"
                   value={nis}
                   onChange={(e) => setNis(e.target.value)}
+                  inputMode="numeric"
                 />
               </div>
             </div>
@@ -144,10 +215,11 @@ const Add = () => {
                 <label className="col-sm-6 col-form-label">No Hp</label>
                 <input
                   required
-                  type="number"
+                  type="text"
                   className="form-control"
                   value={nope}
                   onChange={(e) => setNope(e.target.value)}
+                  inputMode="numeric"
                 />
               </div>
               <div className="mb-3 col-md-6">
@@ -162,7 +234,7 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="row">
+            {/* <div className="row">
               <div className="mb-3 col-md-12">
                 <label htmlFor="formFile" className="form-label">
                   Foto
@@ -177,6 +249,49 @@ const Add = () => {
                 <small className="text-muted">
                   Unggah foto bersifat opsional.
                 </small>
+              </div>
+            </div> */}
+            <div className="row">
+              <div className="mb-3 col-md-6">
+                <label className="col-sm-6 col-form-label">Username</label>
+                <input
+                  required
+                  type="text"
+                  className="form-control"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="mb-3 col-md-6">
+                <label className="col-sm-6 col-form-label">Password</label>
+                <div className="input-group">
+                  <input
+                    required
+                    type={st ? "text" : "password"}
+                    className="form-control"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  {st ? (
+                    <button
+                      onClick={() => setSt(!st)}
+                      className="btn btn-success"
+                      type="button"
+                    >
+                      <i className="mdi mdi-eye-off" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setSt(!st)}
+                      className="btn btn-success"
+                      type="button"
+                    >
+                      <i className="mdi mdi-eye" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </Modal.Body>

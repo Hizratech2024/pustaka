@@ -232,6 +232,54 @@ model SlideTb {
   updatedAt DateTime @updatedAt
 }
 
+model Berita {
+  id        Int      @id @default(autoincrement())
+  judul     String
+  tanggal   DateTime
+  isi       String
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PengumumanTb {
+  id        Int      @id @default(autoincrement())
+  judul     String
+  tanggal   DateTime
+  isi       String
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SlideSuperTb {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  foto      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BeritaSuperTb {
+  id        Int      @id @default(autoincrement())
+  judul     String
+  tanggal   DateTime
+  isi       String
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PengumumanSuperTb {
+  id        Int      @id @default(autoincrement())
+  judul     String
+  tanggal   DateTime
+  isi       String
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // model logloginTb {
 //   id         Int      @id @default(autoincrement())
 //   karyawanId Int

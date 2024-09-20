@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Font } from "@/app/helper";
 import Add from "./action/add";
+import Delete from "./action/delete";
 
 const Zona = () => {
   const [member, setMember] = useState([]);
@@ -82,7 +83,7 @@ const Zona = () => {
     },
     {
       name: "Action",
-      cell: (row: any) => <div className="d-flex"></div>,
+      cell: (row: any) => <Delete id={row.id} reload={reload} />,
       width: "150px",
     },
   ];
@@ -105,7 +106,7 @@ const Zona = () => {
               <div className="row mb-3 flex items-center">
                 <div className="col-md-9">
                   {" "}
-                  <Add />
+                  <Add reload={reload} />
                 </div>
                 <div className="col-md-3">
                   <div className="input-group mb-3  input-success">

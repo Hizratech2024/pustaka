@@ -373,7 +373,6 @@ function Add({
               className="form-control"
               value={qty}
               onChange={(e) => setQty(e.target.value)}
-              autoFocus
             />
           </Modal.Body>
           <Modal.Footer>
