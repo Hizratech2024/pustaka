@@ -171,6 +171,7 @@ model LetakBukuTb {
 
 model PeminjamanTb {
   id                  Int       @id @default(autoincrement())
+  noPeminjaman        String    @unique
   memberId            Int
   tanggalPeminjaman   DateTime
   tanggalPengembalian DateTime?

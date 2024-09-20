@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import * as bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
