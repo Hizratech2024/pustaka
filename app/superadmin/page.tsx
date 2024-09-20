@@ -68,7 +68,7 @@ const Superadmin = () => {
             name: 'Action',
             cell: (row: any) => (
                 <div className="d-flex">
-                    <Update user={row}  reload={reload} />
+                    <Update user={row} reload={reload} />
                     <Delete userId={row.id} reload={reload} />
                 </div>
             ),
