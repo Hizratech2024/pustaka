@@ -79,7 +79,7 @@ function Add({ reload, lemariId,namalemari }: { reload: Function, lemariId: Stri
         <div>
             {lemariId === '' || lemariId === 'Semua Data' ?
                 null :
-                <button type="button" className="btn btn-tambah" onClick={handleShow}>
+                <button type="button" className="btn btn-success" onClick={handleShow}>
                     Tambah
                 </button>
             }

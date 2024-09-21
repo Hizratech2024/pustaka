@@ -20,7 +20,7 @@ export default function RootLayout({
         {/* <title>I-Tech Komputer</title> */}
       </head>
 
-      <body className={montserrat.className}>
+      <body>
         <Provider>
           {/* {pathname == "/login" ? <>{children}</> : <Template>{children}</Template>} */}
           <Template children={children} />

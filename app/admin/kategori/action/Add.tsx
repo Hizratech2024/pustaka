@@ -65,7 +65,7 @@ function Add({ reload }: { reload: Function }) {
 
     return (
         <div>
-            <button type="button" className="btn btn-tambah" onClick={handleShow}>
+            <button type="button" className="btn btn-success" onClick={handleShow}>
                 Tambah
             </button>
             <Modal
