@@ -20,7 +20,7 @@ export default function RootLayout({
       <body>
         <Provider>
           {/* {pathname == "/login" ? <>{children}</> : <Template>{children}</Template>} */}
-          <Template children={children} />
+          <Template >{children} </Template>
         </Provider>
       </body>
     </html>
