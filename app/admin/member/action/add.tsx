@@ -108,15 +108,6 @@ const Add = ({ reload }: { reload: Function }) => {
           showConfirmButton: false,
           timer: 1500,
         });
-      } else if (xxx.data.pesan === "gagal") {
-        setIsLoading(false);
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Gagal Simpan",
-          showConfirmButton: false,
-          timer: 1500,
-        });
       }
     } catch (error) {
       console.log("Terjadi Kesalahan", error);
