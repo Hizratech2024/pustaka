@@ -2,6 +2,9 @@
 import { usePathname } from "next/navigation";
 import Template from "./component/Template";
 import Provider from "./component/Provider";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -17,10 +20,10 @@ export default function RootLayout({
         {/* <title>I-Tech Komputer</title> */}
       </head>
 
-      <body>
+      <body className={montserrat.className}>
         <Provider>
           {/* {pathname == "/login" ? <>{children}</> : <Template>{children}</Template>} */}
-          <Template >{children} </Template>
+          <Template>{children}</Template>
         </Provider>
       </body>
     </html>
