@@ -69,6 +69,9 @@ export async function GET() {
     orderBy: {
       id: "asc",
     },
+    include: {
+      UserTb: true,
+    },
   });
 
   return NextResponse.json(res, { status: 200 });
