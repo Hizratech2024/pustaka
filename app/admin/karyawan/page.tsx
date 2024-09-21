@@ -21,6 +21,7 @@ const Karyawan = () => {
         try {
             const response = await fetch(`/admin/api/karyawan`);
             const result = await response.json();
+            console.log('data karyawan',result)
             setDatakaryawan(result);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -45,16 +46,16 @@ const Karyawan = () => {
         },
         {
             name: 'Nama',
-            selector: (row: any) => row.KaryawanTb.nama,
+            selector: (row: any) => row.KaryawanTb?.nama,
             sortable: true,
         },
         {
             name: 'Alamat',
-            selector: (row: any) => row.KaryawanTb.alamat,
+            selector: (row: any) => row.KaryawanTb?.alamat,
         },
         {
             name: 'No Hp',
-            selector: (row: any) => row.KaryawanTb.hp,
+            selector: (row: any) => row.KaryawanTb?.hp,
         },
         {
             name: 'Status',

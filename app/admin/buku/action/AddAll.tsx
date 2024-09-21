@@ -118,7 +118,7 @@ function AddAll({ reload, kategori, pilihkategoriId }: { reload: Function, kateg
     return (
         <div>
             {pilihkategoriId === 'Semua Data' ?
-                <button type="button" className="btn btn-success" onClick={handleShow}>
+                <button type="button" className="btn btn-tambah" onClick={handleShow}>
                     Tambah
                 </button>
                 :

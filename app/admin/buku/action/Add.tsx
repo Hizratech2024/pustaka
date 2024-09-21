@@ -116,7 +116,7 @@ function Add({ reload, kategoriId, namakategori }: { reload: Function, kategoriI
         <div>
             {kategoriId === '' || kategoriId === 'Semua Data' ?
                 null :
-                <button type="button" className="btn btn-success" onClick={handleShow}>
+                <button type="button" className="btn btn-tambah" onClick={handleShow}>
                     Tambah
                 </button>
             }

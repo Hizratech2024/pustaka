@@ -67,10 +67,16 @@ export const GET = async () => {
       NOT: {
         OR: [
           {
-            role: "Admin",
+            role: {
+              equals: "Admin",
+              mode: "insensitive",
+            },
           },
           {
-            role: "Member",
+            role: {
+              equals: "Member",
+              mode: "insensitive",
+            },
           },
         ],
       },

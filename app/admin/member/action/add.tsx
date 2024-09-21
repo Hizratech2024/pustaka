@@ -135,7 +135,7 @@ const Add = ({ reload }: { reload: Function }) => {
   };
   return (
     <div>
-      <button type="button" className="btn btn-success" onClick={handleShow}>
+      <button type="button" className="btn btn-tambah" onClick={handleShow}>
         Tambah
       </button>
       <Modal

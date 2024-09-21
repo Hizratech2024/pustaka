@@ -289,7 +289,7 @@ function Add({
   return (
     <div>
       {rakId === "" ? null : (
-        <button type="button" className="btn btn-success" onClick={handleShow}>
+        <button type="button" className="btn btn-tambah" onClick={handleShow}>
           Tambah
         </button>
       )}
