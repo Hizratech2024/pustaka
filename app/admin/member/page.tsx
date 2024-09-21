@@ -47,23 +47,13 @@ const Zona = () => {
       width: "80px",
     },
     {
-      name: "Nis",
+      name: "Nomor Identitas",
       selector: (row: any) => row.nis,
       sortable: true,
     },
     {
       name: "Nama",
       selector: (row: any) => row.nama,
-      sortable: true,
-    },
-    {
-      name: "Tempat Lahir",
-      selector: (row: any) => row.tempatLahir,
-      sortable: true,
-    },
-    {
-      name: "Tanggal Lahir",
-      selector: (row: any) => row.tanggalLahir,
       sortable: true,
     },
     {
