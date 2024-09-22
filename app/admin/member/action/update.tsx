@@ -16,7 +16,7 @@ const Update = ({
 }) => {
   const [nama, setNama] = useState(user.nama);
   const [usernama, setUsernama] = useState(user.usernama);
-  const [password, setPassword] = useState(user.password);
+  const [password, setPassword] = useState("");
   const [tempatLahir, setTempatlahir] = useState(member.tempatLahir);
   const [tanggalLahir, setTanggallahir] = useState(
     moment(member.tanggalLahir).format("YYYY-MM-DD")
@@ -44,7 +44,21 @@ const Update = ({
 
   const handleClose = () => {
     setShow(false);
+    refreshform();
   };
+
+  function refreshform() {
+    setNama(user.nama);
+    setUsernama(user.usernama);
+    setPassword("");
+    setTanggallahir(moment(member?.tanggalLahir).format("YYYY-MM-DD"));
+    setTempatlahir(member?.tempatLahir);
+    setAlamat(member?.alamat);
+    setHp(member?.hp);
+    setEmail(member?.email);
+    setNis(member?.nis);
+    setSt(false);
+  }
 
   const handleUpdate = async (e: SyntheticEvent) => {
     setIsLoading(true);
@@ -61,17 +75,13 @@ const Update = ({
       formData.append("alamat", alamat);
       formData.append("hp", hp);
       formData.append("email", email);
-      formData.append("status", status);
+      formData.append("nis", nis.toString());
 
-      const xxx = await axios.patch(
-        `/admin/api/karyawan/${user.id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const xxx = await axios.patch(`/admin/api/member/${user.id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (xxx.data.pesan == "usernama sudah ada") {
         setIsLoading(false);

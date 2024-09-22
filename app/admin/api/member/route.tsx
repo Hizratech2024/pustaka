@@ -64,15 +64,20 @@ export async function POST(request: Request) {
   return NextResponse.json({ pesan: "berhasil" });
 }
 
-export async function GET() {
-  const res = await prisma.memberTb.findMany({
+export const GET = async () => {
+  const members = await prisma.userTb.findMany({
+    where: {
+      role: {
+        equals: "Member",
+        mode: "insensitive",
+      },
+    },
     orderBy: {
       id: "asc",
     },
     include: {
-      UserTb: true,
+      MemberTb: true,
     },
   });
-
-  return NextResponse.json(res, { status: 200 });
-}
+  return NextResponse.json(members, { status: 200 });
+};
