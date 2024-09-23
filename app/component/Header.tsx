@@ -1,7 +1,24 @@
+import { signOut } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
+import Swal from 'sweetalert2';
 
 export default function Header() {
+    function tombol() {
+        Swal.fire({
+            title: "Anda Yakin..?",
+            text: "Logout dari akun ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, logout sekarang!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                signOut()
+            }
+        });
+    }
     return (
         <div>
             <header id="header" className="header fixed-top d-flex align-items-center">
@@ -254,10 +271,10 @@ export default function Header() {
                                     <hr className="dropdown-divider" />
                                 </li>
                                 <li>
-                                    <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <Link className="dropdown-item d-flex align-items-center" href="" onClick={tombol}>
                                         <i className="bi bi-box-arrow-right" />
                                         <span>Sign Out</span>
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                             {/* End Profile Dropdown Items */}

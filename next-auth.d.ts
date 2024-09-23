@@ -32,7 +32,7 @@ declare module "next-auth" {
     nama: String;
     karyawanId: Number;
     namasekolah: Number;
-    status: string;
+    role: string;
     foto: string;
     sekolahId: Number;
   }

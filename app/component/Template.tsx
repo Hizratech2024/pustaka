@@ -5,8 +5,13 @@ import '../../public/tema/css/style.css'
 import Header from './Header';
 import Menu from './Menu';
 import ScriptJs from './ScriptJs';
+import MenuAdmin from './MenuAdmin';
+import MenuAdministrasi from './MenuAdministrasi';
+import MenuPetugas from './MenuPetugas';
+import { useSession } from 'next-auth/react';
 
 function Template({ children }: { children: React.ReactNode }) {
+    const session = useSession()
     return (
         <div>
             <div id="preloader">
@@ -20,7 +25,11 @@ function Template({ children }: { children: React.ReactNode }) {
 
                 <Header />
 
-                <Menu />
+                {session?.data?.role === 'Admin' ? (<MenuAdmin />) :
+                    session?.data?.role === 'Administrasi' ? <MenuAdministrasi /> :
+                        session?.data?.role === 'Petugas' ? <MenuPetugas /> : null}
+
+                {/* <Menu /> */}
 
                 <div className="outer-body">
                     <div className="inner-body">
