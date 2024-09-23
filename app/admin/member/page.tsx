@@ -91,7 +91,11 @@ const Zona = () => {
             <div className="card-header">
               <h6
                 className={`card-title ${montserrat.className}`}
-                style={{ fontWeight: "bold" }}
+                style={{
+                  fontSize: "20px",
+                  color: "#333",
+                  fontWeight: "600",
+                }}
               >
                 Data Member
               </h6>

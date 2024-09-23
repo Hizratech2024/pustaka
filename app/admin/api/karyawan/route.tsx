@@ -1,11 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
+import { get } from "jquery";
+import { getToken } from "next-auth/jwt";
 
 const prisma = new PrismaClient();
 export const dynamic = "force-dynamic";
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
+
   const formData = await request.formData();
 
   const cekusernama = await prisma.userTb.findUnique({
@@ -51,6 +60,7 @@ export const POST = async (request: Request) => {
           alamat: String(formData.get("alamat")),
           hp: String(formData.get("hp")),
           email: String(formData.get("email")),
+          sekolahId: sekolahId,
         },
       },
     },

@@ -33,7 +33,8 @@ model SekolahTb {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  UserTb UserTb @relation(fields: [userId], references: [id], onDelete: Cascade)
+  UserTb     UserTb       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  KaryawanTb KaryawanTb[]
 }
 
 model KaryawanTb {
@@ -45,13 +46,15 @@ model KaryawanTb {
   alamat       String
   hp           String   @unique
   email        String   @unique
+  sekolahId    Int
   // usernama     String   @unique
   foto         String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   // UserTb UserTb?
-  UserTb UserTb @relation(fields: [userId], references: [id], onDelete: Cascade)
+  UserTb    UserTb    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model MemberTb {

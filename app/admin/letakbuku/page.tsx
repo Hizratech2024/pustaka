@@ -6,6 +6,7 @@ import Delete from "./action/Delete";
 import Swal from "sweetalert2";
 import Update from "./action/Update";
 import { Font } from "@/app/helper";
+import axios from "axios";
 
 const LetakBuku = () => {
   const [dataletakbuku, setDataLetakBuku] = useState([]);
@@ -242,8 +243,12 @@ const LetakBuku = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <h6
-                        className={`form-label ${montserrat.className}`}
-                        style={{ fontWeight: "600" }}
+                        className={`card-title ${montserrat.className}`}
+                        style={{
+                          fontSize: "20px",
+                          color: "#333",
+                          fontWeight: "600",
+                        }}
                       >
                         Lemari
                       </h6>
@@ -270,8 +275,12 @@ const LetakBuku = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <h6
-                        className={`form-label ${montserrat.className}`}
-                        style={{ fontWeight: "600" }}
+                        className={`card-title ${montserrat.className}`}
+                        style={{
+                          fontSize: "20px",
+                          color: "#333",
+                          fontWeight: "600",
+                        }}
                       >
                         Rak
                       </h6>

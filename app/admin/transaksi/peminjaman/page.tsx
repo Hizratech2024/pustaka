@@ -16,7 +16,6 @@ import { Button as Button1 } from "antd";
 
 const TransaksiPeminjaman = () => {
   const [selected, setSelected] = useState(null);
-  const [selectMember, setSelectMember] = useState(null);
   const [inputFields, setInputFields] = useState([]);
   const [noPeminjaman, setNoPeminjaman] = useState("");
   const [tanggal, setTanggal] = useState(tanggalHariIni);
@@ -129,21 +128,28 @@ const TransaksiPeminjaman = () => {
       callback(options);
     }, 300);
   };
+
   let loadOptionsMember = (inputValue: any, callback: any) => {
-    setTimeout(async () => {
+    setTimeout(() => {
       if (inputValue.length < 2) {
-        callback([]);
+        callback([]); // Jika inputValue kurang dari 2 karakter, tidak ada hasil
         return;
       }
+
+      // Filter data berdasarkan inputValue
       const data = dataMember.filter(
         (item: any) =>
           item.nama &&
           item.nama.toLowerCase().includes(inputValue.toLowerCase())
       );
+
+      // Map data menjadi opsi yang bisa digunakan dalam AsyncSelect
       const options = data.map((item: any) => ({
         value: item.id,
         label: item.nama,
+        status: item.status, // Pastikan memetakan status di sini
       }));
+
       callback(options);
     }, 300);
   };
@@ -417,27 +423,45 @@ const TransaksiPeminjaman = () => {
       </div>
       <div className="bg-white rounded shadow-sm p-3">
         <form className="">
-          <div className="mb-5">
+          <div className="mb-3">
             <label className="form-label">Member</label>
             <AsyncSelect
               cacheOptions
               defaultOptions
               placeholder="Cari Member..."
               loadOptions={loadOptionsMember}
-              value={selectMember}
               styles={StyleSelect}
             />
           </div>
-          <div>
-            <label className="form-label">Nama Member</label>
-            <input
-              disabled
-              required
-              type="text"
-              className="form-control"
-              style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-            />
-          </div>
+
+          {/* <div className="form-group row mb-5">
+            <div className="col-md-3">
+              <label className="form-label">Nama Member</label>
+            </div>
+            <div className="col-md-3">
+              <input
+                disabled
+                required
+                type="text"
+                className="form-control"
+                style={{ fontSize: 15, color: "black", borderColor: "grey" }}
+                value={memberDetails.nama} // Tampilkan nama member
+              />
+            </div>
+            <div className="col-md-3">
+              <label className="form-label">Status</label>
+            </div>
+            <div className="col-md-3">
+              <input
+                disabled
+                required
+                type="text"
+                className="form-control"
+                style={{ fontSize: 15, color: "black", borderColor: "grey" }}
+                value={memberDetails.status} // Tampilkan status member
+              />
+            </div>
+          </div> */}
           <div className="form-group">
             <div className="mb-3 row">
               <label

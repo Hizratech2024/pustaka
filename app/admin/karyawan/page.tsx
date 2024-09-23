@@ -5,12 +5,15 @@ import Add from "./action/Add";
 import Delete from "./action/Delete";
 import Swal from "sweetalert2";
 import Update from "./action/Update";
+import { Font } from "@/app/helper";
 
 const Karyawan = () => {
   const [datakaryawan, setDatakaryawan] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  const montserrat = Font();
 
   useEffect(() => {
     reload();
@@ -81,10 +84,14 @@ const Karyawan = () => {
           <div className="card">
             <div className="card-header">
               <h6
-                className="card-title"
-                style={{ fontFamily: "initial", fontWeight: "bold" }}
+                className={`card-title ${montserrat.className}`}
+                style={{
+                  fontSize: "20px",
+                  color: "#333",
+                  fontWeight: "600",
+                }}
               >
-                Data Karyawan
+                Karyawan
               </h6>
             </div>
             <div className="card-body">

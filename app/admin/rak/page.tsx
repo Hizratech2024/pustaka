@@ -113,9 +113,13 @@ const Rak = () => {
                   <div className="col-md-3">
                     <h6
                       className={`card-title ${montserrat.className}`}
-                      style={{ fontWeight: "bold" }}
+                      style={{
+                        fontSize: "20px",
+                        color: "#333",
+                        fontWeight: "600",
+                      }}
                     >
-                      Lemari
+                      Rak
                     </h6>
                   </div>
                   <div className="col-md-6">

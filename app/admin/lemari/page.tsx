@@ -75,8 +75,15 @@ const Lemari = () => {
         <div className="col-lg-12">
           <div className="card">
             <div className="card-header">
-              <h6 className={`card-title ${montserrat.className}`}>
-                Data Lemari
+              <h6
+                className={`card-title ${montserrat.className}`}
+                style={{
+                  fontSize: "20px",
+                  color: "#333",
+                  fontWeight: "600",
+                }}
+              >
+                Lemari
               </h6>
             </div>
             <div className="card-body">
