@@ -65,7 +65,7 @@ export default function MenuAdministrasi() {
             </ul>
           </li> */}
           {/* End Components Nav */}
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a
               className="nav-link collapsed"
               data-bs-target="#forms-nav"
@@ -94,7 +94,7 @@ export default function MenuAdministrasi() {
                 </Link>
               </li>
             </ul>
-          </li>
+          </li> */}
           <li className="nav-heading">Transaksi</li>
           <li className="nav-item">
             <Link
