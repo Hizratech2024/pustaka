@@ -34,6 +34,12 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  const ceknis = await prisma.memberTb.findUnique({
+    where: {
+      nis: String(formData.get("nis")),
+    },
+  });
+
   if (cekusernama) {
     return NextResponse.json({ pesan: "usernama ada" });
   }
@@ -43,6 +49,9 @@ export async function POST(request: NextRequest) {
   }
   if (cekhp) {
     return NextResponse.json({ pesan: "No Hp sudah ada" });
+  }
+  if (ceknis) {
+    return NextResponse.json({ pesan: "Nomor Identitas sudah ada" });
   }
 
   await prisma.userTb.create({
@@ -54,7 +63,7 @@ export async function POST(request: NextRequest) {
       MemberTb: {
         create: {
           nama: String(formData.get("nama")),
-          nis: Number(formData.get("nis")),
+          nis: String(formData.get("nis")),
           tempatLahir: String(formData.get("tempatLahir")),
           tanggalLahir: String(formData.get("tanggalLahir")),
           alamat: String(formData.get("alamat")),
@@ -85,8 +94,14 @@ export const GET = async () => {
       id: "asc",
     },
     include: {
-      MemberTb: true,
+      MemberTb: true, // Pastikan MemberTb disertakan
     },
   });
-  return NextResponse.json(members, { status: 200 });
+  return NextResponse.json(
+    members.map((member) => ({
+      ...member,
+      status: member.MemberTb?.status, // Ambil status dari MemberTb
+    })),
+    { status: 200 }
+  );
 };

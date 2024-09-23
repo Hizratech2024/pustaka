@@ -91,6 +91,17 @@ const Add = ({ reload }: { reload: Function }) => {
         });
       }
 
+      if (xxx.data.pesan == "Nomor Identitas sudah ada") {
+        setIsLoading(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "No Hp sudah terdaftar",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+
       if (xxx.data.pesan === "berhasil") {
         Swal.fire({
           icon: "success",

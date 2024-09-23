@@ -77,7 +77,7 @@ model KaryawanTb {
 model MemberTb {
   id           Int      @id @default(autoincrement())
   userId       Int      @unique
-  nis          Int
+  nis          String   @unique
   nama         String
   tempatLahir  String
   tanggalLahir DateTime

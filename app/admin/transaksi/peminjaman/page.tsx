@@ -5,7 +5,7 @@ import SearchableSelect from "./action/SearchMember";
 import SearchKategori from "./action/SearchKategori";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { tanggalHariIni } from "@/app/helper";
+import { tanggalHariIni, VIP0, VIP1 } from "@/app/helper";
 import Swal from "sweetalert2";
 import AsyncSelect from "react-select/async";
 import { Col, Row } from "@themesberg/react-bootstrap";
@@ -13,6 +13,12 @@ import SearchMember from "./action/SearchMember";
 import { StyleSelect } from "@/app/helper";
 import { Minus } from "react-feather";
 import { Button as Button1 } from "antd";
+
+interface MemberOption {
+  value: string;
+  label: string;
+  status: string;
+}
 
 const TransaksiPeminjaman = () => {
   const [selected, setSelected] = useState(null);
@@ -23,13 +29,19 @@ const TransaksiPeminjaman = () => {
   const [totalqty, setTotalqty] = useState(0);
   const [dataBuku, setDataBuku] = useState([]);
   const [dataMember, setDataMember] = useState([]);
-
+  const [selectMemberStatus, setSelectMemberStatus] = useState("");
+  const [tanggalPeminjaman, setTanggalPeminjaman] = useState(tanggalHariIni);
+  const [tanggalPengembalian, setTanggalPengembalian] = useState("");
   const ref = useRef<HTMLInputElement>(null);
   const refuang = useRef<HTMLInputElement>(null);
   const refqty = useRef<HTMLInputElement>(null);
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
+
+  const [selectedMember, setSelectedMember] = useState<MemberOption | null>(
+    null
+  );
 
   useEffect(() => {
     otomatisnopeminjaman();
@@ -105,6 +117,26 @@ const TransaksiPeminjaman = () => {
     setDataMember(data);
   }
 
+  const formatTanggal = (tanggal: Date): string => {
+    const dd = String(tanggal.getDate()).padStart(2, "0");
+    const mm = String(tanggal.getMonth() + 1).padStart(2, "0"); // Bulan dimulai dari 0
+    const yyyy = tanggal.getFullYear();
+    return `${yyyy}-${mm}-${dd}`; // Format ke YYYY-MM-DD untuk input type="date"
+  };
+
+  const maxDate = () => {
+    if (selectMemberStatus === "VIP 0") {
+      const today = new Date();
+      today.setDate(today.getDate() + 3);
+      return formatTanggal(today);
+    } else if (selectMemberStatus === "VIP 1") {
+      const today = new Date();
+      today.setDate(today.getDate() + 6);
+      return formatTanggal(today);
+    }
+    return ""; // Tidak ada batasan jika status member bukan 'vip0'
+  };
+
   let loadOptions = (inputValue: any, callback: any) => {
     setTimeout(async () => {
       if (inputValue.length < 2) {
@@ -129,7 +161,10 @@ const TransaksiPeminjaman = () => {
     }, 300);
   };
 
-  let loadOptionsMember = (inputValue: any, callback: any) => {
+  let loadOptionsMember = (
+    inputValue: string,
+    callback: (options: MemberOption[]) => void
+  ) => {
     setTimeout(() => {
       if (inputValue.length < 2) {
         callback([]); // Jika inputValue kurang dari 2 karakter, tidak ada hasil
@@ -137,21 +172,31 @@ const TransaksiPeminjaman = () => {
       }
 
       // Filter data berdasarkan inputValue
-      const data = dataMember.filter(
+      const filteredData = dataMember.filter(
         (item: any) =>
           item.nama &&
           item.nama.toLowerCase().includes(inputValue.toLowerCase())
       );
 
       // Map data menjadi opsi yang bisa digunakan dalam AsyncSelect
-      const options = data.map((item: any) => ({
+      const options = filteredData.map((item: any) => ({
         value: item.id,
         label: item.nama,
-        status: item.status, // Pastikan memetakan status di sini
+        status: item.status || "Status tidak tersedia", // Menambahkan default jika status tidak ada
       }));
 
       callback(options);
     }, 300);
+  };
+
+  const handleChangeMember = (selectedOption: any) => {
+    setSelectedMember(selectedOption);
+    setSelectMemberStatus(selectedOption.status);
+    if (selectedOption.status === "VIP 0") {
+      setTanggalPengembalian(VIP0);
+    } else if (selectedOption.status === "VIP 1") {
+      setTanggalPengembalian(VIP1);
+    }
   };
 
   const handlechange = (selected: any) => {
@@ -206,59 +251,6 @@ const TransaksiPeminjaman = () => {
       ref.current?.focus();
     }
   };
-
-  // const handlechangeMember = (selected: any) => {
-  //   setSelected(selected);
-  //   if (selected.stok < 1) {
-  //     Swal.fire({
-  //       position: "top-end",
-  //       icon: "warning",
-  //       title: "Stok Kosong",
-  //       showConfirmButton: false,
-  //       timer: 1500,
-  //     });
-  //     setBarcode("");
-  //     setSelected(null);
-  //     ref.current?.focus();
-  //     return;
-  //   } else {
-  //     const a = inputFields.findIndex(
-  //       (element: any) => element.kodeBuku == selected.kodeBuku
-  //     );
-  //     let x = [];
-  //     if (a > -1) {
-  //       const data: any = [...inputFields];
-  //       data[a].qty++;
-  //       data[a].stokakhir = selected.stok - data[a].qty;
-  //       setInputFields(data);
-  //       x = data;
-  //     } else {
-  //       const data: any = [
-  //         ...inputFields,
-  //         {
-  //           id: selected.value,
-  //           kodeBuku: selected.kodeBuku,
-  //           judul: selected.judul,
-  //           penulis: selected.penulis,
-  //           penerbit: selected.penerbit,
-  //           stok: selected.stok,
-  //           qty: 1,
-  //           stokakhir: selected.stok - 1,
-  //         },
-  //       ];
-  //       setInputFields(data);
-  //       x = data;
-  //     }
-  //     let totalqty = 0;
-  //     x.forEach((item: any) => {
-  //       totalqty += Number(item.qty);
-  //     });
-  //     setTotalqty(totalqty);
-  //     setSelected(null);
-  //     setBarcode("");
-  //     ref.current?.focus();
-  //   }
-  // };
 
   const selectall = (kodeBarang: any, event: any) => {
     inputFields.map((i: any) => {
@@ -430,358 +422,471 @@ const TransaksiPeminjaman = () => {
               defaultOptions
               placeholder="Cari Member..."
               loadOptions={loadOptionsMember}
-              styles={StyleSelect}
+              onChange={handleChangeMember}
             />
           </div>
 
-          {/* <div className="form-group row mb-5">
-            <div className="col-md-3">
-              <label className="form-label">Nama Member</label>
+          {selectMemberStatus === "blacklist" ? (
+            <div>
+              <p>Pengguna Tersebut telah di blacklist.</p>
             </div>
-            <div className="col-md-3">
-              <input
-                disabled
-                required
-                type="text"
-                className="form-control"
-                style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-                value={memberDetails.nama} // Tampilkan nama member
-              />
+          ) : selectMemberStatus === "" ? (
+            <div>
+              <p>Silakan pilih member untuk melihat detailnya.</p>
             </div>
-            <div className="col-md-3">
-              <label className="form-label">Status</label>
-            </div>
-            <div className="col-md-3">
-              <input
-                disabled
-                required
-                type="text"
-                className="form-control"
-                style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-                value={memberDetails.status} // Tampilkan status member
-              />
-            </div>
-          </div> */}
-          <div className="form-group">
-            <div className="mb-3 row">
-              <label
-                className="col-sm-2 col-form-label"
-                style={{ fontSize: 15, color: "black" }}
-              >
-                No Faktur
-              </label>
-              <div className="col-sm-3">
-                <input
-                  disabled={true}
-                  required
-                  type="text"
-                  className="form-control"
-                  style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-                  value={noPeminjaman}
-                  onChange={(e) => setNoPeminjaman(e.target.value)}
-                />
-              </div>
+          ) : (
+            <div>
+              {/* Form yang muncul jika member tidak blacklist */}
+              <div className="form-group">
+                <div className="row mb-3">
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Nama Member
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      disabled={true}
+                      required
+                      type="text"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={selectedMember?.label}
+                    />
+                  </div>
+                  <div className="col-sm-1"></div>
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Status
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      disabled={true}
+                      required
+                      type="text"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={selectedMember?.status}
+                    />
+                  </div>
+                </div>
+                <div className="mb-5 row">
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Tanggal Peminjaman
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      disabled
+                      required
+                      type="date"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={tanggalPeminjaman}
+                      onChange={(e) => setTanggalPeminjaman(e.target.value)}
+                    />
+                  </div>
 
-              <div className="col-sm-1"></div>
+                  <div className="col-sm-1"></div>
 
-              <label
-                className="col-sm-2 col-form-label"
-                style={{ fontSize: 15, color: "black" }}
-              >
-                Tanggal
-              </label>
-              <div className="col-sm-3">
-                <input
-                  disabled
-                  required
-                  type="date"
-                  className="form-control"
-                  style={{ fontSize: 15, color: "black", borderColor: "grey" }}
-                  value={tanggal}
-                  onChange={(e) => setTanggal(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="mb-3 row">
-              <label
-                className="col-sm-2 col-form-label"
-                style={{ fontSize: 15, color: "black" }}
-              >
-                Scan Barcode
-              </label>
-              <div className="col-sm-3">
-                <div className="input-group mb-3  input-success">
-                  <input
-                    type="text"
-                    autoFocus
-                    ref={ref}
-                    style={{
-                      backgroundColor: "white",
-                      fontSize: 15,
-                      color: "black",
-                      borderColor: "grey",
-                    }}
-                    className="form-control"
-                    placeholder="Scan Barcode"
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    value={barcode}
-                    onChange={(e) => setBarcode(e.target.value)}
-                    onKeyPress={scanbarcode}
-                  />
-                  <span className="input-group-text border-0">
-                    <i className="mdi mdi-barcode-scan"></i>
-                  </span>
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Tanggal Pengembalian
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      required
+                      type="date"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={tanggalPengembalian}
+                      onChange={(e) => setTanggalPengembalian(e.target.value)}
+                      max={maxDate()}
+                      // readOnly // Menggunakan readOnly agar tidak dapat diubah secara manual
+                    />
+                  </div>
                 </div>
               </div>
+              {/* Form lanjutan di sini */}
+              <div className="form-group">
+                <div className="mb-3 row">
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    No Faktur
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      disabled={true}
+                      required
+                      type="text"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={noPeminjaman}
+                      onChange={(e) => setNoPeminjaman(e.target.value)}
+                    />
+                  </div>
 
-              <div className="col-sm-1"></div>
+                  <div className="col-sm-1"></div>
 
-              <label
-                className="col-sm-2 col-form-label"
-                style={{ fontSize: 15, color: "black" }}
-              >
-                Nama Buku
-              </label>
-              <div className="col-sm-3">
-                <AsyncSelect
-                  cacheOptions
-                  defaultOptions
-                  placeholder="Search..."
-                  loadOptions={loadOptions}
-                  onChange={handlechange}
-                  value={selected}
-                  styles={StyleSelect}
-                />
-              </div>
-            </div>
-            <div className="table-responsive">
-              <table className="table">
-                <thead className="">
-                  <tr className="table-header">
-                    <th className="" style={{ fontSize: 17, color: "black" }}>
-                      Kode buku
-                    </th>
-                    <th className="" style={{ fontSize: 17, color: "black" }}>
-                      Nama buku
-                    </th>
-                    <th className="" style={{ fontSize: 17, color: "black" }}>
-                      Qty
-                    </th>
-                    <th className="" style={{ fontSize: 17, color: "black" }}>
-                      Pengarang
-                    </th>
-                    <th className="" style={{ fontSize: 17, color: "black" }}>
-                      Penerbit
-                    </th>
-                    <th className="" style={{ fontSize: 17, color: "black" }}>
-                      Aksi
-                    </th>
-                    <th
-                      className=""
-                      style={{ fontSize: 17, color: "black" }}
-                    ></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {inputFields.map((inputField: any) => (
-                    <tr key={inputField.kodeBuku}>
-                      <td className="border-0 fw-bold">
-                        <input
-                          className="form-control"
-                          required
-                          disabled={true}
-                          value={inputField.kodeBuku}
-                          // onChange={(event) =>
-                          //   handleChangeInput(inputField.kodeBarang, event)
-                          // }
-                          style={{
-                            fontSize: 15,
-                            width: 200,
-                            maxWidth: 200,
-                            color: "black",
-                            borderColor: "grey",
-                          }}
-                        />
-                      </td>
-                      <td className="border-0 fw-bold">
-                        <input
-                          className="form-control"
-                          required
-                          disabled={true}
-                          value={inputField.judul}
-                          // onChange={(event) =>
-                          //   handleChangeInput(inputField.kodeBarang, event)
-                          // }
-                          style={{
-                            fontSize: 15,
-                            width: 250,
-                            maxWidth: 250,
-                            color: "black",
-                            borderColor: "grey",
-                          }}
-                        />
-                      </td>
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Tanggal
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      disabled
+                      required
+                      type="date"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={tanggal}
+                      onChange={(e) => setTanggal(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-                      <td className="border-0 fw-bold">
-                        <input
-                          ref={refqty}
-                          className="form-control"
-                          required
-                          name="qty"
-                          type="number"
-                          value={inputField.qty}
-                          onChange={(event) =>
-                            handleChangeInput(inputField.kodeBuku, event)
-                          }
-                          onKeyPress={qtykey}
-                          onClick={(event) =>
-                            selectall(inputField.kodeBuku, event)
-                          }
-                          min="1"
-                          style={{
-                            backgroundColor: "white",
-                            width: 80,
-                            maxWidth: 80,
-                            fontSize: 15,
-                            color: "black",
-                            borderColor: "grey",
-                          }}
-                        />
-                      </td>
-                      <td className="border-0 fw-bold">
-                        <input
-                          className="form-control"
-                          disabled={true}
-                          required
-                          type="text"
-                          value={inputField.penulis}
-                          // onChange={(event) =>
-                          //   handleChangeInput(inputField.kodeBarang, event)
-                          // }
-                          style={{
-                            fontSize: 15,
-                            width: 160,
-                            maxWidth: 160,
-                            color: "black",
-                            borderColor: "grey",
-                          }}
-                        />
-                      </td>
-                      <td className="border-0 fw-bold">
-                        <input
-                          className="form-control"
-                          disabled={true}
-                          required
-                          type="text"
-                          value={inputField.penerbit}
-                          // onChange={(event) =>
-                          //   handleChangeInput(inputField.kodeBarang, event)
-                          // }
-                          style={{
-                            fontSize: 15,
-                            width: 160,
-                            maxWidth: 160,
-                            color: "black",
-                            borderColor: "grey",
-                          }}
-                        />
-                      </td>
-                      <td className="border-0 fw-bold">
-                        <Button1
-                          disabled={inputFields.length === 0}
-                          onClick={() =>
-                            handleRemoveFields(inputField.kodeBarang)
-                          }
+                <div className="mb-3 row">
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Scan Barcode
+                  </label>
+                  <div className="col-sm-3">
+                    <div className="input-group mb-3  input-success">
+                      <input
+                        type="text"
+                        autoFocus
+                        ref={ref}
+                        style={{
+                          backgroundColor: "white",
+                          fontSize: 15,
+                          color: "black",
+                          borderColor: "grey",
+                        }}
+                        className="form-control"
+                        placeholder="Scan Barcode"
+                        aria-label="Username"
+                        aria-describedby="basic-addon1"
+                        value={barcode}
+                        onChange={(e) => setBarcode(e.target.value)}
+                        onKeyPress={scanbarcode}
+                      />
+                      <span className="input-group-text border-0">
+                        <i className="mdi mdi-barcode-scan"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="col-sm-1"></div>
+
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Nama Buku
+                  </label>
+                  <div className="col-sm-3">
+                    <AsyncSelect
+                      cacheOptions
+                      defaultOptions
+                      placeholder="Search..."
+                      loadOptions={loadOptions}
+                      onChange={handlechange}
+                      value={selected}
+                      styles={StyleSelect}
+                    />
+                  </div>
+                </div>
+                <div className="table-responsive">
+                  <table className="table">
+                    <thead className="">
+                      <tr className="table-header">
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
                         >
-                          <Minus />
-                        </Button1>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot className=""></tfoot>
-              </table>
-              <Row>
-                <Col md={2} className="mb-2 mt-3">
-                  <h3
-                    className=""
-                    style={{
-                      color: "black",
-                      fontFamily: "initial",
-                      fontSize: 30,
-                      fontWeight: "bold",
-                    }}
-                  ></h3>
-                </Col>
-                <Col md={2} className="mb-2 mt-3">
-                  <h3
-                    className=""
-                    style={{
-                      color: "black",
-                      fontFamily: "initial",
-                      fontSize: 30,
-                      fontWeight: "bold",
-                    }}
-                  ></h3>
-                </Col>
-                <Col md={2} className="mb-2 mt-3">
-                  <h3
-                    className=""
-                    style={{
-                      color: "black",
-                      fontFamily: "initial",
-                      fontSize: 30,
-                      fontWeight: "bold",
-                    }}
-                  ></h3>
-                </Col>
-                <Col md={3} className="mb-2 mt-3">
-                  <h3
-                    className=""
-                    style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Total Item
-                  </h3>
-                </Col>
-                <Col md={3} className="mb-2 mt-3">
-                  <h3
-                    className=""
-                    style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
-                  >
-                    {" "}
-                    {/* {currencyFormat(total)} */}
-                  </h3>
-                </Col>
-              </Row>
+                          Kode buku
+                        </th>
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
+                        >
+                          Nama buku
+                        </th>
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
+                        >
+                          Qty
+                        </th>
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
+                        >
+                          Pengarang
+                        </th>
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
+                        >
+                          Penerbit
+                        </th>
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
+                        >
+                          Aksi
+                        </th>
+                        <th
+                          className=""
+                          style={{ fontSize: 17, color: "black" }}
+                        ></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {inputFields.map((inputField: any) => (
+                        <tr key={inputField.kodeBuku}>
+                          <td className="border-0 fw-bold">
+                            <input
+                              className="form-control"
+                              required
+                              disabled={true}
+                              value={inputField.kodeBuku}
+                              // onChange={(event) =>
+                              //   handleChangeInput(inputField.kodeBarang, event)
+                              // }
+                              style={{
+                                fontSize: 15,
+                                width: 200,
+                                maxWidth: 200,
+                                color: "black",
+                                borderColor: "grey",
+                              }}
+                            />
+                          </td>
+                          <td className="border-0 fw-bold">
+                            <input
+                              className="form-control"
+                              required
+                              disabled={true}
+                              value={inputField.judul}
+                              // onChange={(event) =>
+                              //   handleChangeInput(inputField.kodeBarang, event)
+                              // }
+                              style={{
+                                fontSize: 15,
+                                width: 250,
+                                maxWidth: 250,
+                                color: "black",
+                                borderColor: "grey",
+                              }}
+                            />
+                          </td>
+
+                          <td className="border-0 fw-bold">
+                            <input
+                              ref={refqty}
+                              className="form-control"
+                              required
+                              name="qty"
+                              type="number"
+                              value={inputField.qty}
+                              onChange={(event) =>
+                                handleChangeInput(inputField.kodeBuku, event)
+                              }
+                              onKeyPress={qtykey}
+                              onClick={(event) =>
+                                selectall(inputField.kodeBuku, event)
+                              }
+                              min="1"
+                              style={{
+                                backgroundColor: "white",
+                                width: 80,
+                                maxWidth: 80,
+                                fontSize: 15,
+                                color: "black",
+                                borderColor: "grey",
+                              }}
+                            />
+                          </td>
+                          <td className="border-0 fw-bold">
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              required
+                              type="text"
+                              value={inputField.penulis}
+                              // onChange={(event) =>
+                              //   handleChangeInput(inputField.kodeBarang, event)
+                              // }
+                              style={{
+                                fontSize: 15,
+                                width: 160,
+                                maxWidth: 160,
+                                color: "black",
+                                borderColor: "grey",
+                              }}
+                            />
+                          </td>
+                          <td className="border-0 fw-bold">
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              required
+                              type="text"
+                              value={inputField.penerbit}
+                              // onChange={(event) =>
+                              //   handleChangeInput(inputField.kodeBarang, event)
+                              // }
+                              style={{
+                                fontSize: 15,
+                                width: 160,
+                                maxWidth: 160,
+                                color: "black",
+                                borderColor: "grey",
+                              }}
+                            />
+                          </td>
+                          <td className="border-0 fw-bold">
+                            <Button1
+                              disabled={inputFields.length === 0}
+                              onClick={() =>
+                                handleRemoveFields(inputField.kodeBarang)
+                              }
+                            >
+                              <Minus />
+                            </Button1>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot className=""></tfoot>
+                  </table>
+                  <Row>
+                    <Col md={2} className="mb-2 mt-3">
+                      <h3
+                        className=""
+                        style={{
+                          color: "black",
+                          fontFamily: "initial",
+                          fontSize: 30,
+                          fontWeight: "bold",
+                        }}
+                      ></h3>
+                    </Col>
+                    <Col md={2} className="mb-2 mt-3">
+                      <h3
+                        className=""
+                        style={{
+                          color: "black",
+                          fontFamily: "initial",
+                          fontSize: 30,
+                          fontWeight: "bold",
+                        }}
+                      ></h3>
+                    </Col>
+                    <Col md={2} className="mb-2 mt-3">
+                      <h3
+                        className=""
+                        style={{
+                          color: "black",
+                          fontFamily: "initial",
+                          fontSize: 30,
+                          fontWeight: "bold",
+                        }}
+                      ></h3>
+                    </Col>
+                    <Col md={3} className="mb-2 mt-3">
+                      <h3
+                        className=""
+                        style={{
+                          color: "black",
+                          fontSize: 20,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Total Item
+                      </h3>
+                    </Col>
+                    <Col md={3} className="mb-2 mt-3">
+                      <h3
+                        className=""
+                        style={{
+                          color: "black",
+                          fontSize: 20,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {" "}
+                        {/* {currencyFormat(total)} */}
+                      </h3>
+                    </Col>
+                  </Row>
+                </div>
+              </div>
+              <Col md={5} className="mb-1">
+                {/* <span className="p-buttonset">
+                      <Button
+                        label="Save"
+                        type="submit"
+                        icon="mdi mdi-content-save"
+                        className="px-4"
+                        severity="info"
+                      />
+                      <Button
+                        label="Cancel"
+                        type="button"
+                        onClick={refresh}
+                        icon="mdi mdi-close-circle"
+                        severity="danger"
+                      />
+                      <Button
+                        label="Cetak Ulang Faktur"
+                        type="button"
+                        onClick={handleShow2}
+                        icon="mdi mdi-printer"
+                        severity="success"
+                      />
+                    </span> */}
+              </Col>
             </div>
-          </div>
-          <Col md={5} className="mb-1">
-            {/* <span className="p-buttonset">
-              <Button
-                label="Save"
-                type="submit"
-                icon="mdi mdi-content-save"
-                className="px-4"
-                severity="info"
-              />
-              <Button
-                label="Cancel"
-                type="button"
-                onClick={refresh}
-                icon="mdi mdi-close-circle"
-                severity="danger"
-              />
-              <Button
-                label="Cetak Ulang Faktur"
-                type="button"
-                onClick={handleShow2}
-                icon="mdi mdi-printer"
-                severity="success"
-              />
-            </span> */}
-          </Col>
+          )}
         </form>
       </div>
     </div>

@@ -181,6 +181,26 @@ export function tanggalHariIni() {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+export function VIP0() {
+  const today = new Date();
+  today.setDate(today.getDate() + 3);
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+export function VIP1() {
+  const today = new Date();
+  today.setDate(today.getDate() + 6);
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 export function mingguDepan() {
   const today = new Date();
   today.setDate(today.getDate() + 7);

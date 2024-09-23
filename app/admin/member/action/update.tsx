@@ -173,9 +173,9 @@ const Update = ({
                 <input
                   type="text"
                   required
+                  disabled
                   className="form-control"
                   value={nis}
-                  onChange={(e) => setNis(Number(e.target.value))}
                   inputMode="numeric"
                 />
               </div>

@@ -66,7 +66,6 @@ export const PATCH = async (
           alamat: String(formData.get("alamat")),
           hp: String(formData.get("hp")),
           email: String(formData.get("email")),
-          nis: Number(formData.get("nis")),
         },
       },
     },
