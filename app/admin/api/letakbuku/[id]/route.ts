@@ -1,14 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
+import { getToken } from "next-auth/jwt";
 
 const prisma = new PrismaClient();
 export const dynamic = "force-dynamic";
 
 export const PATCH = async (
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
+
   const formData = await request.formData();
   const qty = Number(formData.get("qty"));
   const bukuId = Number(formData.get("bukuId"));
@@ -70,6 +78,7 @@ export const PATCH = async (
           bukuId: bukuId,
           rakId: rakId,
           qty: qty,
+          sekolahId: sekolahId,
         },
       });
     }
