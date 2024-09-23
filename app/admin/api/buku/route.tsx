@@ -1,10 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { getToken } from "next-auth/jwt";
 
 const prisma = new PrismaClient();
 export const dynamic = "force-dynamic";
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
+
   const formData = await request.formData();
 
   const cekkode = await prisma.bukuTb.findUnique({
@@ -29,6 +37,7 @@ export const POST = async (request: Request) => {
       stok: Number(formData.get("jumlah")),
       qty: Number(formData.get("jumlah")),
       deskripsi: String(formData.get("deskripsi")),
+      sekolahId: sekolahId,
     },
   });
   return NextResponse.json({ pesan: "berhasil" });

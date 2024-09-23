@@ -33,8 +33,25 @@ model SekolahTb {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  UserTb     UserTb       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  KaryawanTb KaryawanTb[]
+  UserTb            UserTb              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  KaryawanTb        KaryawanTb[]
+  MemberTb          MemberTb[]
+  UlasanBukuTb      UlasanBukuTb[]
+  KategoriTb        KategoriTb[]
+  BukuTb            BukuTb[]
+  LemariTb          LemariTb[]
+  RakTb             RakTb[]
+  LetakBukuTb       LetakBukuTb[]
+  PeminjamanTb      PeminjamanTb[]
+  DetailPeminjaman  DetailPeminjaman[]
+  PemesananTb       PemesananTb[]
+  DetailPemesananTb DetailPemesananTb[]
+  SlideTb           SlideTb[]
+  Berita            Berita[]
+  PengumumanTb      PengumumanTb[]
+  SlideSuperTb      SlideSuperTb[]
+  BeritaSuperTb     BeritaSuperTb[]
+  PengumumanSuperTb PengumumanSuperTb[]
 }
 
 model KaryawanTb {
@@ -69,11 +86,13 @@ model MemberTb {
   email        String   @unique
   status       String
   foto         String?
+  sekolahId    Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   // UsermemberTb UsermemberTb?
   UserTb       UserTb         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  SekolahTb    SekolahTb      @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
   PeminjamanTb PeminjamanTb[]
   UlasanBukuTb UlasanBukuTb[]
   PemesananTb  PemesananTb[]
@@ -101,20 +120,24 @@ model UlasanBukuTb {
   bukuId    Int
   rating    Int
   komentar  String
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  MemberTb MemberTb @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  BukuTb   BukuTb   @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+  MemberTb  MemberTb  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  BukuTb    BukuTb    @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model KategoriTb {
   id        Int      @id @default(autoincrement())
   nama      String
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  BukuTb BukuTb[]
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
+  BukuTb    BukuTb[]
 }
 
 model BukuTb {
@@ -129,10 +152,12 @@ model BukuTb {
   stok        Int
   qty         Int
   deskripsi   String?
+  sekolahId   Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   KategoriTb        KategoriTb          @relation(fields: [kategoriId], references: [id], onDelete: Cascade)
+  SekolahTb         SekolahTb           @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
   LetakBukuTb       LetakBukuTb[]
   DetailPeminjaman  DetailPeminjaman[]
   UlasanBukuTb      UlasanBukuTb[]
@@ -143,20 +168,24 @@ model LemariTb {
   id        Int      @id @default(autoincrement())
   nama      String
   jumlahRak Int
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  RakTb RakTb[]
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
+  RakTb     RakTb[]
 }
 
 model RakTb {
   id        Int      @id @default(autoincrement())
   lemariId  Int
   nama      String
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   LemariTb    LemariTb      @relation(fields: [lemariId], references: [id], onDelete: Cascade)
+  SekolahTb   SekolahTb     @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
   LetakBukuTb LetakBukuTb[]
 }
 
@@ -165,11 +194,13 @@ model LetakBukuTb {
   rakId     Int
   bukuId    Int
   qty       Int
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  RakTb  RakTb  @relation(fields: [rakId], references: [id], onDelete: Cascade)
-  BukuTb BukuTb @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+  RakTb     RakTb     @relation(fields: [rakId], references: [id], onDelete: Cascade)
+  BukuTb    BukuTb    @relation(fields: [bukuId], references: [id], onDelete: Cascade)
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model PeminjamanTb {
@@ -183,10 +214,12 @@ model PeminjamanTb {
   status              String
   denda               Int?
   keterangan          String?
+  sekolahId           Int
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
   MemberTb          MemberTb           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  SekolahTb         SekolahTb          @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
   DetailPeminjamand DetailPeminjaman[]
 }
 
@@ -195,11 +228,13 @@ model DetailPeminjaman {
   peminjamanId Int
   bukuId       Int
   qty          Int
+  sekolahId    Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   BukuTb       BukuTb       @relation(fields: [bukuId], references: [id], onDelete: Cascade)
   PeminjamanTb PeminjamanTb @relation(fields: [peminjamanId], references: [id], onDelete: Cascade)
+  SekolahTb    SekolahTb    @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model PemesananTb {
@@ -209,10 +244,12 @@ model PemesananTb {
   tanggalPesan       DateTime
   tanggalPengambilan DateTime
   totalItem          Int
+  sekolahId          Int
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
   MemberTb          MemberTb            @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  SekolahTb         SekolahTb           @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
   DetailPemesananTb DetailPemesananTb[]
 }
 
@@ -221,19 +258,24 @@ model DetailPemesananTb {
   bukuId      Int
   pemesananId Int
   qty         Int
+  sekolahId   Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   BukuTb      BukuTb      @relation(fields: [bukuId], references: [id], onDelete: Cascade)
   PemesananTb PemesananTb @relation(fields: [pemesananId], references: [id], onDelete: Cascade)
+  SekolahTb   SekolahTb   @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model SlideTb {
   id        Int      @id @default(autoincrement())
   nama      String
   foto      String
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model Berita {
@@ -242,8 +284,11 @@ model Berita {
   tanggal   DateTime
   isi       String
   foto      String?
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model PengumumanTb {
@@ -252,16 +297,22 @@ model PengumumanTb {
   tanggal   DateTime
   isi       String
   foto      String?
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model SlideSuperTb {
   id        Int      @id @default(autoincrement())
   nama      String
   foto      String
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model BeritaSuperTb {
@@ -270,8 +321,11 @@ model BeritaSuperTb {
   tanggal   DateTime
   isi       String
   foto      String?
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model PengumumanSuperTb {
@@ -280,8 +334,11 @@ model PengumumanSuperTb {
   tanggal   DateTime
   isi       String
   foto      String?
+  sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  SekolahTb SekolahTb @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 // model logloginTb {

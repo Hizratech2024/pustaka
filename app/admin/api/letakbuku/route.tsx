@@ -1,10 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { getToken } from "next-auth/jwt";
 
 const prisma = new PrismaClient();
 export const dynamic = "force-dynamic";
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
+
   const formData = await request.formData();
   const qty = Number(formData.get("qty"));
   let jumlahbuku = 0;
@@ -61,6 +69,7 @@ export const POST = async (request: Request) => {
         bukuId: Number(formData.get("bukuId")),
         rakId: Number(formData.get("rakId")),
         qty: Number(formData.get("qty")),
+        sekolahId: sekolahId,
       },
     });
 

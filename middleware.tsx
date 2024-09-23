@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
   });
 
   if (token && pathname.match(loginPath)) {
-    const url = new URL('/', request.url);
+    const url = new URL("/", request.url);
     return NextResponse.redirect(url);
   }
 
@@ -43,14 +43,14 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/superadmin")) {
     if (token?.role !== "Superadmin") {
-      const url = new URL('/', request.url);
+      const url = new URL("/", request.url);
       return NextResponse.redirect(url);
     }
   }
 
   if (pathname.startsWith("/admin")) {
     if (token?.role !== "Admin") {
-      const url = new URL('/', request.url);
+      const url = new URL("/", request.url);
       return NextResponse.redirect(url);
     }
   }
