@@ -4,6 +4,7 @@ import DataTable from "react-data-table-component";
 import { Font } from "@/app/helper";
 import Add from "./action/add";
 import Delete from "./action/delete";
+import Update from "./action/update";
 
 const Zona = () => {
   const [member, setMember] = useState([]);
@@ -47,8 +48,8 @@ const Zona = () => {
       width: "80px",
     },
     {
-      name: "Nis",
-      selector: (row: any) => row.nis,
+      name: "Nomor Identitas",
+      selector: (row: any) => row.MemberTb?.nis,
       sortable: true,
     },
     {
@@ -57,34 +58,28 @@ const Zona = () => {
       sortable: true,
     },
     {
-      name: "Tempat Lahir",
-      selector: (row: any) => row.tempatLahir,
-      sortable: true,
-    },
-    {
-      name: "Tanggal Lahir",
-      selector: (row: any) => row.tanggalLahir,
-      sortable: true,
-    },
-    {
       name: "No HP",
-      selector: (row: any) => row.hp,
+      selector: (row: any) => row.MemberTb?.hp,
       sortable: true,
     },
     {
       name: "Email",
-      selector: (row: any) => row.email,
+      selector: (row: any) => row.MemberTb?.email,
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row: any) => row.status,
+      selector: (row: any) => row.MemberTb?.status,
       sortable: true,
     },
     {
       name: "Action",
-      cell: (row: any) => <Delete id={row.id} reload={reload} />,
-      width: "150px",
+      cell: (row: any) => (
+        <div className="d-flex">
+          <Update member={row.MemberTb} user={row} reload={reload} />
+          <Delete id={row.id} reload={reload} />
+        </div>
+      ),
     },
   ];
 

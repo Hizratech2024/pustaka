@@ -11,15 +11,19 @@ import AsyncSelect from "react-select/async";
 import { Col, Row } from "@themesberg/react-bootstrap";
 import SearchMember from "./action/SearchMember";
 import { StyleSelect } from "@/app/helper";
+import { Minus } from "react-feather";
+import { Button as Button1 } from "antd";
 
 const TransaksiPeminjaman = () => {
   const [selected, setSelected] = useState(null);
+  const [selectMember, setSelectMember] = useState(null);
   const [inputFields, setInputFields] = useState([]);
   const [noPeminjaman, setNoPeminjaman] = useState("");
   const [tanggal, setTanggal] = useState(tanggalHariIni);
   const [barcode, setBarcode] = useState("");
   const [totalqty, setTotalqty] = useState(0);
   const [dataBuku, setDataBuku] = useState([]);
+  const [dataMember, setDataMember] = useState([]);
 
   const ref = useRef<HTMLInputElement>(null);
   const refuang = useRef<HTMLInputElement>(null);
@@ -31,6 +35,7 @@ const TransaksiPeminjaman = () => {
   useEffect(() => {
     otomatisnopeminjaman();
     getbuku();
+    getMember();
   }, []);
 
   // const handleSubmit = async (e: SyntheticEvent) => {
@@ -95,6 +100,12 @@ const TransaksiPeminjaman = () => {
     setDataBuku(data);
   }
 
+  async function getMember() {
+    const response = await axios.get(`/admin/api/member`);
+    const data = response.data;
+    setDataMember(data);
+  }
+
   let loadOptions = (inputValue: any, callback: any) => {
     setTimeout(async () => {
       if (inputValue.length < 2) {
@@ -114,6 +125,24 @@ const TransaksiPeminjaman = () => {
         stok: item.stok,
         penulis: item.penulis,
         penerbit: item.penerbit,
+      }));
+      callback(options);
+    }, 300);
+  };
+  let loadOptionsMember = (inputValue: any, callback: any) => {
+    setTimeout(async () => {
+      if (inputValue.length < 2) {
+        callback([]);
+        return;
+      }
+      const data = dataMember.filter(
+        (item: any) =>
+          item.nama &&
+          item.nama.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      const options = data.map((item: any) => ({
+        value: item.id,
+        label: item.nama,
       }));
       callback(options);
     }, 300);
@@ -171,6 +200,59 @@ const TransaksiPeminjaman = () => {
       ref.current?.focus();
     }
   };
+
+  // const handlechangeMember = (selected: any) => {
+  //   setSelected(selected);
+  //   if (selected.stok < 1) {
+  //     Swal.fire({
+  //       position: "top-end",
+  //       icon: "warning",
+  //       title: "Stok Kosong",
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     });
+  //     setBarcode("");
+  //     setSelected(null);
+  //     ref.current?.focus();
+  //     return;
+  //   } else {
+  //     const a = inputFields.findIndex(
+  //       (element: any) => element.kodeBuku == selected.kodeBuku
+  //     );
+  //     let x = [];
+  //     if (a > -1) {
+  //       const data: any = [...inputFields];
+  //       data[a].qty++;
+  //       data[a].stokakhir = selected.stok - data[a].qty;
+  //       setInputFields(data);
+  //       x = data;
+  //     } else {
+  //       const data: any = [
+  //         ...inputFields,
+  //         {
+  //           id: selected.value,
+  //           kodeBuku: selected.kodeBuku,
+  //           judul: selected.judul,
+  //           penulis: selected.penulis,
+  //           penerbit: selected.penerbit,
+  //           stok: selected.stok,
+  //           qty: 1,
+  //           stokakhir: selected.stok - 1,
+  //         },
+  //       ];
+  //       setInputFields(data);
+  //       x = data;
+  //     }
+  //     let totalqty = 0;
+  //     x.forEach((item: any) => {
+  //       totalqty += Number(item.qty);
+  //     });
+  //     setTotalqty(totalqty);
+  //     setSelected(null);
+  //     setBarcode("");
+  //     ref.current?.focus();
+  //   }
+  // };
 
   const selectall = (kodeBarang: any, event: any) => {
     inputFields.map((i: any) => {
@@ -300,6 +382,23 @@ const TransaksiPeminjaman = () => {
     }
   };
 
+  const handleRemoveFields = (kodeBuku: any) => {
+    let x = [];
+    const values = [...inputFields];
+    values.splice(
+      values.findIndex((value: any) => value.kodeBuku === kodeBuku),
+      1
+    );
+    setInputFields(values);
+    x = values;
+    let totalqty = 0;
+    x.forEach((item: any) => {
+      totalqty += Number(item.qty);
+    });
+    setTotalqty(totalqty);
+    ref.current?.focus();
+  };
+
   return (
     <div>
       <div>
@@ -320,7 +419,24 @@ const TransaksiPeminjaman = () => {
         <form className="">
           <div className="mb-5">
             <label className="form-label">Member</label>
-            <SearchMember />
+            <AsyncSelect
+              cacheOptions
+              defaultOptions
+              placeholder="Cari Member..."
+              loadOptions={loadOptionsMember}
+              value={selectMember}
+              styles={StyleSelect}
+            />
+          </div>
+          <div>
+            <label className="form-label">Nama Member</label>
+            <input
+              disabled
+              required
+              type="text"
+              className="form-control"
+              style={{ fontSize: 15, color: "black", borderColor: "grey" }}
+            />
           </div>
           <div className="form-group">
             <div className="mb-3 row">
@@ -548,7 +664,7 @@ const TransaksiPeminjaman = () => {
                           }}
                         />
                       </td>
-                      {/* <td className="border-0 fw-bold">
+                      <td className="border-0 fw-bold">
                         <Button1
                           disabled={inputFields.length === 0}
                           onClick={() =>
@@ -557,7 +673,7 @@ const TransaksiPeminjaman = () => {
                         >
                           <Minus />
                         </Button1>
-                      </td> */}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
