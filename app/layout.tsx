@@ -22,8 +22,8 @@ export default function RootLayout({
 
       <body className={montserrat.className}>
         <Provider>
-          {/* {pathname == "/login" ? <>{children}</> : <Template>{children}</Template>} */}
-          <Template>{children}</Template>
+          {pathname == "/login" ? <>{children}</> : <Template>{children}</Template>}
+          {/* <Template>{children}</Template> */}
         </Provider>
       </body>
     </html>

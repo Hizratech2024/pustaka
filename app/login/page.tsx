@@ -7,7 +7,7 @@ import CryptoJS from 'crypto-js';
 import Modal from 'react-bootstrap/Modal';
 
 const Login = () => {
-  const [showButton, setShowButton] = useState(false);
+  // const [showButton, setShowButton] = useState(false);
   const [usernama, setUsernama] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [st, setSt] = useState(false);
@@ -96,12 +96,9 @@ const Login = () => {
         </div>
         <div className="overlay mt-100">
           <div className="content">
-            {/* {showButton && (
-              <button className="login-button" onClick={handleShow}>
-                Login
-              </button>
-            )} */}
-            <button className="login-button" onClick={handleShow}>
+
+
+            <button className="" onClick={handleShow}>
               Login
             </button>
           </div>
@@ -120,7 +117,7 @@ const Login = () => {
           <Modal.Body>
             <div className="mb-3 col-md-12">
               <input
-                type="email"
+                type="text"
                 className="form-control form-control"
                 onChange={(e) => setUsernama(e.target.value)}
                 placeholder="Username"

@@ -58,6 +58,7 @@ function Add({ reload }: { reload: Function }) {
                     timer: 1500
                 })
             }
+            
         } catch (error) {
             console.error('Error:', error);
         }

@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
           include: {
             KaryawanTb: true,
             MemberTb: true,
+            SekolahTb:true,
           }
         })
 
@@ -69,6 +70,10 @@ export const authOptions: NextAuthOptions = {
           namaKaryawan: user.KaryawanTb?.nama,
           namaMembern: user.MemberTb?.nama,
           hp: user.KaryawanTb?.hp,
+          karyawan:user.KaryawanTb,
+          sekolah:user.SekolahTb,
+          member:user.MemberTb,
+          role:user.role,
           // karyawanId: user.karyawanId,
           foto: user.KaryawanTb?.foto,
         } as any;

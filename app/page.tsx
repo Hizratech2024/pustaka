@@ -1,6 +1,9 @@
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { authOptions } from "./api/auth/[...nextauth]/auth";
 
 export default async function Home() {
+  const session= await getServerSession(authOptions)
   return (
     <>
       {/* <div>
@@ -27,6 +30,7 @@ export default async function Home() {
             </ol>
           </nav>
           <h3>Dashboard</h3>
+          <pre>{JSON.stringify(session)}</pre>
         </div>
       </div>
     </>
