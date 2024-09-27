@@ -9,9 +9,9 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 
 const currentTime = new Date();
 
-export let supabaseUrl = "https://gjrkyteltltxgxtgxogj.supabase.co";
+export let supabaseUrl = "https://harkcrbmtskvtiboutxl.supabase.co";
 export let supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdqcmt5dGVsdGx0eGd4dGd4b2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjEwMjc0NTQsImV4cCI6MjAzNjYwMzQ1NH0.g-lD3Vu1bHYNweSvUGxgYazef6Xf16Hz88wgpggh9I4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhcmtjcmJtdHNrdnRpYm91dHhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTczODY4MTgsImV4cCI6MjAzMjk2MjgxOH0.Oa2dnHnpsJbQviB4fNdIdwSxJgYR8BUS-Nd1VQWg7LY";
 export let supabaseBUCKET = "uploadfile";
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
