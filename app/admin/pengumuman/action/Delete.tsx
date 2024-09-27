@@ -23,7 +23,7 @@ function Delete({ pengumumanId, reload }: { pengumumanId: Number, reload: Functi
     const handleDelete = async (pengumumanId: number) => {
         setIsLoading(true)
         handleClose()
-        await axios.delete(`/superadmin/api/pengumuman/${pengumumanId}`)
+        await axios.delete(`/admin/api/pengumuman/${pengumumanId}`)
         reload()
         setIsLoading(false)
         Swal.fire({
@@ -37,7 +37,7 @@ function Delete({ pengumumanId, reload }: { pengumumanId: Number, reload: Functi
 
     return (
         <div>
-            <span onClick={handleShow} className="btn btn-danger shadow btn-xs sharp mx-1"><i className="fa fa-trash"></i></span>
+            <span onClick={handleShow} className="btn btn-danger  sharp mx-1"><i className="fa fa-trash"></i></span>
             <Modal
                 dialogClassName="modal-md"
                 show={show}

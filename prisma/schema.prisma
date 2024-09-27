@@ -294,9 +294,7 @@ model Berita {
 model PengumumanTb {
   id        Int      @id @default(autoincrement())
   judul     String
-  tanggal   DateTime
   isi       String
-  foto      String?
   sekolahId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

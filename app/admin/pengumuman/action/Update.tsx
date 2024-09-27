@@ -48,7 +48,7 @@ function Update({ pengumuman, reload }: { pengumuman: PengumumanTb, reload: Func
             formData.append('judul', judul)
             formData.append('isi', isi)
 
-            const xxx = await axios.patch(`/superadmin/api/pengumuman/${pengumuman.id}`, formData, {
+            const xxx = await axios.patch(`/admin/api/pengumuman/${pengumuman.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -57,7 +57,6 @@ function Update({ pengumuman, reload }: { pengumuman: PengumumanTb, reload: Func
                 setShow(false);
                 setIsLoading(false)
                 reload()
-                router.refresh()
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -73,7 +72,7 @@ function Update({ pengumuman, reload }: { pengumuman: PengumumanTb, reload: Func
 
     return (
         <div>
-            <span onClick={handleShow} className="btn btn-success shadow btn-xs sharp mx-1"><i className="fa fa-edit"></i></span>
+            <span onClick={handleShow} className="btn btn-success  sharp mx-1"><i className="fa fa-edit"></i></span>
             <Modal
                 dialogClassName="modal-lg"
                 show={show}
@@ -103,7 +102,7 @@ function Update({ pengumuman, reload }: { pengumuman: PengumumanTb, reload: Func
                                 <Editor
                                     value={isi}
                                     init={{
-                                        height: 500,
+                                        height: 250,
                                         menubar: true,
                                         plugins: [
                                             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',

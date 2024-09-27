@@ -4,13 +4,14 @@ import DataTable from 'react-data-table-component';
 import Add from './action/Add';
 import Update from './action/Update';
 import Delete from './action/Delete';
-import { tanggalIndo } from '@/app/helper';
+import { Font, tanggalIndo } from '@/app/helper';
 
 const Pengumuman = () => {
   const [datapengumuman, setDatapengumuman] = useState([])
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const montserrat = Font();
 
   useEffect(() => {
     reload()
@@ -18,7 +19,7 @@ const Pengumuman = () => {
 
   const reload = async () => {
     try {
-      const response = await fetch(`/superadmin/api/pengumuman`);
+      const response = await fetch(`/admin/api/pengumuman`);
       const result = await response.json();
       setDatapengumuman(result);
     } catch (error) {
@@ -71,7 +72,10 @@ const Pengumuman = () => {
         <div className="col-md-12 grid-margin stretch-card">
           <div className="card">
             <div className="card-header">
-              <h1 className="card-title">Data Pengumuman</h1>
+              <h6
+                className={`card-title ${montserrat.className}`}
+                style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
+              >Data Pengumuman</h6>
             </div>
             <div className="card-body">
               <div className="row mb-3">

@@ -198,7 +198,7 @@ function Update({ berita, reload }: { berita: Berita, reload: Function }) {
                                 <Editor
                                     value={isi}
                                     init={{
-                                        height: 500,
+                                        height: 250,
                                         menubar: true,
                                         plugins: [
                                             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',

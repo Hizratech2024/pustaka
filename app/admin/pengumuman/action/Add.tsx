@@ -48,7 +48,7 @@ function Add({ reload }: { reload: Function }) {
             const formData = new FormData()
             formData.append('judul', judul)
             formData.append('isi', isi)
-            const xxx = await axios.post(`/superadmin/api/pengumuman`, formData, {
+            const xxx = await axios.post(`/admin/api/pengumuman`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -58,7 +58,6 @@ function Add({ reload }: { reload: Function }) {
                 setIsLoading(false)
                 clearForm();
                 reload()
-                router.refresh()
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -110,7 +109,7 @@ function Add({ reload }: { reload: Function }) {
                                     value={isi}
                                     initialValue=""
                                     init={{
-                                        height: 500,
+                                        height: 250,
                                         menubar: true,
                                         plugins: [
                                             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
