@@ -7,6 +7,9 @@ import Swal from "sweetalert2";
 import Update from "./action/Update";
 import AddAll from "./action/AddAll";
 import { Font } from "@/app/helper";
+import Modal from 'react-bootstrap/esm/Modal';
+import * as XLSX from 'xlsx';
+import axios from "axios";
 
 const Buku = () => {
   const [datakategori, setDatakategori] = useState([]);
@@ -15,7 +18,33 @@ const Buku = () => {
   const [namaKategori, setNamakategori] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [excelData, setExcelData] = useState<string[]>([]);
+  const [files, setFiles] = useState(true)
   const [all, setAll] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    clearForm();
+  }
+  const handleShow = () => setShow(true);
+
+  function clearForm() {
+    setFiles(true)
+    setExcelData([])
+  }
+
+  const [isLoading, setIsLoading] = useState(false)
+  if (isLoading) {
+    Swal.fire({
+      title: "Mohon tunggu!",
+      html: "Sedang mengirim data ke server",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    })
+  }
 
   const montserrat = Font();
 
@@ -98,12 +127,12 @@ const Buku = () => {
     },
     ...(kategoriId === "Semua Data"
       ? [
-          {
-            name: "Kategori",
-            selector: (row: any) => row.KategoriTb?.nama,
-            sortable: true,
-          },
-        ]
+        {
+          name: "Kategori",
+          selector: (row: any) => row.KategoriTb?.nama,
+          sortable: true,
+        },
+      ]
       : []),
     {
       name: "Action",
@@ -116,6 +145,68 @@ const Buku = () => {
     },
   ];
 
+  const downloadtemplate = () => {
+    const fileName = 'templatebuku.xlsx';
+    const fileUrl = `/${fileName}`;
+
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const handleFileUpload = (e: any) => {
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const importedData = XLSX.utils.sheet_to_json(worksheet);
+      setExcelData(importedData as string[])
+    };
+    setFiles(false)
+    reader.readAsArrayBuffer(file);
+  };
+
+  const handleSubmit = async (e: any) => {
+    setIsLoading(true)
+    e.preventDefault()
+    try {
+      const formData = new FormData()
+      formData.append('selected', JSON.stringify(excelData))
+
+      const xxx = await axios.post(`/admin/api/importbuku`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      if (xxx.data.pesan === 'berhasil') {
+        handleClose();
+        reload()
+        clearForm()
+        setIsLoading(false)
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Berhasil disimpan',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   return (
     <div>
       <div className="row">
@@ -125,10 +216,10 @@ const Buku = () => {
               <div className="card-title col-md-6 mt-2">
                 <div className="row">
                   <div className="col-md-3">
-                  <h6
-                className={`card-title ${montserrat.className}`}
-                style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
-              >
+                    <h6
+                      className={`card-title ${montserrat.className}`}
+                      style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
+                    >
                       Kategori
                     </h6>
                   </div>
@@ -207,6 +298,87 @@ const Buku = () => {
                   },
                 }}
               />
+              <div className="row mb-3">
+                <div className="col-md-3">
+
+                </div>
+                <div className="col-md-9 d-flex justify-content-end">
+                  <li>
+                    <button type='button' onClick={downloadtemplate} className="btn btn-primary btn-icon-text mx-2">
+                      Download Template
+                    </button>
+                  </li>
+                  <li>
+                    <button type='button' onClick={handleShow} className="btn btn-info btn-icon-text">
+                      Import dari Excel
+                    </button>
+                  </li>
+                </div>
+
+              </div>
+              <Modal
+                dialogClassName="modal-xl"
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}>
+                <form
+                  onSubmit={handleSubmit}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title >Import Data Buku</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="mb-3 row">
+                      <div className="col-sm-12">
+                        {files ?
+                          <div>
+                            <input
+                              type="file"
+                              className="form-control"
+                              onChange={handleFileUpload}
+                              accept=".xlsx, .xls"
+                            />
+                          </div>
+                          :
+                          null
+                        }
+                      </div>
+                      {excelData.length > 0 && (
+                        <div className="table-responsive">
+                          <table className="table primary-table-bordered">
+                            <thead className="thead-success">
+                              <tr>
+                                <th style={{ fontSize: 17, color: "black" }}>Kode Buku</th>
+                                <th style={{ fontSize: 17, color: "black" }}>Judul </th>
+                                <th style={{ fontSize: 17, color: "black" }}>Bahasa</th>
+                                <th style={{ fontSize: 17, color: "black" }}>Penerbit</th>
+                                <th style={{ fontSize: 17, color: "black" }}>Tahun</th>
+                                <th style={{ fontSize: 17, color: "black" }}>Penulis</th>
+                                <th style={{ fontSize: 17, color: "black" }}>Jumlah</th>
+                                <th style={{ fontSize: 17, color: "black" }}>Kategori</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {excelData.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                  {Object.values(row).map((cell: any, cellIndex) => (
+                                    <td key={cellIndex}>{cell}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <button type="button" className="btn btn-danger light" onClick={handleClose}>Close</button>
+                    <button type="submit" className="btn btn-primary light">Simpan</button>
+                  </Modal.Footer>
+                </form>
+              </Modal>
             </div>
           </div>
         </div>
