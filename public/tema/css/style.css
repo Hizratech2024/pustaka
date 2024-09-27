@@ -1497,3 +1497,36 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+.new-arrival-product .new-arrivals-img-contnent {
+  overflow: hidden;
+  position: relative;
+}
+
+.new-arrival-product .new-arrivals-img-contnent img {
+  width: 100%;
+  -webkit-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+  border-radius: 0.625rem;
+}
+
+.new-arrival-product .new-arrivals-img-contnent:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -85%;
+  z-index: 2;
+  display: block;
+  content: '';
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+  -webkit-transform: skewX(-25deg);
+  transform: skewX(-25deg);
+}
+
+.new-arrival-product:hover .new-arrivals-img-contnent:after {
+  webkit-animation: shine .75s;
+  animation: shine .75s;
+}

@@ -107,9 +107,4 @@ export const authOptions: NextAuthOptions = {
     updateAge: 60 * 60,
   },
 };
-function GoogleProvider(arg0: {
-  clientId: string | undefined;
-  clientSecret: string | undefined;
-}): import("next-auth/providers/index").Provider {
-  throw new Error("Function not implemented.");
-}
+

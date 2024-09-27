@@ -86,121 +86,116 @@ const Login = () => {
     <main>
 
 
-      <div className="video-container">
+      <div className="container">
+        <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                <div className="d-flex justify-content-center py-4">
+                  <a
+                    href="index.html"
+                    className="logo d-flex align-items-center w-auto"
+                  >
+                    <img src="/tema/img/logo3.png" alt="" width={150} />
+                    {/* <span className="d-none d-lg-block">ePustaka</span> */}
+                  </a>
+                </div>
+                {/* End Logo */}
 
-        <div className="video-container">
-          <video autoPlay loop muted className="custom-video1" poster="">
-            <source src="/tema/videos/bg.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div className="overlay mt-100">
-          <div className="content">
+                <div className="card mb-3">
+                  <div className="card-body">
+                    <div className="pt-4 pb-2">
+                      <h5 className="card-title text-center pb-0 fs-4">
+                        Selamat Datang...!!!
+                      </h5>
+                      <p className="text-center small">
+                        Silahkan login untuk melanjutkan
+                      </p>
+                    </div>
+                    <form className="row g-3 needs-validation" onSubmit={handleSubmit}>
+                      <div className="col-12">
+                        {/* <label htmlFor="yourUsername" className="form-label">
+                          Username
+                        </label> */}
+                        <div className="input-group has-validation">
+                          <input
+                            required
+                            type="text"
+                            className="form-control form-control"
+                            onChange={(e) => setUsernama(e.target.value)}
+                            placeholder="Username"
+                          // style={{ backgroundColor: "antiquewhite" }}
+                          />
 
+                        </div>
+                      </div>
+                      <div className="col-12">
+                        {/* <label htmlFor="yourPassword" className="form-label">
+                          Password
+                        </label> */}
+                        <div className="input-group">
+                          <input
+                            required
+                            type={st ? "text" : "password"}
+                            className="form-control"
+                            placeholder="Password"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={passwordText} onChange={(e) => setPasswordText(e.target.value)}
+                          />
+                          {st ?
+                            <button onClick={() => setSt(!st)} className="btn btn-primary btn-xs" type="button">
+                              <i className="mdi mdi-eye-off" />
+                            </button>
+                            :
+                            <button onClick={() => setSt(!st)} className="btn btn-primary btn-xs" type="button">
+                              <i className="mdi mdi-eye" />
+                            </button>
+                          }
+                        </div>
 
-            <button className="" onClick={handleShow}>
-              Login
-            </button>
-          </div>
-        </div>
-      </div>
-      <Modal
-        dialogClassName="modal-m modal-dialog-centered"
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}>
-        <form onSubmit={handleSubmit}>
-          <Modal.Header closeButton>
-            <Modal.Title className="modal-title-center">Silahkan Login!!!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="mb-3 col-md-12">
-              <input
-                type="text"
-                className="form-control form-control"
-                onChange={(e) => setUsernama(e.target.value)}
-                placeholder="Username"
-                style={{ backgroundColor: "antiquewhite" }}
-              />
-            </div>
-
-            <div className="mb-3 col-md-12">
-              <div className="input-group">
-                <input
-                  required
-                  type={st ? "text" : "password"}
-                  className="form-control"
-                  aria-label="Recipient's username"
-                  aria-describedby="basic-addon2"
-                  value={passwordText} onChange={(e) => setPasswordText(e.target.value)}
-                />
-                {st ?
-                  <button onClick={() => setSt(!st)} className="btn btn-success btn-xs" type="button">
-                    <i className="mdi mdi-eye-off" />
-                  </button>
-                  :
-                  <button onClick={() => setSt(!st)} className="btn btn-success btn-xs" type="button">
-                    <i className="mdi mdi-eye" />
-                  </button>
-                }
+                      </div>
+                      {/* <div className="col-12">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            name="remember"
+                            defaultValue="true"
+                            id="rememberMe"
+                          />
+                          <label className="form-check-label" htmlFor="rememberMe">
+                            Remember me
+                          </label>
+                        </div>
+                      </div> */}
+                      <div className="col-12">
+                        <button className="btn btn-primary w-100" type="submit">
+                          Login
+                        </button>
+                      </div>
+                      {/* <div className="col-12">
+                        <p className="small mb-0">
+                          Don't have account?{" "}
+                          <a href="pages-register.html">Create an account</a>
+                        </p>
+                      </div> */}
+                    </form>
+                  </div>
+                </div>
+                <div className="credits">
+                  {/* All the links in the footer should remain intact. */}
+                  {/* You can delete the links only if you purchased the pro version. */}
+                  {/* Licensing information: https://bootstrapmade.com/license/ */}
+                  {/* Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ */}
+                  Designed by <a href="https://hizra.co.id" target="_blank">Hizratech</a>
+                </div>
               </div>
             </div>
-            <div className="text-center mb-4">
-              <button type="submit" className="btn btn-info  btn-block">
-                LOGIN
-              </button>
-            </div>
-          </Modal.Body>
-        </form>
-      </Modal>
-      <div
-        className="modal fade"
-        id="subscribeModal"
-        tabIndex={-1}
-        aria-labelledby="subscribeModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div className="modal-content">
-            <div className="modal-header">
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
-            <div className="modal-body">
-              <form
-                action="#"
-                method="get"
-                className="custom-form mt-lg-4 mt-2"
-                role="form"
-              >
-                <h2 className="modal-title" id="subscribeModalLabel">
-                  Stay up to date
-                </h2>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  pattern="[^ @]*@[^ @]*"
-                  className="form-control"
-                  placeholder="your@email.com"
-                  required
-                />
-                <button type="submit" className="form-control">
-                  Notify
-                </button>
-              </form>
-            </div>
-            <div className="modal-footer justify-content-center">
-              <p>By signing up, you agree to our Privacy Notice</p>
-            </div>
           </div>
-        </div>
+        </section>
       </div>
+
 
     </main>
 

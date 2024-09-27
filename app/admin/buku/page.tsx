@@ -125,14 +125,10 @@ const Buku = () => {
               <div className="card-title col-md-6 mt-2">
                 <div className="row">
                   <div className="col-md-3">
-                    <h6
-                      className={`card-title ${montserrat.className}`}
-                      style={{
-                        fontSize: "20px",
-                        color: "#333",
-                        fontWeight: "600",
-                      }}
-                    >
+                  <h6
+                className={`card-title ${montserrat.className}`}
+                style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
+              >
                       Kategori
                     </h6>
                   </div>

@@ -77,11 +77,7 @@ const Lemari = () => {
             <div className="card-header">
               <h6
                 className={`card-title ${montserrat.className}`}
-                style={{
-                  fontSize: "20px",
-                  color: "#333",
-                  fontWeight: "600",
-                }}
+                style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
               >
                 Lemari
               </h6>

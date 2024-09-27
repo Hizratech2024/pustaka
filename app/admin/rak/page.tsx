@@ -84,12 +84,12 @@ const Rak = () => {
     },
     ...(lemariId === "Semua Data"
       ? [
-          {
-            name: "Lemari",
-            selector: (row: any) => row.LemariTb?.nama,
-            sortable: true,
-          },
-        ]
+        {
+          name: "Lemari",
+          selector: (row: any) => row.LemariTb?.nama,
+          sortable: true,
+        },
+      ]
       : []),
     {
       name: "Action",
@@ -113,11 +113,7 @@ const Rak = () => {
                   <div className="col-md-3">
                     <h6
                       className={`card-title ${montserrat.className}`}
-                      style={{
-                        fontSize: "20px",
-                        color: "#333",
-                        fontWeight: "600",
-                      }}
+                      style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
                     >
                       Rak
                     </h6>

@@ -136,6 +136,44 @@ export default function MenuAdmin() {
               </li>
             </ul>
           </li>
+
+          <li className="nav-heading">Setting</li>
+          <li className="nav-item">
+            <Link
+              href="/admin/Slide"
+              className="nav-link collapsed"
+            >
+              <i className="bi bi-gear-fill"></i>
+              <span>Profil</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              href="/admin/pengumuman"
+              className="nav-link collapsed"
+            >
+              <i className="bi bi-megaphone-fill"></i>
+              <span>Pengumuman</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              href="/admin/berita"
+              className="nav-link collapsed"
+            >
+              <i className="bi bi-newspaper"></i>
+              <span>Berita</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              href="/admin/slide"
+              className="nav-link collapsed"
+            >
+              <i className="bi bi-card-image"></i>
+              <span>Slide</span>
+            </Link>
+          </li>
         </ul>
       </aside>
     </div>

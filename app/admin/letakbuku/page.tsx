@@ -85,10 +85,10 @@ const LetakBuku = () => {
 
   const filteredItems = all
     ? dataletakbuku.filter(
-        (item: any) =>
-          item.BukuTb.judul &&
-          item.BukuTb.judul.toLowerCase().includes(filterText.toLowerCase())
-      )
+      (item: any) =>
+        item.BukuTb.judul &&
+        item.BukuTb.judul.toLowerCase().includes(filterText.toLowerCase())
+    )
     : dataletakbukuterpilih;
 
   const handlelemari = (e: any) => {
@@ -131,102 +131,102 @@ const LetakBuku = () => {
 
   const columns = !all
     ? [
-        {
-          name: "No",
-          cell: (row: any, index: number) => (
-            <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>
-          ),
-          sortable: false,
-          width: "80px",
-        },
-        {
-          name: "Judul Buku",
-          selector: (row: any) => row.BukuTb.judul,
-          sortable: true,
-        },
-        {
-          name: "Penerbit",
-          selector: (row: any) => row.BukuTb.penerbit,
-          sortable: true,
-        },
-        {
-          name: "Penulis",
-          selector: (row: any) => row.BukuTb.penulis,
-          sortable: true,
-        },
-        {
-          name: "Jumlah",
-          selector: (row: any) => row.qty,
-          sortable: true,
-        },
-        {
-          name: "Action",
-          cell: (row: any) => (
-            <div className="d-flex">
-              <Delete
-                letakbukuId={row.id}
-                reload={reload}
-                reloadtabel={reloadtabel}
-                qty={row.qty}
-                bukuId={row.bukuId}
-                rakId={row.rakId}
-                reloadbuku={reloadbuku}
-              />
-            </div>
-          ),
-        },
-      ]
+      {
+        name: "No",
+        cell: (row: any, index: number) => (
+          <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>
+        ),
+        sortable: false,
+        width: "80px",
+      },
+      {
+        name: "Judul Buku",
+        selector: (row: any) => row.BukuTb.judul,
+        sortable: true,
+      },
+      {
+        name: "Penerbit",
+        selector: (row: any) => row.BukuTb.penerbit,
+        sortable: true,
+      },
+      {
+        name: "Penulis",
+        selector: (row: any) => row.BukuTb.penulis,
+        sortable: true,
+      },
+      {
+        name: "Jumlah",
+        selector: (row: any) => row.qty,
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row: any) => (
+          <div className="d-flex">
+            <Delete
+              letakbukuId={row.id}
+              reload={reload}
+              reloadtabel={reloadtabel}
+              qty={row.qty}
+              bukuId={row.bukuId}
+              rakId={row.rakId}
+              reloadbuku={reloadbuku}
+            />
+          </div>
+        ),
+      },
+    ]
     : [
-        {
-          name: "No",
-          cell: (row: any, index: number) => (
-            <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>
-          ),
-          sortable: false,
-          width: "80px",
-        },
-        {
-          name: "Judul Buku",
-          selector: (row: any) => row.BukuTb.judul,
-          sortable: true,
-        },
-        {
-          name: "Penerbit",
-          selector: (row: any) => row.BukuTb.penerbit,
-          sortable: true,
-        },
-        {
-          name: "Jumlah",
-          selector: (row: any) => row.qty,
-          sortable: true,
-        },
-        {
-          name: "Lemari",
-          selector: (row: any) => row.RakTb.LemariTb.nama,
-          sortable: true,
-        },
-        {
-          name: "Rak",
-          selector: (row: any) => row.RakTb.nama,
-          sortable: true,
-        },
-        {
-          name: "Action",
-          cell: (row: any) => (
-            <div className="d-flex">
-              <Delete
-                letakbukuId={row.id}
-                reload={reload}
-                reloadtabel={reloadtabel}
-                qty={row.qty}
-                bukuId={row.bukuId}
-                rakId={row.rakId}
-                reloadbuku={reloadbuku}
-              />
-            </div>
-          ),
-        },
-      ];
+      {
+        name: "No",
+        cell: (row: any, index: number) => (
+          <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>
+        ),
+        sortable: false,
+        width: "80px",
+      },
+      {
+        name: "Judul Buku",
+        selector: (row: any) => row.BukuTb.judul,
+        sortable: true,
+      },
+      {
+        name: "Penerbit",
+        selector: (row: any) => row.BukuTb.penerbit,
+        sortable: true,
+      },
+      {
+        name: "Jumlah",
+        selector: (row: any) => row.qty,
+        sortable: true,
+      },
+      {
+        name: "Lemari",
+        selector: (row: any) => row.RakTb.LemariTb.nama,
+        sortable: true,
+      },
+      {
+        name: "Rak",
+        selector: (row: any) => row.RakTb.nama,
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row: any) => (
+          <div className="d-flex">
+            <Delete
+              letakbukuId={row.id}
+              reload={reload}
+              reloadtabel={reloadtabel}
+              qty={row.qty}
+              bukuId={row.bukuId}
+              rakId={row.rakId}
+              reloadbuku={reloadbuku}
+            />
+          </div>
+        ),
+      },
+    ];
 
   return (
     <div>
@@ -244,11 +244,7 @@ const LetakBuku = () => {
                     <div className="col-md-12">
                       <h6
                         className={`card-title ${montserrat.className}`}
-                        style={{
-                          fontSize: "20px",
-                          color: "#333",
-                          fontWeight: "600",
-                        }}
+                        style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
                       >
                         Lemari
                       </h6>
@@ -276,11 +272,7 @@ const LetakBuku = () => {
                     <div className="col-md-12">
                       <h6
                         className={`card-title ${montserrat.className}`}
-                        style={{
-                          fontSize: "20px",
-                          color: "#333",
-                          fontWeight: "600",
-                        }}
+                        style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
                       >
                         Rak
                       </h6>

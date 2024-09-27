@@ -1,81 +1,77 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import Add from "./action/Add";
-import Delete from "./action/Delete";
-import Swal from "sweetalert2";
-import Update from "./action/Update";
-import { Font } from "@/app/helper";
-import Link from "next/link";
+"use client"
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import Add from './action/Add';
+import Update from './action/Update';
+import Delete from './action/Delete';
+import { tanggalIndo } from '@/app/helper';
 
-const Kategori = () => {
-  const [datakategori, setDatakategori] = useState([]);
-  const [filterText, setFilterText] = React.useState("");
+const Pengumuman = () => {
+  const [datapengumuman, setDatapengumuman] = useState([])
+  const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-  const montserrat = Font();
 
   useEffect(() => {
-    reload();
-  }, []);
+    reload()
+  }, [])
 
   const reload = async () => {
     try {
-      const response = await fetch(`/admin/api/kategori`);
+      const response = await fetch(`/superadmin/api/pengumuman`);
       const result = await response.json();
-      setDatakategori(result);
+      setDatapengumuman(result);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
-  };
+  }
 
   const handleRowsPerPageChange = (newPerPage: number, page: number) => {
     setItemsPerPage(newPerPage);
     setCurrentPage(page);
   };
 
-  const filteredItems = datakategori.filter(
-    (item: any) =>
-      item.nama && item.nama.toLowerCase().includes(filterText.toLowerCase())
+  const filteredItems = datapengumuman.filter(
+    (item: any) => item.judul && item.judul.toLowerCase().includes(filterText.toLowerCase()),
   );
 
   const columns = [
     {
-      name: "No",
-      cell: (row: any, index: number) => (
-        <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>
-      ),
+      name: 'No',
+      cell: (row: any, index: number) => <div>{(currentPage - 1) * itemsPerPage + index + 1}</div>,
       sortable: false,
-      width: "80px",
+      width: '80px'
     },
     {
-      name: "Nama Kategori",
-      selector: (row: any) => row.nama,
+      name: 'Tanggal Terbit',
+      selector: (row: any) => tanggalIndo(row.createdAt),
       sortable: true,
     },
     {
-      name: "Action",
+      name: 'Judul',
+      selector: (row: any) => row.judul,
+      sortable: true,
+    },
+    {
+      name: 'Action',
       cell: (row: any) => (
         <div className="d-flex">
-          <Update kategori={row} reload={reload} />
-          <Delete kategoriId={row.id} reload={reload} />
+          <Update reload={reload} pengumuman={row} />
+          <Delete reload={reload} pengumumanId={row.id} />
         </div>
       ),
+      width: '150px'
     },
+
   ];
 
   return (
     <div>
       <div className="row">
-        <div className="col-lg-12">
+        <div className="col-md-12 grid-margin stretch-card">
           <div className="card">
             <div className="card-header">
-              <h6
-                className={`card-title ${montserrat.className}`}
-                style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
-              >
-                Data Kategori
-              </h6>
+              <h1 className="card-title">Data Pengumuman</h1>
             </div>
             <div className="card-body">
               <div className="row mb-3">
@@ -84,9 +80,7 @@ const Kategori = () => {
                 </div>
                 <div className="col-md-3">
                   <div className="input-group mb-3  input-success">
-                    <span className="input-group-text">
-                      <i className="mdi mdi-magnify"></i>
-                    </span>
+                    <span className="input-group-text border-0"><i className="mdi mdi-magnify"></i></span>
                     <input
                       id="search"
                       type="text"
@@ -113,8 +107,7 @@ const Kategori = () => {
                 customStyles={{
                   headRow: {
                     style: {
-                      backgroundColor: "#53d0b2",
-                      // fontSize: 15,
+                      backgroundColor: '#53d0b2',
                     },
                   },
                 }}
@@ -122,9 +115,9 @@ const Kategori = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
+      </div >
+    </div >
+  )
+}
 
-export default Kategori;
+export default Pengumuman
