@@ -113,7 +113,7 @@ const Laporan = () => {
   ];
   return (
     <>
-      <div>
+      {/* <div>
         <div className="pagetitle bg-white p-3 rounded shadow-sm flex items-center">
           <nav>
             <ol className="breadcrumb flex items-center">
@@ -126,7 +126,7 @@ const Laporan = () => {
           </nav>
           <h3>Peminjaman</h3>
         </div>
-      </div>
+      </div> */}
       <div className="bg-white p-3 rounded shadow-sm mt-3">
         <div className="row mb-3">
           <div className="col-md-3 ms-auto">

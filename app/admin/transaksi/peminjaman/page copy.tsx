@@ -399,7 +399,7 @@ const TransaksiPeminjaman = () => {
 
   return (
     <div>
-      {/* <div>
+      <div>
         <div className="pagetitle bg-white p-3 rounded shadow-sm flex items-center mb-3">
           <nav>
             <ol className="breadcrumb flex items-center">
@@ -412,7 +412,7 @@ const TransaksiPeminjaman = () => {
           </nav>
           <h3>Peminjaman</h3>
         </div>
-      </div> */}
+      </div>
       <div className="bg-white rounded shadow-sm p-3">
         <form className="">
           <div className="mb-3">
@@ -461,7 +461,7 @@ const TransaksiPeminjaman = () => {
                   </div>
                   <div className="col-sm-1"></div>
                   <label
-                    className="col-sm-3 col-form-label"
+                    className="col-sm-2 col-form-label"
                     style={{ fontSize: 15, color: "black" }}
                   >
                     Status
@@ -481,12 +481,63 @@ const TransaksiPeminjaman = () => {
                     />
                   </div>
                 </div>
+                <div className="mb-5 row">
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Tanggal Peminjaman
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      disabled
+                      required
+                      type="date"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={tanggalPeminjaman}
+                      onChange={(e) => setTanggalPeminjaman(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="col-sm-1"></div>
+
+                  <label
+                    className="col-sm-2 col-form-label"
+                    style={{ fontSize: 15, color: "black" }}
+                  >
+                    Tanggal Pengembalian
+                  </label>
+                  <div className="col-sm-3">
+                    <input
+                      required
+                      type="date"
+                      className="form-control"
+                      style={{
+                        fontSize: 15,
+                        color: "black",
+                        borderColor: "grey",
+                      }}
+                      value={tanggalPengembalian}
+                      onChange={(e) => setTanggalPengembalian(e.target.value)}
+                      max={maxDate()}
+                      // readOnly // Menggunakan readOnly agar tidak dapat diubah secara manual
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* Form lanjutan di sini */}
+              <div className="form-group">
                 <div className="mb-3 row">
                   <label
                     className="col-sm-2 col-form-label"
                     style={{ fontSize: 15, color: "black" }}
                   >
-                    No Peminjaman
+                    No Faktur
                   </label>
                   <div className="col-sm-3">
                     <input
@@ -507,13 +558,14 @@ const TransaksiPeminjaman = () => {
                   <div className="col-sm-1"></div>
 
                   <label
-                    className="col-sm-3 col-form-label"
+                    className="col-sm-2 col-form-label"
                     style={{ fontSize: 15, color: "black" }}
                   >
-                    Tanggal Pengembalian
+                    Tanggal
                   </label>
                   <div className="col-sm-3">
                     <input
+                      disabled
                       required
                       type="date"
                       className="form-control"
@@ -522,12 +574,12 @@ const TransaksiPeminjaman = () => {
                         color: "black",
                         borderColor: "grey",
                       }}
-                      value={tanggalPengembalian}
-                      onChange={(e) => setTanggalPengembalian(e.target.value)}
-                      max={maxDate()}
+                      value={tanggal}
+                      onChange={(e) => setTanggal(e.target.value)}
                     />
                   </div>
                 </div>
+
                 <div className="mb-3 row">
                   <label
                     className="col-sm-2 col-form-label"
@@ -564,7 +616,7 @@ const TransaksiPeminjaman = () => {
                   <div className="col-sm-1"></div>
 
                   <label
-                    className="col-sm-3 col-form-label"
+                    className="col-sm-2 col-form-label"
                     style={{ fontSize: 15, color: "black" }}
                   >
                     Nama Buku
@@ -581,9 +633,6 @@ const TransaksiPeminjaman = () => {
                     />
                   </div>
                 </div>
-              </div>
-              {/* Form lanjutan di sini */}
-              <div className="form-group">
                 <div className="table-responsive">
                   <table className="table">
                     <thead className="">
@@ -644,8 +693,8 @@ const TransaksiPeminjaman = () => {
                               // }
                               style={{
                                 fontSize: 15,
-                                width: 120,
-                                maxWidth: 120,
+                                width: 200,
+                                maxWidth: 200,
                                 color: "black",
                                 borderColor: "grey",
                               }}
@@ -688,8 +737,8 @@ const TransaksiPeminjaman = () => {
                               min="1"
                               style={{
                                 backgroundColor: "white",
-                                width: 60,
-                                maxWidth: 60,
+                                width: 80,
+                                maxWidth: 80,
                                 fontSize: 15,
                                 color: "black",
                                 borderColor: "grey",
@@ -805,7 +854,7 @@ const TransaksiPeminjaman = () => {
                         }}
                       >
                         {" "}
-                        {totalqty}
+                        {/* {currencyFormat(total)} */}
                       </h3>
                     </Col>
                   </Row>
