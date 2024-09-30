@@ -220,17 +220,17 @@ const Buku = () => {
         <div className="col-lg-12">
           <div className="card">
             <div className="card-header">
-              <div className="card-title col-md-6 mt-2">
+              <div className="card-title col-md-12 mt-2">
                 <div className="row">
-                  <div className="col-md-3">
+                  <div className="col-md-2">
                     <h6
-                      className={`card-title ${montserrat.className}`}
+                      className={`col-form-label ${montserrat.className}`}
                       style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
                     >
                       Kategori
                     </h6>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-3">
                     <select
                       autoFocus
                       required
@@ -305,7 +305,7 @@ const Buku = () => {
                   },
                 }}
               />
-             {databuku.length > 0 ?
+              {databuku.length > 0 ?
                 <div className="row mb-3">
                   <div className="col-md-3">
                     <button type='button' onClick={exportToExcel} className="btn btn-success btn-icon-text">
@@ -324,7 +324,6 @@ const Buku = () => {
                       </button>
                     </li>
                   </div>
-
                 </div>
                 :
                 <div className="row mb-3">
