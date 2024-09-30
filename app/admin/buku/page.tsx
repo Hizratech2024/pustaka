@@ -207,6 +207,13 @@ const Buku = () => {
     }
   }
 
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredItems);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data Buku');
+    XLSX.writeFile(workbook, 'Data Buku.xlsx');
+  };
+
   return (
     <div>
       <div className="row">
@@ -298,24 +305,47 @@ const Buku = () => {
                   },
                 }}
               />
-              <div className="row mb-3">
-                <div className="col-md-3">
+             {databuku.length > 0 ?
+                <div className="row mb-3">
+                  <div className="col-md-3">
+                    <button type='button' onClick={exportToExcel} className="btn btn-success btn-icon-text">
+                      Ekspor ke Excel
+                    </button>
+                  </div>
+                  <div className="col-md-9 d-flex justify-content-end">
+                    <li>
+                      <button type='button' onClick={downloadtemplate} className="btn btn-primary btn-icon-text mx-2">
+                        Download Template
+                      </button>
+                    </li>
+                    <li>
+                      <button type='button' onClick={handleShow} className="btn btn-info btn-icon-text">
+                        Import dari Excel
+                      </button>
+                    </li>
+                  </div>
 
                 </div>
-                <div className="col-md-9 d-flex justify-content-end">
-                  <li>
-                    <button type='button' onClick={downloadtemplate} className="btn btn-primary btn-icon-text mx-2">
-                      Download Template
-                    </button>
-                  </li>
-                  <li>
-                    <button type='button' onClick={handleShow} className="btn btn-info btn-icon-text">
-                      Import dari Excel
-                    </button>
-                  </li>
-                </div>
+                :
+                <div className="row mb-3">
+                  <div className="col-md-3">
 
-              </div>
+                  </div>
+                  <div className="col-md-9 d-flex justify-content-end">
+                    <li>
+                      <button type='button' onClick={downloadtemplate} className="btn btn-primary btn-icon-text mx-2">
+                        Download Template
+                      </button>
+                    </li>
+                    <li>
+                      <button type='button' onClick={handleShow} className="btn btn-info btn-icon-text">
+                        Import dari Excel
+                      </button>
+                    </li>
+                  </div>
+
+                </div>
+              }
               <Modal
                 dialogClassName="modal-xl"
                 show={show}

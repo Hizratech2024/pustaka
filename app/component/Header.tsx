@@ -1,9 +1,11 @@
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
 import Swal from 'sweetalert2';
+import { supabaseBUCKET, supabaseUrl } from '../helper';
 
 export default function Header() {
+    const session = useSession()
     function tombol() {
         Swal.fire({
             title: "Anda Yakin..?",
@@ -23,10 +25,21 @@ export default function Header() {
         <div>
             <header id="header" className="header fixed-top d-flex align-items-center">
                 <div className="d-flex align-items-center justify-content-between">
-                    <Link href="/" className="logo d-flex align-items-center">
-                        <img width={50} height={50} src="/tema/img/logo3.png" alt="" />
-                        <span className="d-none d-lg-block">SMAN 1 Pekanbaru</span>
-                    </Link>
+                    
+                    {session.data?.namasekolah === undefined || session.data?.namasekolah==null 
+                    || session.data?.logo === undefined || session.data?.logo==null
+                    ?
+                        <Link href="/" className="logo d-flex align-items-center">
+                            <img  width={50} height={50} src='/tema/img/logo3.png' alt="" />
+                            <span className="d-none d-lg-block">ePustaka</span>
+                        </Link>
+                        :
+                        <Link href="/" className="logo d-flex align-items-center">
+                            <img className="img-bulek" width={50} height={50} src={`${supabaseUrl}/storage/v1/object/public/${supabaseBUCKET}/foto-profil-pustaka/${session.data?.logo}`} alt="" />
+                            <span className="d-none d-lg-block">{session.data?.namasekolah}</span>
+                        </Link>
+                    }
+
                     <i className="bi bi-list toggle-sidebar-btn" />
                 </div>
                 {/* End Logo */}

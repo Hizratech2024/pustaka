@@ -76,6 +76,8 @@ export const authOptions: NextAuthOptions = {
           hp: user.KaryawanTb?.hp,
           karyawan: user.KaryawanTb,
           sekolah: user.SekolahTb,
+          namasekolah: user.SekolahTb?.nama,
+          logo: user.SekolahTb?.logo,
           member: user.MemberTb,
           role: user.role,
           sekolahId: user.SekolahTb?.id,

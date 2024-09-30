@@ -1530,3 +1530,113 @@ h6 {
   webkit-animation: shine .75s;
   animation: shine .75s;
 }
+
+.author-profile {
+  text-align: center;
+}
+
+.author-profile .card-body {
+  padding: 0;
+}
+
+.author-profile .author-media {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.author-profile .author-media img {
+  width: 130px;
+  border-radius: 100%;
+  height: 130px;
+  object-fit: cover;
+}
+
+.author-profile .author-info .title {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.author-profile .author-info span {
+  display: block;
+  color: #888888;
+}
+
+.author-profile .info-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  border-top: 1px solid #cdcdcd;
+  padding: 18px 30px;
+  color: #333333;
+}
+
+.author-profile .info-list li a {
+  color: #333333;
+}
+
+.author-profile .info-list li span {
+  color: #888888;
+  font-weight: 500;
+}
+
+.author-profile .card-footer {
+  padding: 30px;
+  display: block;
+}
+
+.author-profile .card-footer .form-control {
+  height: 45px;
+  border-color: #cdcdcd;
+  overflow: hidden;
+  line-height: 34px;
+}
+
+.author-profile .upload-link {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  line-height: 32px;
+  background: var(--primary-light);
+  bottom: 0;
+  right: 0px;
+  box-shadow: 0 0 10px 0 rgba(0, 24, 128, 0.1);
+  border-radius: 100%;
+  color: var(--text-dark);
+  overflow: hidden;
+  border: 2px solid #cdcdcd;
+}
+
+.author-profile .upload-link .update-flie {
+  position: absolute;
+  opacity: 0;
+  z-index: 0;
+  width: 100%;
+  cursor: pointer;
+  left: 0;
+  height: 100%;
+}
+
+[data-theme-version="dark"] .avatar-list.avatar-list-stacked .avatar,
+[data-theme-version="dark"] .author-profile .card-footer .form-control,
+[data-theme-version="dark"] .profile-card .card-header,
+[data-theme-version="dark"] .author-profile .upload-link {
+  border-color: #444444;
+}
+
+[data-theme-version="dark"] .avatar-list.avatar-list-stacked .avatar,
+[data-theme-version="dark"] .author-profile .card-footer .form-control,
+[data-theme-version="dark"] .profile-card .card-header,
+[data-theme-version="dark"] .author-profile .upload-link {
+  border-color: #444444;
+}
+
+.img-bulek {
+
+  border-radius: 50%; /* Ini yang membuat gambar menjadi lingkaran */
+  object-fit: cover;  /* Memastikan gambar sesuai dengan lingkaran */
+}

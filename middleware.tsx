@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -24,35 +25,36 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  if (token && pathname.match(loginPath)) {
-    const url = new URL("/", request.url);
-    return NextResponse.redirect(url);
-  }
 
-  if (disableAuth.some((x) => pathname.startsWith(x))) {
-    return res;
-  }
+  if (token) {
 
-  if (requireAuth.some((path) => pathname.startsWith(path))) {
-    if (!token) {
+    // Redirect if trying to access login page while authenticated
+    if (pathname.match(loginPath)) {
+      const url = new URL("/", request.url);
+      return NextResponse.redirect(url);
+    }
+
+    // Role-based redirect
+    if (pathname.startsWith("/superadmin") && token.role !== "Superadmin") {
+      const url = new URL("/", request.url);
+      return NextResponse.redirect(url);
+    }
+
+    if (pathname.startsWith("/admin") && token.role !== "Admin") {
+      const url = new URL("/", request.url);
+      return NextResponse.redirect(url);
+    }
+  } else {
+    if (disableAuth.some((x) => pathname.startsWith(x))) {
+      return res;
+    }
+
+    // Redirect to login if no token
+    if (requireAuth.some((path) => pathname.startsWith(path))) {
       const url = new URL("/login", request.url);
-      // url.searchParams.set("callbackUrl", encodeURI(request.url));
       return NextResponse.redirect(url);
     }
-  }
 
-  if (pathname.startsWith("/superadmin")) {
-    if (token?.role !== "Superadmin") {
-      const url = new URL("/", request.url);
-      return NextResponse.redirect(url);
-    }
-  }
-
-  if (pathname.startsWith("/admin")) {
-    if (token?.role !== "Admin") {
-      const url = new URL("/", request.url);
-      return NextResponse.redirect(url);
-    }
   }
 
   return res;

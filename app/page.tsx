@@ -30,7 +30,7 @@ export default async function Home() {
             </ol>
           </nav>
           <h3>Dashboard</h3>
-          <pre>{JSON.stringify(session)}</pre>
+          {/* <pre>{JSON.stringify(session)}</pre> */}
         </div>
       </div>
     </>

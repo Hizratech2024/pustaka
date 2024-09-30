@@ -140,7 +140,7 @@ export default function MenuAdmin() {
           <li className="nav-heading">Setting</li>
           <li className="nav-item">
             <Link
-              href="/admin/Slide"
+              href="/admin/profil"
               className="nav-link collapsed"
             >
               <i className="bi bi-gear-fill"></i>

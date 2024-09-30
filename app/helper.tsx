@@ -16,7 +16,6 @@ export let supabaseBUCKET = "uploadfile";
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export function Font() {
-  console.log(montserrat);
   return montserrat;
 }
 

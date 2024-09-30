@@ -93,7 +93,7 @@ const Login = () => {
               <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
                 <div className="d-flex justify-content-center py-4">
                   <a
-                    href="index.html"
+                    href=""
                     className="logo d-flex align-items-center w-auto"
                   >
                     <img src="/tema/img/logo3.png" alt="" width={150} />
