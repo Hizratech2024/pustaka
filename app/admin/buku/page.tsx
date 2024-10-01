@@ -191,7 +191,8 @@ const Buku = () => {
 
       if (xxx.data.pesan === 'berhasil') {
         handleClose();
-        reload()
+        reload();
+        reloadkategori();
         clearForm()
         setIsLoading(false)
         Swal.fire({

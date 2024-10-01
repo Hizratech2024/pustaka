@@ -1640,3 +1640,9 @@ h6 {
   border-radius: 50%; /* Ini yang membuat gambar menjadi lingkaran */
   object-fit: cover;  /* Memastikan gambar sesuai dengan lingkaran */
 }
+
+.table-header {
+  background-color: #53d0b2;
+  color: black;
+  font-size: 18px;
+}

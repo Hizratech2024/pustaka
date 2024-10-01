@@ -23,8 +23,17 @@ export const POST = async (request: NextRequest) => {
   return NextResponse.json({ pesan: "berhasil" });
 };
 
-export const GET = async () => {
+export const GET = async (request:NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
   const kategori = await prisma.kategoriTb.findMany({
+    where:{
+      sekolahId:sekolahId
+    },
     orderBy: {
       nama: "asc",
     },

@@ -24,7 +24,7 @@ export const POST = async (request: NextRequest) => {
   });
 
   if (xxx) {
-    jumlahbuku = xxx.qty;
+    jumlahbuku = xxx.stoklemari;
   }
 
   if (jumlahbuku < qty) {
@@ -60,7 +60,7 @@ export const POST = async (request: NextRequest) => {
         id: Number(formData.get("bukuId")),
       },
       data: {
-        qty: hasil,
+        stoklemari: hasil,
       },
     });
   } else {
@@ -78,7 +78,7 @@ export const POST = async (request: NextRequest) => {
         id: Number(formData.get("bukuId")),
       },
       data: {
-        qty: hasil,
+        stoklemari: hasil,
       },
     });
   }

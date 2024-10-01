@@ -23,7 +23,6 @@ function Add({
   const [filterText, setFilterText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [isLoading, setIsLoading] = useState(false);
   const [qty, setQty] = useState("");
   const [bukuId, setBukuId] = useState("");
   const [IdLain, setIdLain] = useState("");
@@ -57,6 +56,18 @@ function Add({
     setIdLain("");
     setQty(""); // Clear quantity input when closing modal
   };
+
+  const [isLoading, setIsLoading] = useState(false);
+  if (isLoading) {
+    Swal.fire({
+      title: "Mohon tunggu!",
+      html: "Sedang mengirim data ke server",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    })
+  }
 
   const handleRowsPerPageChange = (newPerPage: number, page: number) => {
     setItemsPerPage(newPerPage);
@@ -101,7 +112,7 @@ function Add({
     },
     {
       name: "Jumlah Buku",
-      selector: (row: any) => row.qty,
+      selector: (row: any) => row.stoklemari,
       sortable: true,
     },
     {
@@ -111,14 +122,14 @@ function Add({
           (data: any) =>
             data.bukuId === Number(row.id) &&
             data.rakId === Number(rakId) &&
-            data.qty === data.BukuTb.stok
+            data.qty === data.BukuTb.stokinput
         ) ? null : dataAll.some(
-            (data: any) =>
-              data.bukuId === Number(row.id) &&
-              data.rakId === Number(rakId) &&
-              data.BukuTb.qty !== 0 &&
-              data.qty !== data.BukuTb.stok
-          ) ? (
+          (data: any) =>
+            data.bukuId === Number(row.id) &&
+            data.rakId === Number(rakId) &&
+            data.BukuTb.stoklemari !== 0 &&
+            data.qty !== data.BukuTb.stokinput
+        ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -129,12 +140,12 @@ function Add({
             </button>
           </div>
         ) : dataAll.some(
-            (data: any) =>
-              data.bukuId === Number(row.id) &&
-              data.rakId === Number(rakId) &&
-              data.BukuTb.qty === 0 &&
-              data.qty !== data.BukuTb.stok
-          ) ? (
+          (data: any) =>
+            data.bukuId === Number(row.id) &&
+            data.rakId === Number(rakId) &&
+            data.BukuTb.stoklemari === 0 &&
+            data.qty !== data.BukuTb.stokinput
+        ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -145,11 +156,11 @@ function Add({
             </button>
           </div>
         ) : dataAll.some(
-            (data: any) =>
-              data.bukuId === Number(row.id) &&
-              data.rakId !== Number(rakId) &&
-              data.BukuTb.qty !== 0
-          ) ? (
+          (data: any) =>
+            data.bukuId === Number(row.id) &&
+            data.rakId !== Number(rakId) &&
+            data.BukuTb.stoklemari !== 0
+        ) ? (
           <div className="d-flex">
             <button
               type="button"
@@ -160,11 +171,11 @@ function Add({
             </button>
           </div>
         ) : dataAll.some(
-            (data: any) =>
-              data.bukuId === Number(row.id) &&
-              data.rakId !== Number(rakId) &&
-              data.BukuTb.qty === 0
-          ) ? (
+          (data: any) =>
+            data.bukuId === Number(row.id) &&
+            data.rakId !== Number(rakId) &&
+            data.BukuTb.stoklemari === 0
+        ) ? (
           <div className="d-flex">
             <button
               type="button"

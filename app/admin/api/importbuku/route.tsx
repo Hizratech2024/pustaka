@@ -17,9 +17,10 @@ export const POST = async (request: NextRequest) => {
     let kategoriId = 0
     var x = [];
     for (let i = 0; i < pilihbarang.length; i++) {
-        const cekkode = await prisma.bukuTb.findUnique({
+        const cekkode = await prisma.bukuTb.findFirst({
             where: {
-                kodeBuku: String(pilihbarang[i].kodeBuku)
+                kodeBuku: String(pilihbarang[i].kodeBuku),
+                sekolahId: sekolahId
             },
         })
         if (cekkode) {
@@ -31,6 +32,7 @@ export const POST = async (request: NextRequest) => {
                     contains: pilihbarang[i].kategori,
                     mode: 'insensitive'
                 },
+                sekolahId: sekolahId
             }
         })
         if (xxx) {
@@ -54,7 +56,8 @@ export const POST = async (request: NextRequest) => {
             penulis: (pilihbarang[i].penulis),
             bahasa: (pilihbarang[i].bahasa),
             stok: Number(pilihbarang[i].jumlah),
-            qty: Number(pilihbarang[i].jumlah),
+            stokinput: Number(pilihbarang[i].jumlah),
+            stoklemari: Number(pilihbarang[i].jumlah),
             sekolahId: sekolahId
         });
     }

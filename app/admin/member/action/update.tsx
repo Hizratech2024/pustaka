@@ -221,7 +221,7 @@ const Update = ({
                 <label className="col-sm-6 col-form-label">No Hp</label>
                 <input
                   required
-                  type="text"
+                  type="number"
                   className="form-control"
                   value={hp}
                   onChange={(e) => setHp(e.target.value)}
@@ -272,7 +272,6 @@ const Update = ({
                 <label className="col-sm-6 col-form-label">Password</label>
                 <div className="input-group">
                   <input
-                    required
                     type={st ? "text" : "password"}
                     className="form-control"
                     aria-label="Recipient's username"

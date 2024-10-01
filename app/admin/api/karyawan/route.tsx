@@ -71,32 +71,26 @@ export const POST = async (request: NextRequest) => {
   return NextResponse.json({ pesan: "berhasil" });
 };
 
-export const GET = async () => {
-  const karyawan = await prisma.userTb.findMany({
+export const GET = async (request: NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
+
+  const karyawan = await prisma.karyawanTb.findMany({
     where: {
-      NOT: {
-        OR: [
-          {
-            role: {
-              equals: "Admin",
-              mode: "insensitive",
-            },
-          },
-          {
-            role: {
-              equals: "Member",
-              mode: "insensitive",
-            },
-          },
-        ],
-      },
+      sekolahId: sekolahId,
+      
     },
     orderBy: {
       id: "asc",
     },
     include: {
-      KaryawanTb: true,
+      UserTb: true,
     },
   });
+ 
   return NextResponse.json(karyawan, { status: 200 });
 };

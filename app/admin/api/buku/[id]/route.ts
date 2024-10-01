@@ -23,7 +23,8 @@ export const PATCH = async (
       penulis: String(formData.get("penulis")),
       bahasa: String(formData.get("bahasa")),
       stok: Number(formData.get("jumlah")),
-      qty: Number(formData.get("jumlah")),
+      stokinput: Number(formData.get("jumlah")),
+      stoklemari: Number(formData.get("jumlah")),
       deskripsi: String(formData.get("deskripsi")),
     },
   });

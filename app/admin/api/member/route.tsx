@@ -57,9 +57,9 @@ export async function POST(request: NextRequest) {
   await prisma.userTb.create({
     data: {
       nama: String(formData.get("nama")),
-      usernama: String(formData.get("username")),
+      usernama: String(formData.get("usernama")),
       password: await bcrypt.hash(String(formData.get("password")), 10),
-      role: "member",
+      role: "Member",
       MemberTb: {
         create: {
           nama: String(formData.get("nama")),
@@ -82,26 +82,23 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ pesan: "berhasil" });
 }
 
-export const GET = async () => {
-  const members = await prisma.userTb.findMany({
+export const GET = async (request: NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  const sekolahId = Number(token?.sekolahId);
+
+  const members = await prisma.memberTb.findMany({
     where: {
-      role: {
-        equals: "Member",
-        mode: "insensitive",
-      },
+      sekolahId: sekolahId
     },
     orderBy: {
       id: "asc",
     },
     include: {
-      MemberTb: true, // Pastikan MemberTb disertakan
+      UserTb: true,
     },
   });
-  return NextResponse.json(
-    members.map((member) => ({
-      ...member,
-      status: member.MemberTb?.status, // Ambil status dari MemberTb
-    })),
-    { status: 200 }
-  );
+  return NextResponse.json(members, { status: 200 });
 };

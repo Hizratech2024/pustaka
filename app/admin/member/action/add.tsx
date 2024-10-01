@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Modal from "react-bootstrap/Modal";
+import { tanggalHariIni } from "@/app/helper";
 
 const Add = ({ reload }: { reload: Function }) => {
   const [nama, setNama] = useState("");
   const [nis, setNis] = useState("");
   const [tempatLahir, setTempatLahir] = useState("");
-  const [tanggalLahir, setTanggalLahir] = useState("");
+  const [tanggalLahir, setTanggalLahir] = useState(tanggalHariIni);
   const [alamat, setAlamat] = useState("");
   const [nope, setNope] = useState("");
   const [email, setEmail] = useState("");
   // const [foto, setFoto] = useState("");
-  const [username, setUsername] = useState("");
+  const [usernama, setUsernama] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("VIP 0");
 
@@ -48,8 +49,7 @@ const Add = ({ reload }: { reload: Function }) => {
       formData.append("alamat", alamat);
       formData.append("nope", nope);
       formData.append("email", email);
-      // formData.append("foto", foto);
-      formData.append("username", username);
+      formData.append("usernama", usernama);
       formData.append("password", password);
       formData.append("status", status);
 
@@ -129,7 +129,7 @@ const Add = ({ reload }: { reload: Function }) => {
     setNama("");
     setNis("");
     setTempatLahir("");
-    setTanggalLahir("");
+    setTanggalLahir(tanggalHariIni);
     setAlamat("");
     setNope("");
     setEmail("");
@@ -260,8 +260,8 @@ const Add = ({ reload }: { reload: Function }) => {
                   required
                   type="text"
                   className="form-control"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={usernama}
+                  onChange={(e) => setUsernama(e.target.value)}
                 />
               </div>
               <div className="mb-3 col-md-6">

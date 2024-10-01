@@ -43,7 +43,6 @@ model SekolahTb {
   RakTb             RakTb[]
   LetakBukuTb       LetakBukuTb[]
   PeminjamanTb      PeminjamanTb[]
-  DetailPeminjaman  DetailPeminjaman[]
   PemesananTb       PemesananTb[]
   DetailPemesananTb DetailPemesananTb[]
   SlideTb           SlideTb[]
@@ -143,14 +142,15 @@ model KategoriTb {
 model BukuTb {
   id          Int      @id @default(autoincrement())
   kategoriId  Int
-  kodeBuku    String   @unique
+  kodeBuku    String
   judul       String
   penerbit    String
   tahunTerbit String
   penulis     String
   bahasa      String
+  stokinput   Int
   stok        Int
-  qty         Int
+  stoklemari  Int
   deskripsi   String?
   sekolahId   Int
   createdAt   DateTime @default(now())
@@ -228,13 +228,11 @@ model DetailPeminjaman {
   peminjamanId Int
   bukuId       Int
   qty          Int
-  sekolahId    Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   BukuTb       BukuTb       @relation(fields: [bukuId], references: [id], onDelete: Cascade)
   PeminjamanTb PeminjamanTb @relation(fields: [peminjamanId], references: [id], onDelete: Cascade)
-  SekolahTb    SekolahTb    @relation(fields: [sekolahId], references: [id], onDelete: Cascade)
 }
 
 model PemesananTb {

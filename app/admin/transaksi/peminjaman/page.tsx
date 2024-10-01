@@ -5,50 +5,130 @@ import SearchableSelect from "./action/SearchMember";
 import SearchKategori from "./action/SearchKategori";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { Font, tanggalHariIni, VIP0, VIP1 } from "@/app/helper";
+import { Font, maxDate, tanggalHariIni, VIP0, VIP1 } from "@/app/helper";
 import Swal from "sweetalert2";
 import AsyncSelect from "react-select/async";
 import { Col, Row } from "@themesberg/react-bootstrap";
 import SearchMember from "./action/SearchMember";
 import { StyleSelect } from "@/app/helper";
 import { Minus } from "react-feather";
-import { Button as Button1 } from "antd";
-
-interface MemberOption {
-  value: string;
-  label: string;
-  status: string;
-}
+import { Button as Button1 } from 'antd';
+import { Button } from 'primereact/button';
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
 
 const TransaksiPeminjaman = () => {
+  const [selectedMember, setSelectedMember] = useState(null);
   const [selected, setSelected] = useState(null);
   const [inputFields, setInputFields] = useState([]);
   const [noPeminjaman, setNoPeminjaman] = useState("");
+  const [memberId, setMemberId] = useState("");
   const [tanggal, setTanggal] = useState(tanggalHariIni);
   const [barcode, setBarcode] = useState("");
   const [totalqty, setTotalqty] = useState(0);
   const [dataBuku, setDataBuku] = useState([]);
   const [dataMember, setDataMember] = useState([]);
   const [selectMemberStatus, setSelectMemberStatus] = useState("");
-  const [tanggalPeminjaman, setTanggalPeminjaman] = useState(tanggalHariIni);
-  const [tanggalPengembalian, setTanggalPengembalian] = useState("");
+  const [deadline, setDeadline] = useState("");
   const ref = useRef<HTMLInputElement>(null);
   const refuang = useRef<HTMLInputElement>(null);
   const refqty = useRef<HTMLInputElement>(null);
   const montserrat = Font();
 
-  const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(false);
-
-  const [selectedMember, setSelectedMember] = useState<MemberOption | null>(
-    null
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  if (isLoading) {
+    Swal.fire({
+      title: "Mohon tunggu!",
+      html: "Sedang mengirim data ke server",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    })
+  }
 
   useEffect(() => {
     otomatisnopeminjaman();
     getbuku();
     getMember();
   }, []);
+
+  async function otomatisnopeminjaman() {
+    const response = await axios.get(`/admin/api/transaksiPeminjaman`);
+    const data = response.data;
+    setNoPeminjaman(data);
+  }
+
+  async function getbuku() {
+    const response = await axios.get(`/admin/api/buku`);
+    const data = response.data;
+    setDataBuku(data);
+  }
+
+  async function getMember() {
+    const response = await axios.get(`/admin/api/member`);
+    const data = response.data;
+    setDataMember(data);
+  }
+
+  const refresh = () => {
+    setInputFields([])
+    setTotalqty(0)
+    setMemberId('')
+    setSelectMemberStatus('')
+    setSelectedMember(null)
+    setBarcode('')
+    setDeadline('')
+    setTanggal(tanggalHariIni)
+    ref.current?.focus();
+  }
+
+  let loadOptions = (inputValue: any, callback: any) => {
+    setTimeout(async () => {
+      if (inputValue.length < 2) {
+        callback([]);
+        return;
+      }
+      const data = dataBuku.filter(
+        (item: any) =>
+          item.judul &&
+          item.judul.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      const options = data.map((item: any) => ({
+        value: item.id,
+        label: item.judul,
+        kodeBuku: item.kodeBuku,
+        judul: item.judul,
+        stok: item.stok,
+        penulis: item.penulis,
+        penerbit: item.penerbit,
+      }));
+      callback(options);
+    }, 300);
+  };
+
+  let loadOptionsMember = (inputValue: any, callback: any) => {
+    setTimeout(() => {
+      if (inputValue.length < 2) {
+        callback([]);
+        return;
+      }
+
+      const filteredData = dataMember.filter(
+        (item: any) =>
+          item.nama &&
+          item.nama.toLowerCase().includes(inputValue.toLowerCase())
+      );
+
+      const options = filteredData.map((item: any) => ({
+        value: item.id,
+        label: item.nama,
+        status: item.status || "Status tidak tersedia",
+      }));
+
+      callback(options);
+    }, 300);
+  };
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -85,118 +165,53 @@ const TransaksiPeminjaman = () => {
       });
       return;
     }
-    handleShow();
+    selesai();
     setTimeout(function () {
       refuang.current?.focus();
     }, 400);
   };
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => {
-    setShow(false);
-    // refresh2();
-    setTimeout(function () {
-      ref.current?.focus();
-    }, 400);
-  };
+  const selesai = async () => {
+    setIsLoading(true);
+    const formData = new FormData()
+    formData.append('totalqty', String(totalqty))
+    formData.append('noPeminjaman', noPeminjaman)
+    formData.append('memberId', memberId)
+    formData.append('tanggal', new Date(tanggal).toISOString())
+    formData.append('deadline',  new Date(deadline).toISOString())
+    formData.append('selected', JSON.stringify(inputFields))
 
-  async function otomatisnopeminjaman() {
-    const response = await axios.get(`/admin/api/transaksiPeminjaman`);
-    const data = response.data;
-    setNoPeminjaman(data);
-  }
+    const xxx = await axios.post(`/admin/api/peminjaman`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    if (xxx.data.pesan === 'berhasil') {
+      setIsLoading(false);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Berhasil simpan',
+        showConfirmButton: false,
+        timer: 1500
+      })
 
-  async function getbuku() {
-    const response = await axios.get(`/admin/api/buku`);
-    const data = response.data;
-    setDataBuku(data);
-  }
+      // cetakfaktur(inputFields, total, nofaktur, kasir, tanggal, Number(uang));
 
-  async function getMember() {
-    const response = await axios.get(`/admin/api/member`);
-    const data = response.data;
-    setDataMember(data);
-  }
-
-  const formatTanggal = (tanggal: Date): string => {
-    const dd = String(tanggal.getDate()).padStart(2, "0");
-    const mm = String(tanggal.getMonth() + 1).padStart(2, "0"); // Bulan dimulai dari 0
-    const yyyy = tanggal.getFullYear();
-    return `${yyyy}-${mm}-${dd}`; // Format ke YYYY-MM-DD untuk input type="date"
-  };
-
-  const maxDate = () => {
-    if (selectMemberStatus === "VIP 0") {
-      const today = new Date();
-      today.setDate(today.getDate() + 3);
-      return formatTanggal(today);
-    } else if (selectMemberStatus === "VIP 1") {
-      const today = new Date();
-      today.setDate(today.getDate() + 6);
-      return formatTanggal(today);
+      otomatisnopeminjaman()
+      refresh();
+      getbuku()
     }
-    return ""; // Tidak ada batasan jika status member bukan 'vip0'
-  };
-
-  let loadOptions = (inputValue: any, callback: any) => {
-    setTimeout(async () => {
-      if (inputValue.length < 2) {
-        callback([]);
-        return;
-      }
-      const data = dataBuku.filter(
-        (item: any) =>
-          item.judul &&
-          item.judul.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      const options = data.map((item: any) => ({
-        value: item.id,
-        label: item.judul,
-        kodeBuku: item.kodeBuku,
-        judul: item.judul,
-        stok: item.stok,
-        penulis: item.penulis,
-        penerbit: item.penerbit,
-      }));
-      callback(options);
-    }, 300);
-  };
-
-  let loadOptionsMember = (
-    inputValue: string,
-    callback: (options: MemberOption[]) => void
-  ) => {
-    setTimeout(() => {
-      if (inputValue.length < 2) {
-        callback([]); // Jika inputValue kurang dari 2 karakter, tidak ada hasil
-        return;
-      }
-
-      // Filter data berdasarkan inputValue
-      const filteredData = dataMember.filter(
-        (item: any) =>
-          item.nama &&
-          item.nama.toLowerCase().includes(inputValue.toLowerCase())
-      );
-
-      // Map data menjadi opsi yang bisa digunakan dalam AsyncSelect
-      const options = filteredData.map((item: any) => ({
-        value: item.id,
-        label: item.nama,
-        status: item.status || "Status tidak tersedia", // Menambahkan default jika status tidak ada
-      }));
-
-      callback(options);
-    }, 300);
-  };
+  }
 
   const handleChangeMember = (selectedOption: any) => {
     setSelectedMember(selectedOption);
+    setMemberId(selectedOption.value)
     setSelectMemberStatus(selectedOption.status);
     if (selectedOption.status === "VIP 0") {
-      setTanggalPengembalian(VIP0);
+      setDeadline(VIP0);
     } else if (selectedOption.status === "VIP 1") {
-      setTanggalPengembalian(VIP1);
+      setDeadline(VIP1);
     }
   };
 
@@ -390,20 +405,6 @@ const TransaksiPeminjaman = () => {
 
   return (
     <div>
-      {/* <div>
-        <div className="pagetitle bg-white p-3 rounded shadow-sm flex items-center mb-3">
-          <nav>
-            <ol className="breadcrumb flex items-center">
-              <li className="breadcrumb-item">
-                <Link href="/">Home</Link>
-              </li>
-              <li className="breadcrumb-item">Transaksi</li>
-              <li className="breadcrumb-item active">Peminjaman</li>
-            </ol>
-          </nav>
-          <h3>Peminjaman</h3>
-        </div>
-      </div> */}
       <div className="row">
         <div className="col-lg-12">
           <div className="card">
@@ -418,7 +419,7 @@ const TransaksiPeminjaman = () => {
                       Member
                     </label>
                   </div>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <AsyncSelect
                       cacheOptions
                       defaultOptions
@@ -427,12 +428,40 @@ const TransaksiPeminjaman = () => {
                       onChange={handleChangeMember}
                     />
                   </div>
+                  {selectMemberStatus === "" ?
+                    null
+                    :
+                    <>
+                      <div className="col-md-3">
+                        <label
+                          className={`col-form-label ${montserrat.className}`}
+                          style={{ fontSize: "17px", color: "#333", fontWeight: "600" }}
+                        >
+                          Status Member
+                        </label>
+                      </div>
+                      <div className="col-sm-3">
+                        <input
+                          disabled={true}
+                          required
+                          type="text"
+                          className="form-control"
+                          style={{
+                            fontSize: 15,
+                            color: "black",
+                            borderColor: "grey",
+                          }}
+                          value={selectMemberStatus}
+                        />
+                      </div>
+                    </>
+                  }
                 </div>
               </div>
             </div>
             <div className="bg-white rounded shadow-sm p-3">
-              <form className="">
-                {selectMemberStatus === "blacklist" ? (
+              <form className="" onSubmit={handleSubmit}>
+                {selectMemberStatus.toLowerCase().includes('blacklist') ? (
                   <div>
                     <p>Pengguna Tersebut telah di blacklist.</p>
                   </div>
@@ -442,84 +471,17 @@ const TransaksiPeminjaman = () => {
                   </div>
                 ) : (
                   <div>
-                    {/* Form yang muncul jika member tidak blacklist */}
                     <div className="form-group">
-                      <div className="row mb-3">
-                        <label
-                          className="col-sm-2 col-form-label"
-                          style={{ fontSize: 15, color: "black" }}
-                        >
-                          Nama Member
-                        </label>
-                        <div className="col-sm-3">
-                          <input
-                            disabled={true}
-                            required
-                            type="text"
-                            className="form-control"
-                            style={{
-                              fontSize: 15,
-                              color: "black",
-                              borderColor: "grey",
-                            }}
-                            value={selectedMember?.label}
-                          />
-                        </div>
-                        <div className="col-sm-1"></div>
-                        <label
-                          className="col-sm-3 col-form-label"
-                          style={{ fontSize: 15, color: "black" }}
-                        >
-                          Status Member
-                        </label>
-                        <div className="col-sm-3">
-                          <input
-                            disabled={true}
-                            required
-                            type="text"
-                            className="form-control"
-                            style={{
-                              fontSize: 15,
-                              color: "black",
-                              borderColor: "grey",
-                            }}
-                            value={selectedMember?.status}
-                          />
-                        </div>
-                      </div>
                       <div className="mb-3 row">
                         <label
                           className="col-sm-2 col-form-label"
                           style={{ fontSize: 15, color: "black" }}
                         >
-                          No Peminjaman
+                          Tanggal
                         </label>
                         <div className="col-sm-3">
                           <input
                             disabled={true}
-                            required
-                            type="text"
-                            className="form-control"
-                            style={{
-                              fontSize: 15,
-                              color: "black",
-                              borderColor: "grey",
-                            }}
-                            value={noPeminjaman}
-                            onChange={(e) => setNoPeminjaman(e.target.value)}
-                          />
-                        </div>
-
-                        <div className="col-sm-1"></div>
-
-                        <label
-                          className="col-sm-3 col-form-label"
-                          style={{ fontSize: 15, color: "black" }}
-                        >
-                          Tanggal Pengembalian
-                        </label>
-                        <div className="col-sm-3">
-                          <input
                             required
                             type="date"
                             className="form-control"
@@ -528,9 +490,32 @@ const TransaksiPeminjaman = () => {
                               color: "black",
                               borderColor: "grey",
                             }}
-                            value={tanggalPengembalian}
-                            onChange={(e) => setTanggalPengembalian(e.target.value)}
-                            max={maxDate()}
+                            value={tanggal}
+                          />
+                        </div>
+
+                        <div className="col-sm-1"></div>
+
+                        <label
+                          className="col-sm-3 col-form-label"
+                          style={{ fontSize: 15, color: "black" }}
+                        >
+                          Deadline Pengembalian
+                        </label>
+                        <div className="col-sm-3">
+                          <input
+                            disabled
+                            required
+                            type="date"
+                            className="form-control"
+                            style={{
+                              fontSize: 15,
+                              color: "black",
+                              borderColor: "grey",
+                            }}
+                            value={deadline}
+                            onChange={(e) => setDeadline(e.target.value)}
+                            max={maxDate(selectMemberStatus)}
                           />
                         </div>
                       </div>
@@ -818,29 +803,29 @@ const TransaksiPeminjaman = () => {
                       </div>
                     </div>
                     <Col md={5} className="mb-1">
-                      {/* <span className="p-buttonset">
-                      <Button
-                        label="Save"
-                        type="submit"
-                        icon="mdi mdi-content-save"
-                        className="px-4"
-                        severity="info"
-                      />
-                      <Button
-                        label="Cancel"
-                        type="button"
-                        onClick={refresh}
-                        icon="mdi mdi-close-circle"
-                        severity="danger"
-                      />
-                      <Button
+                      <span className="p-buttonset">
+                        <Button
+                          label="Save"
+                          type="submit"
+                          icon="mdi mdi-content-save"
+                          className="px-4"
+                          severity="info"
+                        />
+                        <Button
+                          label="Cancel"
+                          type="button"
+                          onClick={refresh}
+                          icon="mdi mdi-close-circle"
+                          severity="danger"
+                        />
+                        {/* <Button
                         label="Cetak Ulang Faktur"
                         type="button"
                         onClick={handleShow2}
                         icon="mdi mdi-printer"
                         severity="success"
-                      />
-                    </span> */}
+                      /> */}
+                      </span>
                     </Col>
                   </div>
                 )}

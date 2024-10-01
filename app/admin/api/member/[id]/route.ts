@@ -5,10 +5,7 @@ import * as bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 export const dynamic = "force-dynamic";
 
-export const PATCH = async (
-  request: Request,
-  { params }: { params: { id: string } }
-) => {
+export const PATCH = async (request: Request, { params }: { params: { id: string } }) => {
   const formData = await request.formData();
   const newpass = formData.get("newpass");
 
@@ -84,10 +81,7 @@ export const PATCH = async (
   return NextResponse.json({ status: 200, pesan: "berhasil" });
 };
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   const id = params.id;
   try {
     await prisma.memberTb.delete({

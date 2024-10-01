@@ -49,7 +49,7 @@ const Zona = () => {
     },
     {
       name: "Nomor Identitas",
-      selector: (row: any) => row.MemberTb?.nis,
+      selector: (row: any) => row.nis,
       sortable: true,
     },
     {
@@ -59,24 +59,24 @@ const Zona = () => {
     },
     {
       name: "No HP",
-      selector: (row: any) => row.MemberTb?.hp,
+      selector: (row: any) => row.hp,
       sortable: true,
     },
     {
       name: "Email",
-      selector: (row: any) => row.MemberTb?.email,
+      selector: (row: any) => row.email,
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row: any) => row.MemberTb?.status,
+      selector: (row: any) => row.status,
       sortable: true,
     },
     {
       name: "Action",
       cell: (row: any) => (
         <div className="d-flex">
-          <Update member={row.MemberTb} user={row} reload={reload} />
+          <Update member={row} user={row.UserTb} reload={reload} />
           <Delete id={row.id} reload={reload} />
         </div>
       ),

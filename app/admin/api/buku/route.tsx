@@ -15,9 +15,10 @@ export const POST = async (request: NextRequest) => {
 
   const formData = await request.formData();
 
-  const cekkode = await prisma.bukuTb.findUnique({
+  const cekkode = await prisma.bukuTb.findFirst({
     where: {
       kodeBuku: String(formData.get("kodeBuku")),
+      sekolahId:sekolahId
     },
   });
 
@@ -35,7 +36,8 @@ export const POST = async (request: NextRequest) => {
       penulis: String(formData.get("penulis")),
       bahasa: String(formData.get("bahasa")),
       stok: Number(formData.get("jumlah")),
-      qty: Number(formData.get("jumlah")),
+      stokinput: Number(formData.get("jumlah")),
+      stoklemari: Number(formData.get("jumlah")),
       deskripsi: String(formData.get("deskripsi")),
       sekolahId: sekolahId,
     },
@@ -43,8 +45,17 @@ export const POST = async (request: NextRequest) => {
   return NextResponse.json({ pesan: "berhasil" });
 };
 
-export const GET = async () => {
+export const GET = async (request:NextRequest) => {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const sekolahId = Number(token?.sekolahId);
   const rak = await prisma.bukuTb.findMany({
+    where:{
+      sekolahId:sekolahId
+    },
     include: {
       KategoriTb: true,
     },

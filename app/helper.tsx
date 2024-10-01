@@ -9,6 +9,13 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 
 const currentTime = new Date();
 
+const formatTanggal = (tanggal: Date): string => {
+  const dd = String(tanggal.getDate()).padStart(2, "0");
+  const mm = String(tanggal.getMonth() + 1).padStart(2, "0");
+  const yyyy = tanggal.getFullYear();
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 export let supabaseUrl = "https://harkcrbmtskvtiboutxl.supabase.co";
 export let supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhcmtjcmJtdHNrdnRpYm91dHhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTczODY4MTgsImV4cCI6MjAzMjk2MjgxOH0.Oa2dnHnpsJbQviB4fNdIdwSxJgYR8BUS-Nd1VQWg7LY";
@@ -210,6 +217,21 @@ export function mingguDepan() {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+export function maxDate(select: any) {
+
+  if (select === "VIP 0") {
+    const today = new Date();
+    today.setDate(today.getDate() + 3);
+    return formatTanggal(today);
+  } else if (select === "VIP 1") {
+    const today = new Date();
+    today.setDate(today.getDate() + 6);
+    return formatTanggal(today);
+  }
+  return "";
+
+}
+
 export const rupiah = (value: any) => {
   return value.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
 };
@@ -304,8 +326,8 @@ export function cetakfaktur(
             <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
             <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
             <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(
-              tanggal
-            )}</span></div>
+    tanggal
+  )}</span></div>
             <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
           </div>
         <table>
@@ -326,21 +348,20 @@ export function cetakfaktur(
     tableHTML += `
             <tr>
                 <td>${index + 1}</td>
-                <td class="nama-column" style="text-align:left;">${
-                  item.namaBarang
-                }</td>
+                <td class="nama-column" style="text-align:left;">${item.namaBarang
+      }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">unit</td>
                 <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString(
-                  "id-ID",
-                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                )}</td>
+        "id-ID",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+      )}</td>
                 <td style="text-align:right; width: 20%">Rp ${(
-                  item.qty * item.hargaJual
-                ).toLocaleString("id-ID", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}</td>
+        item.qty * item.hargaJual
+      ).toLocaleString("id-ID", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}</td>
             </tr>
         `;
   });
@@ -352,25 +373,25 @@ export function cetakfaktur(
                 <tr>
                     <td colspan="5" class="total">Grand Total</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString(
-                      "id-ID",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
+    "id-ID",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Jumlah Uang</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString(
-                      "id-ID",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
+    "id-ID",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Kembalian</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${(
-                      uangDiterima - total
-                    ).toLocaleString("id-ID", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}</td>
+      uangDiterima - total
+    ).toLocaleString("id-ID", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}</td>
                 </tr>
             </tfoot>
         </table>
@@ -505,8 +526,8 @@ export function cetakulangfaktur(
             <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
             <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
             <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(
-              tanggal
-            )}</span></div>
+    tanggal
+  )}</span></div>
             <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
           </div>
         <table>
@@ -527,21 +548,20 @@ export function cetakulangfaktur(
     tableHTML += `
             <tr>
                 <td>${index + 1}</td>
-                <td class="nama-column" style="text-align:left;">${
-                  item.BarangTb.namaBarang
-                }</td>
+                <td class="nama-column" style="text-align:left;">${item.BarangTb.namaBarang
+      }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">unit</td>
                 <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString(
-                  "id-ID",
-                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                )}</td>
+        "id-ID",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+      )}</td>
                 <td style="text-align:right; width: 20%">Rp ${(
-                  item.qty * item.hargaJual
-                ).toLocaleString("id-ID", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}</td>
+        item.qty * item.hargaJual
+      ).toLocaleString("id-ID", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}</td>
             </tr>
         `;
   });
@@ -553,25 +573,25 @@ export function cetakulangfaktur(
                 <tr>
                     <td colspan="5" class="total">Grand Total</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString(
-                      "id-ID",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
+    "id-ID",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Jumlah Uang</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString(
-                      "id-ID",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
+    "id-ID",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Kembalian</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${(
-                      uangDiterima - total
-                    ).toLocaleString("id-ID", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}</td>
+      uangDiterima - total
+    ).toLocaleString("id-ID", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}</td>
                 </tr>
             </tfoot>
         </table>
@@ -708,8 +728,8 @@ export function cetakfakturservis(
             <div><span><b>No. Faktur</b></span><span>: ${nofaktur} </span></div>
             <div><span><b>Kasir</b></span><span>: ${kasir}</span></div>
             <div><span><b>Tanggal</b></span><span>: ${tanggalIndo(
-              tanggal
-            )}</span></div>
+    tanggal
+  )}</span></div>
             <div><span><b>Pembayaran</b></span><span>: Tunai / Transfer</span></div>
           </div>
         <table>
@@ -729,21 +749,20 @@ export function cetakfakturservis(
     tableHTML += `
             <tr>
                 <td>${counter++}</td>
-                <td class="nama-column" style="text-align:left;">${
-                  item.jenisServis
-                }</td>
+                <td class="nama-column" style="text-align:left;">${item.jenisServis
+      }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">jasa</td>
                 <td style="text-align:right; width: 19%">Rp ${item.biaya.toLocaleString(
-                  "id-ID",
-                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                )}</td>
+        "id-ID",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+      )}</td>
                 <td style="text-align:right; width: 20%">Rp ${(
-                  item.qty * item.biaya
-                ).toLocaleString("id-ID", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}</td>
+        item.qty * item.biaya
+      ).toLocaleString("id-ID", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}</td>
             </tr>
         `;
   });
@@ -751,21 +770,20 @@ export function cetakfakturservis(
     tableHTML += `
             <tr>
                 <td>${counter++}</td>
-                <td class="nama-column" style="text-align:left;">${
-                  item.namaBarang
-                }</td>
+                <td class="nama-column" style="text-align:left;">${item.namaBarang
+      }</td>
                 <td class="qty-column">${item.qty}</td>
                 <td class="qty-column">unit</td>
                 <td style="text-align:right; width: 19%">Rp ${item.hargaJual.toLocaleString(
-                  "id-ID",
-                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                )}</td>
+        "id-ID",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+      )}</td>
                 <td style="text-align:right; width: 20%">Rp ${(
-                  item.qty * item.hargaJual
-                ).toLocaleString("id-ID", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}</td>
+        item.qty * item.hargaJual
+      ).toLocaleString("id-ID", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}</td>
             </tr>
         `;
   });
@@ -777,26 +795,26 @@ export function cetakfakturservis(
                 <tr>
                     <td colspan="5" class="total">Grand Total</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${total.toLocaleString(
-                      "id-ID",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
+    "id-ID",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  )}</td>
                 </tr>
 
                   <tr>
                     <td colspan="5" class="total">Jumlah Uang</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${uangDiterima.toLocaleString(
-                      "id-ID",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
+    "id-ID",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  )}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="total">Kembalian</td>
                     <td class="total" style="text-align:right; width: 20%">Rp ${(
-                      uangDiterima - total
-                    ).toLocaleString("id-ID", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}</td>
+      uangDiterima - total
+    ).toLocaleString("id-ID", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}</td>
                 </tr>
 
             </tfoot>

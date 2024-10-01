@@ -6,10 +6,7 @@ import { getToken } from "next-auth/jwt";
 const prisma = new PrismaClient();
 export const dynamic = "force-dynamic";
 
-export const PATCH = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
+export const PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
@@ -112,7 +109,7 @@ export const POST = async (
   });
 
   if (xxx) {
-    jumlah = xxx.qty;
+    jumlah = xxx.stoklemari;
   }
 
   const hasil = jumlah + qty;
@@ -122,7 +119,7 @@ export const POST = async (
       id: bukuId,
     },
     data: {
-      qty: hasil,
+      stoklemari: hasil,
     },
   });
 

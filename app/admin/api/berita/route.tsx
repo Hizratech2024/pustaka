@@ -18,14 +18,23 @@ export const POST = async (request: NextRequest) => {
             tanggal: String(formData.get('tanggal')),
             isi: String(formData.get('isi')),
             foto: String(formData.get('namaunik')),
-            sekolahId:sekolahId
+            sekolahId: sekolahId
         }
     })
     return NextResponse.json({ pesan: 'berhasil' })
 }
 
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
+    const token = await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    const sekolahId = Number(token?.sekolahId);
     const berita = await prisma.berita.findMany({
+        where: {
+            sekolahId: sekolahId
+        },
         orderBy: {
             createdAt: 'asc'
         }
